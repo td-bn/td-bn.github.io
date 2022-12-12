@@ -1,0 +1,67 @@
+---
+title: "tbDEX: Foundations, participants and flow"
+format: html
+---
+### One Liner
+
+The *tbDEX* protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements.
+
+## What is the aim?
+
+- be a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)
+- utilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world
+- provides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers
+
+## Foundations
+
+### DIDs
+
+- are a new type of identifier that enables verifiable, decentralized digital identity
+- A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.
+- In contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.
+- while other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party
+
+### VCs
+
+- The Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.
+- ZK tech can further advance privacy and safety by preventing linkability across disclosures,
+reducing the amount of data disclosed, and in some cases removing the need to expose raw data
+values at all.
+
+### Identity Hubs
+
+- For entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in
+- Identity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID
+- This enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.
+- Identity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. 
+A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols.
+
+## Participants
+
+### Issuers of VCs
+
+- Issuers are the source of VCs. Both individuals and organizations can be the source of VCs.
+    - e.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals
+
+### Participating Financial Institutions(PFIs)
+
+- entities that provide liquidity services on the tdDEX network
+- each PFI will be identified via DIDs and VCs
+
+### Wallets
+
+- act as agents for individuals or institutions by facilitating exchanges with PFIs
+- provides:
+    - Providing secure encrypted storage for VCs
+    - PFI discovery by crawling identity hubs
+    - applying signatures and storing history
+
+## Protocol
+
+Divided into:
+
+- Request for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange
+- Messaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction
+
+### Topology and communication flow
+![](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/188bd0da-8b07-4c5c-a3e3-e9e64f729768/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221212%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221212T091952Z&X-Amz-Expires=86400&X-Amz-Signature=054ec018d06e18b00f7fbc6375194e7c582b421dc1a616ff35ac8dae936cd3ef&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject)
