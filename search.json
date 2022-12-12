@@ -7,6 +7,41 @@
     "text": "I am a Telwain Daand.\nI move around in circles trying to generate value."
   },
   {
+    "objectID": "blockchain/tdDEX.html",
+    "href": "blockchain/tdDEX.html",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "",
+    "text": "The tbDEX protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements."
+  },
+  {
+    "objectID": "blockchain/tdDEX.html#what-is-the-aim",
+    "href": "blockchain/tdDEX.html#what-is-the-aim",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "What is the aim?",
+    "text": "What is the aim?\n\nbe a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)\nutilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world\nprovides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers"
+  },
+  {
+    "objectID": "blockchain/tdDEX.html#foundations",
+    "href": "blockchain/tdDEX.html#foundations",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Foundations",
+    "text": "Foundations\n\nDIDs\n\nare a new type of identifier that enables verifiable, decentralized digital identity\nA DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.\nIn contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.\nwhile other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party\n\n\n\nVCs\n\nThe Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.\nZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.\n\n\n\nIdentity Hubs\n\nFor entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in\nIdentity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID\nThis enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.\nIdentity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols."
+  },
+  {
+    "objectID": "blockchain/tdDEX.html#participants",
+    "href": "blockchain/tdDEX.html#participants",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Participants",
+    "text": "Participants\n\nIssuers of VCs\n\nIssuers are the source of VCs. Both individuals and organizations can be the source of VCs.\n\ne.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals\n\n\n\n\nParticipating Financial Institutions(PFIs)\n\nentities that provide liquidity services on the tdDEX network\neach PFI will be identified via DIDs and VCs\n\n\n\nWallets\n\nact as agents for individuals or institutions by facilitating exchanges with PFIs\nprovides:\n\nProviding secure encrypted storage for VCs\nPFI discovery by crawling identity hubs\napplying signatures and storing history"
+  },
+  {
+    "objectID": "blockchain/tdDEX.html#protocol",
+    "href": "blockchain/tdDEX.html#protocol",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Protocol",
+    "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
+  },
+  {
     "objectID": "fastai/lesson_1.html",
     "href": "fastai/lesson_1.html",
     "title": "Is it a duck or a swan?",

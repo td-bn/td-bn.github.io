@@ -2,10 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://td-bn.github.io/home/index.html</loc>
-    <lastmod>2022-12-09T13:32:17.090Z</lastmod>
+    <lastmod>2022-12-12T09:23:00.084Z</lastmod>
+  </url>
+  <url>
+    <loc>https://td-bn.github.io/blockchain/tdDEX.html</loc>
+    <lastmod>2022-12-12T09:23:00.423Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/fastai/lesson_1.html</loc>
-    <lastmod>2022-12-09T13:32:17.464Z</lastmod>
+    <lastmod>2022-12-12T09:23:00.775Z</lastmod>
   </url>
 </urlset>
