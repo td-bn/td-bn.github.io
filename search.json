@@ -7,6 +7,62 @@
     "text": "I am a Telwain Daand.\nI move around in circles trying to generate value."
   },
   {
+    "objectID": "rust/async-await.html",
+    "href": "rust/async-await.html",
+    "title": "Async/Await",
+    "section": "",
+    "text": "tasks voluntarily give up control to the CPU through a yield operation\ndifferent from preemptive scheduling where the OS forcibly switches between running tasks\n\nBasically comes down to:\nIf I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me"
+  },
+  {
+    "objectID": "rust/async-await.html#why",
+    "href": "rust/async-await.html#why",
+    "title": "Async/Await",
+    "section": "Why?",
+    "text": "Why?\n\nI/O is costly\nThreads are nice\nBut not too many\nSwitching threads = context switches, costly"
+  },
+  {
+    "objectID": "rust/async-await.html#future-and-asyncawait",
+    "href": "rust/async-await.html#future-and-asyncawait",
+    "title": "Async/Await",
+    "section": "Future and async/await",
+    "text": "Future and async/await\n\nAsync/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield\nCooperative scheduling also means that you have to be vigilant about running blocking code in a future\n\nsee tokio::task::spawn_blocking\n\nAsync/await is rust is implemented using what is called a Future\nFuture represents a value that is not available yet.\nInstead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.\nFuture has a poll method is used to initiate the resolution of the Future. Rust Futures are lazy.\n\npub trait Future {\n    type Output;\n    fn poll(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Self::Output>;\n}\n\n/**\nOutput -> Type of the asynchronous value that the future resolves to.\nPin -> Reference which is pinned in memory\nContext -> Contains information about the Waker(responsible for letting executor\nknow about resolution of the Future)\n**/\n\nAsync/await facilitates the creation of nested Futures to better utilize CPU resources."
+  },
+  {
+    "objectID": "rust/async-await.html#executor",
+    "href": "rust/async-await.html#executor",
+    "title": "Async/Await",
+    "section": "Executor",
+    "text": "Executor\n\nSo is it turtles all the way down?\n\nSomething has to hold all our futures\nIt can’t yield, because its a top level Future describing the flow of our application\nSo it kind of checks on all the futures in our application flow\n\nThis is what an executor does in a very basic sense\nExecutor create (e.g. tokio):\n\nprovides lowest resources on network sockets and timers\nprovides the executor loop at the top\nwired up together behind the scenes\ne.g. if we are waiting for a network socket, tokio manages all that for us\n\nThis is what happens when we wrap our Rust main function in tokio::main\n\nit kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await"
+  },
+  {
+    "objectID": "rust/async-await.html#efficiency",
+    "href": "rust/async-await.html#efficiency",
+    "title": "Async/Await",
+    "section": "Efficiency",
+    "text": "Efficiency\n\nSpawn:\n\nProblem: async/await runs on 1 thread if you are not spawning anything\nspawning lets us take advantage of parallelism\n\nUnder the hood futures are implemented as state machines that contain the state of all the futures that they contain\n\nthis can become a problem when we are dealing with large states\nfutures become too big\nalternatives\n\nhave state on heap; Box our futures\nuse tokio::spawn, uses pointer to future\n\n\nasync-trait used to have traits with async functions\n\nwhy? Because its not possible for compiler to know size of futures\nasync-trait box that in a pointer for dynamic dispatch"
+  },
+  {
+    "objectID": "rust/async-await.html#sharing-state",
+    "href": "rust/async-await.html#sharing-state",
+    "title": "Async/Await",
+    "section": "Sharing state",
+    "text": "Sharing state\n\nsharing state across Futures\n\nArc, Mutex\nclone arc and pass it into futures\n\nTokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.\n\nrisk of deadlock\ntokio mutex helps but is slower"
+  },
+  {
+    "objectID": "rust/async-await.html#cancelling-future-execution",
+    "href": "rust/async-await.html#cancelling-future-execution",
+    "title": "Async/Await",
+    "section": "Cancelling Future execution",
+    "text": "Cancelling Future execution\n\nCancellation is possible: see select macro tokio\n\nNeed to aware of all the edge cases\n\n\nThreads vs Futures:\n\ngeneral rule of thumb, use threads for compute heavy stuff\nuse async for IO applications"
+  },
+  {
+    "objectID": "rust/async-await.html#resources-and-references",
+    "href": "rust/async-await.html#resources-and-references",
+    "title": "Async/Await",
+    "section": "Resources and References",
+    "text": "Resources and References\n\nJon Gjengset deep dive into async/await from an implementation PoV\nJon Gjengset overview of async/await from an application dev PoV\nOS rust section on async/await"
+  },
+  {
     "objectID": "blockchain/tdDEX.html",
     "href": "blockchain/tdDEX.html",
     "title": "tbDEX: Foundations, participants and flow",
