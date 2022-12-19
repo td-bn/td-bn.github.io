@@ -1,0 +1,97 @@
+---
+title: Async/Await
+format: html
+---
+
+## Cooperative scheduling
+
+- tasks voluntarily give up control to the CPU through a yield operation
+- different from preemptive scheduling where the OS forcibly switches between running tasks
+
+Basically comes down to: 
+
+`If I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me`
+
+## Why?
+
+- I/O is costly
+- Threads are nice
+- But not too many
+- Switching threads = context switches, costly
+
+## Future and async/await
+
+- Async/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield
+- Cooperative scheduling also means that you have to be vigilant about running blocking code in a future
+    - see tokio::task::spawn_blocking
+- Async/await is rust is implemented using what is called a `Future`
+- Future represents a value that is not available yet.
+- Instead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.
+- Future has a `poll` method is used to initiate the resolution of the Future. Rust Futures are lazy.
+```rust
+pub trait Future {
+    type Output;
+    fn poll(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Self::Output>;
+}
+
+/**
+Output -> Type of the asynchronous value that the future resolves to.
+Pin -> Reference which is pinned in memory
+Context -> Contains information about the Waker(responsible for letting executor
+know about resolution of the Future)
+**/
+```
+- Async/await facilitates the creation of nested Futures to better utilize CPU resources.
+
+## Executor
+
+- So is it turtles all the way down?
+    - Something has to hold all our futures
+    - It can’t yield, because its a top level Future describing the flow of our application
+    - So it kind of checks on all the futures in our application flow
+- This is what an executor does in a very basic sense
+- Executor create (e.g. tokio):
+    - provides lowest resources on network sockets and timers
+    - provides the executor loop at the top
+    - wired up together behind the scenes
+    - e.g. if we are waiting for a network socket, tokio manages all that for us
+- This is what happens when we wrap our Rust main function in tokio::main
+    - it kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await
+
+
+## Efficiency
+- Spawn:
+    - Problem: async/await runs on 1 thread if you are not spawning anything
+    - spawning lets us take advantage of parallelism
+- Under the hood futures are implemented as state machines that contain the state of all the futures that they contain
+    - this can become a problem when we are dealing with large states
+    - futures become too big
+    - alternatives
+        - have state on heap; Box our futures
+        - use tokio::spawn, uses pointer to future
+- async-trait used to have traits with async functions
+    - why? Because its not possible for compiler to know size of futures
+    - async-trait box that in a pointer for dynamic dispatch
+
+## Sharing state
+- sharing state across Futures
+    - Arc, Mutex
+    - clone arc and pass it into futures
+- Tokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.
+    - risk of deadlock
+    - tokio mutex helps but is slower
+
+## Cancelling Future execution
+- Cancellation is possible: see select macro tokio
+    - Need to aware of all the edge cases
+
+Threads vs Futures:
+
+- general rule of thumb, use threads for compute heavy stuff
+- use async for IO applications
+
+
+## Resources and References
+- [Jon Gjengset deep dive into async/await from an implementation PoV](https://www.youtube.com/watch?v=ThjvMReOXYM)
+- [Jon Gjengset overview of async/await from an application dev PoV](https://www.youtube.com/watch?v=9_3krAQtD2k)
+- [OS rust section on async/await](https://os.phil-opp.com/async-await)
