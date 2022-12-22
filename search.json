@@ -7,6 +7,13 @@
     "text": "I am a Telwain Daand.\nI move around in circles trying to generate value."
   },
   {
+    "objectID": "rust/foundations.html",
+    "href": "rust/foundations.html",
+    "title": "",
+    "section": "",
+    "text": "Values in Rust are a combination of a type and an element in the domain of that type.\nValues are stored at a place which can be the stack, the heap or any other location.\nA pointer points to such a place. It holds the address of a region of memory.\nThe most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a variable.\n\nNote: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.\n\n\n\n\nIn a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.\nA good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).\nThe dependency relationships or flows trace the lifetimes of a particular instance of a value.\nThis roughly matches roughly how the compiler and the borrow checker reason about the program.\n\n\n\nVariables name memory locations that may or may not hold legal values.\nlet x: u32; // x is a name for a region in memory\nx = 6; // value 6 written to address\nIf we declare multiple variables with the same names they end up at different memory locations."
+  },
+  {
     "objectID": "rust/async-await.html",
     "href": "rust/async-await.html",
     "title": "Async/Await",

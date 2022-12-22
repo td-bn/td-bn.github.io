@@ -2,18 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://td-bn.github.io/home/index.html</loc>
-    <lastmod>2022-12-19T09:40:09.108Z</lastmod>
+    <lastmod>2022-12-22T15:38:39.875Z</lastmod>
+  </url>
+  <url>
+    <loc>https://td-bn.github.io/rust/foundations.html</loc>
+    <lastmod>2022-12-22T15:38:40.264Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/async-await.html</loc>
-    <lastmod>2022-12-19T09:40:09.465Z</lastmod>
+    <lastmod>2022-12-22T15:38:40.658Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/blockchain/tdDEX.html</loc>
-    <lastmod>2022-12-19T09:40:09.786Z</lastmod>
+    <lastmod>2022-12-22T15:38:41.098Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/fastai/lesson_1.html</loc>
-    <lastmod>2022-12-19T09:40:10.145Z</lastmod>
+    <lastmod>2022-12-22T15:38:41.531Z</lastmod>
   </url>
 </urlset>

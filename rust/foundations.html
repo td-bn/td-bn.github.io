@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Async/Await</title>
+<title>foundations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Async/Await</h1>
+      <h1 class="quarto-secondary-nav-title"></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -201,12 +201,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link active">Async/Await</a>
+  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
   </div>
 </li>
       </ul>
@@ -220,169 +220,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cooperative-scheduling" id="toc-cooperative-scheduling" class="nav-link active" data-scroll-target="#cooperative-scheduling">Cooperative scheduling</a></li>
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why">Why?</a></li>
-  <li><a href="#future-and-asyncawait" id="toc-future-and-asyncawait" class="nav-link" data-scroll-target="#future-and-asyncawait">Future and async/await</a></li>
-  <li><a href="#executor" id="toc-executor" class="nav-link" data-scroll-target="#executor">Executor</a></li>
-  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
-  <li><a href="#sharing-state" id="toc-sharing-state" class="nav-link" data-scroll-target="#sharing-state">Sharing state</a></li>
-  <li><a href="#cancelling-future-execution" id="toc-cancelling-future-execution" class="nav-link" data-scroll-target="#cancelling-future-execution">Cancelling Future execution</a></li>
-  <li><a href="#resources-and-references" id="toc-resources-and-references" class="nav-link" data-scroll-target="#resources-and-references">Resources and References</a></li>
+  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
+  <ul class="collapse">
+  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
+  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
+  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">Async/Await</h1>
-</div>
 
 
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-</header>
-
-<section id="cooperative-scheduling" class="level2">
-<h2 class="anchored" data-anchor-id="cooperative-scheduling">Cooperative scheduling</h2>
-<ul>
-<li>tasks voluntarily give up control to the CPU through a yield operation</li>
-<li>different from preemptive scheduling where the OS forcibly switches between running tasks</li>
-</ul>
-<p>Basically comes down to:</p>
-<p><code>If I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me</code></p>
+<section id="foundations" class="level1">
+<h1>Foundations</h1>
+<section id="values-variables-and-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
+<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
+<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
+<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
+<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
+<blockquote class="blockquote">
+<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
+</blockquote>
 </section>
-<section id="why" class="level2">
-<h2 class="anchored" data-anchor-id="why">Why?</h2>
-<ul>
-<li>I/O is costly</li>
-<li>Threads are nice</li>
-<li>But not too many</li>
-<li>Switching threads = context switches, costly</li>
-</ul>
+<section id="high-level-model-of-variables" class="level2">
+<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
+<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
+<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
+<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
+<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
 </section>
-<section id="future-and-asyncawait" class="level2">
-<h2 class="anchored" data-anchor-id="future-and-asyncawait">Future and async/await</h2>
-<ul>
-<li>Async/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield</li>
-<li>Cooperative scheduling also means that you have to be vigilant about running blocking code in a future
-<ul>
-<li>see tokio::task::spawn_blocking</li>
-</ul></li>
-<li>Async/await is rust is implemented using what is called a <code>Future</code></li>
-<li>Future represents a value that is not available yet.</li>
-<li>Instead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.</li>
-<li>Future has a <code>poll</code> method is used to initiate the resolution of the Future. Rust Futures are lazy.</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">Future</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> poll(<span class="kw">self</span><span class="op">:</span> Pin<span class="op">&lt;&amp;</span><span class="kw">mut</span> <span class="dt">Self</span><span class="op">&gt;,</span> cx<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> Context) <span class="op">-&gt;</span> Poll<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Output<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">Output -&gt; Type of the asynchronous value that the future resolves to.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">Pin -&gt; Reference which is pinned in memory</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">Context -&gt; Contains information about the Waker(responsible for letting executor</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">know about resolution of the Future)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">**/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Async/await facilitates the creation of nested Futures to better utilize CPU resources.</li>
-</ul>
-</section>
-<section id="executor" class="level2">
-<h2 class="anchored" data-anchor-id="executor">Executor</h2>
-<ul>
-<li>So is it turtles all the way down?
-<ul>
-<li>Something has to hold all our futures</li>
-<li>It can’t yield, because its a top level Future describing the flow of our application</li>
-<li>So it kind of checks on all the futures in our application flow</li>
-</ul></li>
-<li>This is what an executor does in a very basic sense</li>
-<li>Executor create (e.g.&nbsp;tokio):
-<ul>
-<li>provides lowest resources on network sockets and timers</li>
-<li>provides the executor loop at the top</li>
-<li>wired up together behind the scenes</li>
-<li>e.g.&nbsp;if we are waiting for a network socket, tokio manages all that for us</li>
-</ul></li>
-<li>This is what happens when we wrap our Rust main function in tokio::main
-<ul>
-<li>it kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await</li>
-</ul></li>
-</ul>
-</section>
-<section id="efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
-<ul>
-<li>Spawn:
-<ul>
-<li>Problem: async/await runs on 1 thread if you are not spawning anything</li>
-<li>spawning lets us take advantage of parallelism</li>
-</ul></li>
-<li>Under the hood futures are implemented as state machines that contain the state of all the futures that they contain
-<ul>
-<li>this can become a problem when we are dealing with large states</li>
-<li>futures become too big</li>
-<li>alternatives
-<ul>
-<li>have state on heap; Box our futures</li>
-<li>use tokio::spawn, uses pointer to future</li>
-</ul></li>
-</ul></li>
-<li>async-trait used to have traits with async functions
-<ul>
-<li>why? Because its not possible for compiler to know size of futures</li>
-<li>async-trait box that in a pointer for dynamic dispatch</li>
-</ul></li>
-</ul>
-</section>
-<section id="sharing-state" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-state">Sharing state</h2>
-<ul>
-<li>sharing state across Futures
-<ul>
-<li>Arc, Mutex</li>
-<li>clone arc and pass it into futures</li>
-</ul></li>
-<li>Tokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.
-<ul>
-<li>risk of deadlock</li>
-<li>tokio mutex helps but is slower</li>
-</ul></li>
-</ul>
-</section>
-<section id="cancelling-future-execution" class="level2">
-<h2 class="anchored" data-anchor-id="cancelling-future-execution">Cancelling Future execution</h2>
-<ul>
-<li>Cancellation is possible: see select macro tokio
-<ul>
-<li>Need to aware of all the edge cases</li>
-</ul></li>
-</ul>
-<p>Threads vs Futures:</p>
-<ul>
-<li>general rule of thumb, use threads for compute heavy stuff</li>
-<li>use async for IO applications</li>
-</ul>
-</section>
-<section id="resources-and-references" class="level2">
-<h2 class="anchored" data-anchor-id="resources-and-references">Resources and References</h2>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=ThjvMReOXYM">Jon Gjengset deep dive into async/await from an implementation PoV</a></li>
-<li><a href="https://www.youtube.com/watch?v=9_3krAQtD2k">Jon Gjengset overview of async/await from an application dev PoV</a></li>
-<li><a href="https://os.phil-opp.com/async-await">OS rust section on async/await</a></li>
-</ul>
+<section id="low-level-model-of-variables" class="level2">
+<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
+<p>Variables name memory locations that may or may not hold legal values.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
