@@ -225,6 +225,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
   <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
   <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
+  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
+  <ul class="collapse">
+  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
+  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
+  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -259,8 +265,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If we declare multiple variables with the same names they end up at different memory locations.</p>
+</section>
+<section id="memory-regions" class="level2">
+<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
+<section id="stack" class="level3">
+<h3 class="anchored" data-anchor-id="stack">Stack</h3>
+<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
+</section>
+<section id="heap" class="level3">
+<h3 class="anchored" data-anchor-id="heap">Heap</h3>
+<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
+<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
+</section>
+<section id="static-memory" class="level3">
+<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
+<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
+<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
+<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
 
 
+</section>
 </section>
 </section>
 
