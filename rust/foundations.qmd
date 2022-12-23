@@ -34,3 +34,22 @@ x = 6; // value 6 written to address
 
 If we declare multiple variables with the same names they end up at different memory locations.
 
+## Memory regions
+
+### Stack
+
+Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).
+
+### Heap
+
+Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame. 
+
+Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.
+
+### Static Memory
+
+Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.
+
+Static memory also holds the variables we define with a `static` keyword as well as certain constants values like strings. 
+
+The `'static` lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.
