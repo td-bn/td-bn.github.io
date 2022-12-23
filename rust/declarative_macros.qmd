@@ -3,6 +3,7 @@ title: Declerative macros
 format: html
 ---
 
+[See](https://github.com/td-bn/rust-level-up/blob/main/vecmac/src/lib.rs) for a simple exercise with macros.
 Macros are more about metaprogramming. 
 Can be used to map Rust expression to generate or run code. Kind of like `match`, but for Rust expressions. 
 
