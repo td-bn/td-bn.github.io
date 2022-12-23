@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>foundations</title>
+<title>Declerative macros</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Declerative macros</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -206,12 +206,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link active">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
       </ul>
@@ -225,72 +225,98 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
-  <ul class="collapse">
-  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
-  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
-  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
-  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
-  <ul class="collapse">
-  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
-  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
-  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#declaring" id="toc-declaring" class="nav-link active" data-scroll-target="#declaring">Declaring</a></li>
+  <li><a href="#using-macros" id="toc-using-macros" class="nav-link" data-scroll-target="#using-macros">using macros</a></li>
+  <li><a href="#cargo-expand" id="toc-cargo-expand" class="nav-link" data-scroll-target="#cargo-expand">Cargo expand</a></li>
+  <li><a href="#patterns" id="toc-patterns" class="nav-link" data-scroll-target="#patterns">Patterns</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Declerative macros</h1>
+</div>
 
 
-<section id="foundations" class="level1">
-<h1>Foundations</h1>
-<section id="values-variables-and-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
-<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
-<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
-<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
-<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
-<blockquote class="blockquote">
-<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
-</blockquote>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Macros are more about metaprogramming. Can be used to map Rust expression to generate or run code. Kind of like <code>match</code>, but for Rust expressions.</p>
+<section id="declaring" class="level2">
+<h2 class="anchored" data-anchor-id="declaring">Declaring</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        () <span class="op">=&gt;</span> <span class="op">{};</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can supply any arguments to the macro definition as if it were a function e.g.&nbsp;</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        (<span class="op">$</span>arg1<span class="op">:</span> ty<span class="op">,</span> <span class="op">$</span>arg2<span class="op">:</span>expr<span class="op">,</span> <span class="op">$</span>arg3<span class="op">:</span> path) <span class="op">=&gt;</span> <span class="op">{};</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But, we don’t have to.</p>
+<p>Rust allows us to write whatever we want as syntax pattern as long as its syntactically valid Rust. It should be parsed. And the output has to be <strong>valid Rust grammar</strong>. That means its doesn’t need to compile, but it must be comprised of valid Rust syntax. e.g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        (<span class="op">$</span>arg1<span class="op">:</span> ty <span class="op">=&gt;</span> <span class="op">$</span>arg2<span class="op">:</span>expr<span class="op">;</span> <span class="op">$</span>arg3<span class="op">:</span> path) <span class="op">=&gt;</span> <span class="op">{};</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>NOTE: Rust macros are not allowed to use values outside their own scope.</p>
 </section>
-<section id="high-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
-<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
-<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
-<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
-<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
+<section id="using-macros" class="level2">
+<h2 class="anchored" data-anchor-id="using-macros">using macros</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        () <span class="op">=&gt;</span> <span class="op">{};</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can use any brackets, because there is no way to specify what brackets we expect in current syntax.</p>
+<p>SO its up to the user to use what he wants.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span>()<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span>[]<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span> <span class="op">{}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="low-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
-<p>Variables name memory locations that may or may not hold legal values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
+<section id="cargo-expand" class="level2">
+<h2 class="anchored" data-anchor-id="cargo-expand">Cargo expand</h2>
+<p>Handy tool to expand all the macros in out code.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    (<span class="op">$</span>arg1<span class="op">:</span> ty <span class="op">=&gt;</span> <span class="op">$</span>arg2<span class="op">:</span>ident) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">type</span> $arg2 <span class="op">=</span> <span class="op">$</span>arg1<span class="op">;</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">avec!</span><span class="op">{</span><span class="dt">u32</span> <span class="op">=&gt;</span> AlsoU32<span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>expands to:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">#![</span>feature<span class="at">(</span>prelude_import<span class="at">)]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>prelude_import<span class="at">]</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::prelude::rust_2021::</span><span class="op">*;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>macro_use<span class="at">]</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="kw">crate</span> std<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> AlsoU32 <span class="op">=</span> <span class="dt">u32</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="memory-regions" class="level2">
-<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
-<section id="stack" class="level3">
-<h3 class="anchored" data-anchor-id="stack">Stack</h3>
-<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
-</section>
-<section id="heap" class="level3">
-<h3 class="anchored" data-anchor-id="heap">Heap</h3>
-<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
-<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
-</section>
-<section id="static-memory" class="level3">
-<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
-<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
-<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
-<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
+<section id="patterns" class="level2">
+<h2 class="anchored" data-anchor-id="patterns">Patterns</h2>
+<p>We can specify patterns for repitition logic:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// $($elem:expr),+: 1 or more of this pattern</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// $(,)?: Zero or one trailing comma</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    (<span class="op">$</span>(<span class="op">$</span>elem<span class="op">:</span>expr)<span class="op">,+</span> <span class="op">$</span>(<span class="op">,</span>)<span class="op">?</span>) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// We want this to be a block so that when we</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// do `let x = avec![..] cargo doesn't get mad</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> <span class="kw">mut</span> vs <span class="op">=</span> <span class="dt">Vec</span><span class="pp">::</span>new()<span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Repeat inside these parens the same num of time</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">// as the pattern that had 'elem' in it</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">$</span>(vs<span class="op">.</span>push(<span class="op">$</span>elem)<span class="op">;</span>)<span class="op">*</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            vs</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->

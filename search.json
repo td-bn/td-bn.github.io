@@ -70,6 +70,41 @@
     "text": "Resources and References\n\nJon Gjengset deep dive into async/await from an implementation PoV\nJon Gjengset overview of async/await from an application dev PoV\nOS rust section on async/await"
   },
   {
+    "objectID": "rust/declarative_macros.html",
+    "href": "rust/declarative_macros.html",
+    "title": "Declerative macros",
+    "section": "",
+    "text": "Macros are more about metaprogramming. Can be used to map Rust expression to generate or run code. Kind of like match, but for Rust expressions."
+  },
+  {
+    "objectID": "rust/declarative_macros.html#declaring",
+    "href": "rust/declarative_macros.html#declaring",
+    "title": "Declerative macros",
+    "section": "Declaring",
+    "text": "Declaring\n    macro_rules! avec {\n        () => {};\n    }\nWe can supply any arguments to the macro definition as if it were a function e.g. \n    macro_rules! avec {\n        ($arg1: ty, $arg2:expr, $arg3: path) => {};\n    }\nBut, we don’t have to.\nRust allows us to write whatever we want as syntax pattern as long as its syntactically valid Rust. It should be parsed. And the output has to be valid Rust grammar. That means its doesn’t need to compile, but it must be comprised of valid Rust syntax. e.g.\n    macro_rules! avec {\n        ($arg1: ty => $arg2:expr; $arg3: path) => {};\n    }\nNOTE: Rust macros are not allowed to use values outside their own scope."
+  },
+  {
+    "objectID": "rust/declarative_macros.html#using-macros",
+    "href": "rust/declarative_macros.html#using-macros",
+    "title": "Declerative macros",
+    "section": "using macros",
+    "text": "using macros\n    macro_rules! avec {\n        () => {};\n    }\nWe can use any brackets, because there is no way to specify what brackets we expect in current syntax.\nSO its up to the user to use what he wants.\n avec!();\n avec![];\n avec! {}"
+  },
+  {
+    "objectID": "rust/declarative_macros.html#cargo-expand",
+    "href": "rust/declarative_macros.html#cargo-expand",
+    "title": "Declerative macros",
+    "section": "Cargo expand",
+    "text": "Cargo expand\nHandy tool to expand all the macros in out code.\nmacro_rules! avec {\n    ($arg1: ty => $arg2:ident) => {\n        type $arg2 = $arg1; \n    };\n}\n\n\navec!{u32 => AlsoU32}\nexpands to:\n#![feature(prelude_import)]\n#[prelude_import]\nuse std::prelude::rust_2021::*;\n#[macro_use]\nextern crate std;\ntype AlsoU32 = u32;"
+  },
+  {
+    "objectID": "rust/declarative_macros.html#patterns",
+    "href": "rust/declarative_macros.html#patterns",
+    "title": "Declerative macros",
+    "section": "Patterns",
+    "text": "Patterns\nWe can specify patterns for repitition logic:\n    // $($elem:expr),+: 1 or more of this pattern\n    // $(,)?: Zero or one trailing comma\n    ($($elem:expr),+ $(,)?) => {\n        // We want this to be a block so that when we\n        // do `let x = avec![..] cargo doesn't get mad\n        {\n            let mut vs = Vec::new();\n            // Repeat inside these parens the same num of time\n            // as the pattern that had 'elem' in it\n            $(vs.push($elem);)*\n            vs\n        }\n    };"
+  },
+  {
     "objectID": "blockchain/tdDEX.html",
     "href": "blockchain/tdDEX.html",
     "title": "tbDEX: Foundations, participants and flow",
