@@ -74,7 +74,7 @@
     "href": "rust/declarative_macros.html",
     "title": "Declerative macros",
     "section": "",
-    "text": "Macros are more about metaprogramming. Can be used to map Rust expression to generate or run code. Kind of like match, but for Rust expressions."
+    "text": "See for a simple exercise with macros. Macros are more about metaprogramming. Can be used to map Rust expression to generate or run code. Kind of like match, but for Rust expressions."
   },
   {
     "objectID": "rust/declarative_macros.html#declaring",
