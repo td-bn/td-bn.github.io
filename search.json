@@ -7,6 +7,55 @@
     "text": "I am a Telwain Daand.\nI move around in circles trying to generate value."
   },
   {
+    "objectID": "rust/iter.html",
+    "href": "rust/iter.html",
+    "title": "Iterators",
+    "section": "",
+    "text": "See this for exercise.\nIterator in Rust is a trait. It has an associate type named Item and a method called next.\nItem is the type of item that the iterator will yield. It will call next and return items until they are exhausted at which point it returns None.\nIterators are also composable, and it’s common to chain them together to do more complex forms of processing."
+  },
+  {
+    "objectID": "rust/iter.html#three-forms-of-iterators",
+    "href": "rust/iter.html#three-forms-of-iterators",
+    "title": "Iterators",
+    "section": "Three forms of iterators",
+    "text": "Three forms of iterators\nThree common ways to create iterators form a collection:\niter() // which iterates over &T.\niter_mut() // which iterates over &mut T.\ninto_iter() // which iterates over T."
+  },
+  {
+    "objectID": "rust/iter.html#how-for-loop-works-under-the-hood",
+    "href": "rust/iter.html#how-for-loop-works-under-the-hood",
+    "title": "Iterators",
+    "section": "How for loop works under the hood",
+    "text": "How for loop works under the hood\nA for loop like\nfor x in vec![\"a\", \"b\", \"c\"] \n    ...\n}\nturns into something like:\nlet iter = vec![...].into_iter();\nwhile let Some(x) = iter.next() {\n    ...\n}\nIn actuality it is something like:\n    // let values = vec![...];\n    let result = match IntoIterator::into_iter(values) {\n        mut iter => loop {\n            let next;\n            match iter.next() {\n                Some(val) => next = val,\n                None => break,\n            };\n            let x = next;\n            // ....\n        },\n    };"
+  },
+  {
+    "objectID": "rust/iter.html#into-iter",
+    "href": "rust/iter.html#into-iter",
+    "title": "Iterators",
+    "section": "Into iter",
+    "text": "Into iter\npub trait IntoIterator {\n    type Item;\n    type IntoIter: Iterator<Item = Self::Item>;\n\n    fn into_iter(self) -> Self::IntoIter;\n}\nSort of a wrapper trait around iter. Anything that can be turned into an iterator. Usually used for collections. By definiting IntoIter for a type, we define how it can be converted into an iterator.\nIn addition to an associated type Item, it also has an associtaed type IntoIter.\nIf a collection C implements iter(), it usually also implements IntoIterator for &C, with an implementation that just calles iter(). Likewise, a collection C that implements mut_iter(), it usually also implements IntoIterator for &mut C, with an implementation that just calles iter_mut().\nThis enables convenient shorthands like:\nlet mut values = vec![41];\nfor x in &mut values { // same as `values.iter_mut()`\n    *x += 1;\n}\nfor x in &values { // same as `values.iter()`\n    assert_eq!(*x, 42);\n}\nassert_eq!(values.len(), 1);"
+  },
+  {
+    "objectID": "rust/iter.html#associated-type-vs-generic-type",
+    "href": "rust/iter.html#associated-type-vs-generic-type",
+    "title": "Iterators",
+    "section": "Associated type vs generic type",
+    "text": "Associated type vs generic type\nWhy do we have?\ntrait Iterator {\n   type Item;\n   ..\n}\nand not\ntrait Iterator<Item> {\n   ...\nBoth of these would work. An associated type is used when we expect there to be only one implementation of the trait for a given type.\ne.g. if we have an iterator type for a HashMap there is only one implementation for it keys and values.\nOn the other hand we want generic types for a trait when we expect to have multiple implementation for the same type.\ne.g a service trait that supports multiple types of requests.\nWhy don’t we use generic always? It saves the type checker some headache. We make its job easier. Reduces extra generic type params that we need to use."
+  },
+  {
+    "objectID": "rust/iter.html#different-types-of-for-loops",
+    "href": "rust/iter.html#different-types-of-for-loops",
+    "title": "Iterators",
+    "section": "Different types of for loops",
+    "text": "Different types of for loops\n// General idea of Rust: being explicit is good\n\nfor v in vs {\n    // consumes vs and owned acess to v\n}\n\nfor v in vs.iter() {\n    // borrows vs, & to v\n}\n\nfor v in &vs {\n    // eq to vs.iter()\n}"
+  },
+  {
+    "objectID": "rust/iter.html#other-method-in-iterator-trait",
+    "href": "rust/iter.html#other-method-in-iterator-trait",
+    "title": "Iterators",
+    "section": "Other method in Iterator trait",
+    "text": "Other method in Iterator trait\nProvides default implementation for other methods by using Item and next(). Note that Iterator provides a default implementation of methods such as nth and fold which call next internally. However, it is also possible to write a custom implementation of methods like nth and fold if an iterator can compute them more efficiently without calling next."
+  },
+  {
     "objectID": "rust/foundations.html",
     "href": "rust/foundations.html",
     "title": "",
