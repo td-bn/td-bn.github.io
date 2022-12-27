@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Declerative macros</title>
+<title>Smart pointers and Interior Mutability</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,7 +71,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Declerative macros</h1>
+      <h1 class="quarto-secondary-nav-title">Smart pointers and Interior Mutability</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -206,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link active">Declerative macros</a>
+  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -221,7 +158,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
+  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link active">Smart pointers and Interior Mutability</a>
   </div>
 </li>
       </ul>
@@ -235,10 +172,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#declaring" id="toc-declaring" class="nav-link active" data-scroll-target="#declaring">Declaring</a></li>
-  <li><a href="#using-macros" id="toc-using-macros" class="nav-link" data-scroll-target="#using-macros">using macros</a></li>
-  <li><a href="#cargo-expand" id="toc-cargo-expand" class="nav-link" data-scroll-target="#cargo-expand">Cargo expand</a></li>
-  <li><a href="#patterns" id="toc-patterns" class="nav-link" data-scroll-target="#patterns">Patterns</a></li>
+  <li><a href="#what-are-smart-pointers" id="toc-what-are-smart-pointers" class="nav-link active" data-scroll-target="#what-are-smart-pointers">What are smart pointers?</a></li>
+  <li><a href="#unsafe-cell" id="toc-unsafe-cell" class="nav-link" data-scroll-target="#unsafe-cell">Unsafe Cell</a></li>
+  <li><a href="#cell" id="toc-cell" class="nav-link" data-scroll-target="#cell">Cell</a></li>
+  <li><a href="#refcell" id="toc-refcell" class="nav-link" data-scroll-target="#refcell">RefCell</a></li>
+  <li><a href="#rc" id="toc-rc" class="nav-link" data-scroll-target="#rc">Rc</a></li>
+  <li><a href="#thread-safe-version-of-these" id="toc-thread-safe-version-of-these" class="nav-link" data-scroll-target="#thread-safe-version-of-these">Thread safe version of these</a>
+  <ul class="collapse">
+  <li><a href="#cell-1" id="toc-cell-1" class="nav-link" data-scroll-target="#cell-1">Cell</a></li>
+  <li><a href="#refcell---rwlock" id="toc-refcell---rwlock" class="nav-link" data-scroll-target="#refcell---rwlock">Refcell -&gt; RwLock</a></li>
+  <li><a href="#rc---arc" id="toc-rc---arc" class="nav-link" data-scroll-target="#rc---arc">Rc -&gt; Arc</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -247,7 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Declerative macros</h1>
+<h1 class="title d-none d-lg-block">Smart pointers and Interior Mutability</h1>
 </div>
 
 
@@ -262,71 +206,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p><a href="https://github.com/td-bn/rust-level-up/blob/main/vecmac/src/lib.rs">See</a> for a simple exercise with macros. Macros are more about metaprogramming. Can be used to map Rust expression to generate or run code. Kind of like <code>match</code>, but for Rust expressions.</p>
-<section id="declaring" class="level2">
-<h2 class="anchored" data-anchor-id="declaring">Declaring</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        () <span class="op">=&gt;</span> <span class="op">{};</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can supply any arguments to the macro definition as if it were a function e.g.&nbsp;</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        (<span class="op">$</span>arg1<span class="op">:</span> ty<span class="op">,</span> <span class="op">$</span>arg2<span class="op">:</span>expr<span class="op">,</span> <span class="op">$</span>arg3<span class="op">:</span> path) <span class="op">=&gt;</span> <span class="op">{};</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>But, we don’t have to.</p>
-<p>Rust allows us to write whatever we want as syntax pattern as long as its syntactically valid Rust. It should be parsed. And the output has to be <strong>valid Rust grammar</strong>. That means its doesn’t need to compile, but it must be comprised of valid Rust syntax. e.g.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        (<span class="op">$</span>arg1<span class="op">:</span> ty <span class="op">=&gt;</span> <span class="op">$</span>arg2<span class="op">:</span>expr<span class="op">;</span> <span class="op">$</span>arg3<span class="op">:</span> path) <span class="op">=&gt;</span> <span class="op">{};</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>NOTE: Rust macros are not allowed to use values outside their own scope.</p>
+<section id="what-are-smart-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-smart-pointers">What are smart pointers?</h2>
+<p>Smart pointers, on the other hand, are data structures that act like a pointer but also have additional metadata and capabilities. In other words, they act like pointers but have additional behaviour e.g. - what happens when the smart pointer needs to be dropped - what behaviour to expose to the outside world and how</p>
+<p>See exercises/code <a href="https://github.com/td-bn/rust-level-up/tree/main/crust-of-rust/pointers/src">here</a></p>
 </section>
-<section id="using-macros" class="level2">
-<h2 class="anchored" data-anchor-id="using-macros">using macros</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        () <span class="op">=&gt;</span> <span class="op">{};</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can use any brackets, because there is no way to specify what brackets we expect in current syntax.</p>
-<p>SO its up to the user to use what he wants.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span>()<span class="op">;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span>[]<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> <span class="pp">avec!</span> <span class="op">{}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="unsafe-cell" class="level2">
+<h2 class="anchored" data-anchor-id="unsafe-cell">Unsafe Cell</h2>
+<p>Core primitive for interior mutability in Rust.</p>
+<p>An usafe primitive. UnsafeCell opts out of the immutability guarantee for &amp;T.</p>
+<p>A shared reference to <code>&amp;UnsafeCell&lt;T&gt;</code> may point to data that is being mutated.</p>
 </section>
-<section id="cargo-expand" class="level2">
-<h2 class="anchored" data-anchor-id="cargo-expand">Cargo expand</h2>
-<p>Handy tool to expand all the macros in out code.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">macro_rules!</span> avec <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    (<span class="op">$</span>arg1<span class="op">:</span> ty <span class="op">=&gt;</span> <span class="op">$</span>arg2<span class="op">:</span>ident) <span class="op">=&gt;</span> <span class="op">{</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">type</span> $arg2 <span class="op">=</span> <span class="op">$</span>arg1<span class="op">;</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">avec!</span><span class="op">{</span><span class="dt">u32</span> <span class="op">=&gt;</span> AlsoU32<span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>expands to:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">#![</span>feature<span class="at">(</span>prelude_import<span class="at">)]</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>prelude_import<span class="at">]</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">std::prelude::rust_2021::</span><span class="op">*;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>macro_use<span class="at">]</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">extern</span> <span class="kw">crate</span> std<span class="op">;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> AlsoU32 <span class="op">=</span> <span class="dt">u32</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="cell" class="level2">
+<h2 class="anchored" data-anchor-id="cell">Cell</h2>
+<p>Rust allows shared references: everyone can read ONLY. Rust allows mutable references: ONLY one owner can change things.</p>
+<p>Cell is a sharable mutable reference. Sometimes it is required to have multiple references to an object and yet mutate it.</p>
+<p>Cell allows us to do this is a single threaded context. Usually used to a flag or an int in a thread local environment.</p>
+<p>Cell is copy. Generally used for small types that are Copy.</p>
 </section>
-<section id="patterns" class="level2">
-<h2 class="anchored" data-anchor-id="patterns">Patterns</h2>
-<p>We can specify patterns for repitition logic:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// $($elem:expr),+: 1 or more of this pattern</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// $(,)?: Zero or one trailing comma</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    (<span class="op">$</span>(<span class="op">$</span>elem<span class="op">:</span>expr)<span class="op">,+</span> <span class="op">$</span>(<span class="op">,</span>)<span class="op">?</span>) <span class="op">=&gt;</span> <span class="op">{</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// We want this to be a block so that when we</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// do `let x = avec![..] cargo doesn't get mad</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> <span class="kw">mut</span> vs <span class="op">=</span> <span class="dt">Vec</span><span class="pp">::</span>new()<span class="op">;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Repeat inside these parens the same num of time</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="co">// as the pattern that had 'elem' in it</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">$</span>(vs<span class="op">.</span>push(<span class="op">$</span>elem)<span class="op">;</span>)<span class="op">*</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            vs</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="refcell" class="level2">
+<h2 class="anchored" data-anchor-id="refcell">RefCell</h2>
+<p>Normally all borrow checks are done at compile time. RefCell allows us to do safe dynamically checked borrowing.</p>
+</section>
+<section id="rc" class="level2">
+<h2 class="anchored" data-anchor-id="rc">Rc</h2>
+<p>Rc refers to reference counting pionters.</p>
+<p>It provides a shared ownership of a value of type <code>T</code>, allocating in the heap. Calling a <code>clone</code> method returns a pointer to the same allocation in the heap.</p>
+<p>When the last <code>Rc</code> pointer to the allocation is destroyed, the value is dropped.</p>
+<p>Since sharing mutable references is not permitted by default in Rust, we have to put a <code>Cell</code> and <code>Refcell</code> insdie an <code>Rc</code>.</p>
+<p><code>Rc</code> cannot be send between thread.</p>
+</section>
+<section id="thread-safe-version-of-these" class="level2">
+<h2 class="anchored" data-anchor-id="thread-safe-version-of-these">Thread safe version of these</h2>
+<section id="cell-1" class="level3">
+<h3 class="anchored" data-anchor-id="cell-1">Cell</h3>
+<p>No thread safe version. Having two threads modify the same reference at the same time is not okay.</p>
+</section>
+<section id="refcell---rwlock" class="level3">
+<h3 class="anchored" data-anchor-id="refcell---rwlock">Refcell -&gt; RwLock</h3>
+<p><code>RwLock</code> is kinda similar in functionality to a RefCell.</p>
+<p><code>RwLock</code> doesn’t return <code>Option</code>s for giving out read and write references. Instead it using blocks the thread if the borrow can’t suceed. When the conditions are met, the operations are allowed.</p>
+</section>
+<section id="rc---arc" class="level3">
+<h3 class="anchored" data-anchor-id="rc---arc">Rc -&gt; Arc</h3>
+<p>Thread safe reference counting pointer. Use CPU atomics to managing the reference count.</p>
+<p>NOTE: There is a cost to using these atomics. That’s why we might want to use Cell, RefCells and Rcs.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

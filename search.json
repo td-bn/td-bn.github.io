@@ -119,6 +119,48 @@
     "text": "Resources and References\n\nJon Gjengset deep dive into async/await from an implementation PoV\nJon Gjengset overview of async/await from an application dev PoV\nOS rust section on async/await"
   },
   {
+    "objectID": "rust/pointers.html",
+    "href": "rust/pointers.html",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "",
+    "text": "Smart pointers, on the other hand, are data structures that act like a pointer but also have additional metadata and capabilities. In other words, they act like pointers but have additional behaviour e.g. - what happens when the smart pointer needs to be dropped - what behaviour to expose to the outside world and how\nSee exercises/code here"
+  },
+  {
+    "objectID": "rust/pointers.html#unsafe-cell",
+    "href": "rust/pointers.html#unsafe-cell",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "Unsafe Cell",
+    "text": "Unsafe Cell\nCore primitive for interior mutability in Rust.\nAn usafe primitive. UnsafeCell opts out of the immutability guarantee for &T.\nA shared reference to &UnsafeCell<T> may point to data that is being mutated."
+  },
+  {
+    "objectID": "rust/pointers.html#cell",
+    "href": "rust/pointers.html#cell",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "Cell",
+    "text": "Cell\nRust allows shared references: everyone can read ONLY. Rust allows mutable references: ONLY one owner can change things.\nCell is a sharable mutable reference. Sometimes it is required to have multiple references to an object and yet mutate it.\nCell allows us to do this is a single threaded context. Usually used to a flag or an int in a thread local environment.\nCell is copy. Generally used for small types that are Copy."
+  },
+  {
+    "objectID": "rust/pointers.html#refcell",
+    "href": "rust/pointers.html#refcell",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "RefCell",
+    "text": "RefCell\nNormally all borrow checks are done at compile time. RefCell allows us to do safe dynamically checked borrowing."
+  },
+  {
+    "objectID": "rust/pointers.html#rc",
+    "href": "rust/pointers.html#rc",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "Rc",
+    "text": "Rc\nRc refers to reference counting pionters.\nIt provides a shared ownership of a value of type T, allocating in the heap. Calling a clone method returns a pointer to the same allocation in the heap.\nWhen the last Rc pointer to the allocation is destroyed, the value is dropped.\nSince sharing mutable references is not permitted by default in Rust, we have to put a Cell and Refcell insdie an Rc.\nRc cannot be send between thread."
+  },
+  {
+    "objectID": "rust/pointers.html#thread-safe-version-of-these",
+    "href": "rust/pointers.html#thread-safe-version-of-these",
+    "title": "Smart pointers and Interior Mutability",
+    "section": "Thread safe version of these",
+    "text": "Thread safe version of these\n\nCell\nNo thread safe version. Having two threads modify the same reference at the same time is not okay.\n\n\nRefcell -> RwLock\nRwLock is kinda similar in functionality to a RefCell.\nRwLock doesn’t return Options for giving out read and write references. Instead it using blocks the thread if the borrow can’t suceed. When the conditions are met, the operations are allowed.\n\n\nRc -> Arc\nThread safe reference counting pointer. Use CPU atomics to managing the reference count.\nNOTE: There is a cost to using these atomics. That’s why we might want to use Cell, RefCells and Rcs."
+  },
+  {
     "objectID": "rust/declarative_macros.html",
     "href": "rust/declarative_macros.html",
     "title": "Declerative macros",
