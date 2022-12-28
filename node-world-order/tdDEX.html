@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>foundations</title>
+<title>tbDEX: Foundations, participants and flow</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,7 +71,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">tbDEX: Foundations, participants and flow</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -191,7 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../node-world-order/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../node-world-order/tdDEX.html" class="sidebar-item-text sidebar-link active">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
@@ -216,7 +153,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -240,17 +177,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
+  <li><a href="#one-liner" id="toc-one-liner" class="nav-link active" data-scroll-target="#one-liner">One Liner</a></li>
+  <li><a href="#what-is-the-aim" id="toc-what-is-the-aim" class="nav-link" data-scroll-target="#what-is-the-aim">What is the aim?</a></li>
+  <li><a href="#foundations" id="toc-foundations" class="nav-link" data-scroll-target="#foundations">Foundations</a>
   <ul class="collapse">
-  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
-  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
-  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
-  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
-  <ul class="collapse">
-  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
-  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
-  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
+  <li><a href="#dids" id="toc-dids" class="nav-link" data-scroll-target="#dids">DIDs</a></li>
+  <li><a href="#vcs" id="toc-vcs" class="nav-link" data-scroll-target="#vcs">VCs</a></li>
+  <li><a href="#identity-hubs" id="toc-identity-hubs" class="nav-link" data-scroll-target="#identity-hubs">Identity Hubs</a></li>
   </ul></li>
+  <li><a href="#participants" id="toc-participants" class="nav-link" data-scroll-target="#participants">Participants</a>
+  <ul class="collapse">
+  <li><a href="#issuers-of-vcs" id="toc-issuers-of-vcs" class="nav-link" data-scroll-target="#issuers-of-vcs">Issuers of VCs</a></li>
+  <li><a href="#participating-financial-institutionspfis" id="toc-participating-financial-institutionspfis" class="nav-link" data-scroll-target="#participating-financial-institutionspfis">Participating Financial Institutions(PFIs)</a></li>
+  <li><a href="#wallets" id="toc-wallets" class="nav-link" data-scroll-target="#wallets">Wallets</a></li>
+  </ul></li>
+  <li><a href="#protocol" id="toc-protocol" class="nav-link" data-scroll-target="#protocol">Protocol</a>
+  <ul class="collapse">
+  <li><a href="#topology-and-communication-flow" id="toc-topology-and-communication-flow" class="nav-link" data-scroll-target="#topology-and-communication-flow">Topology and communication flow</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -258,53 +201,106 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">tbDEX: Foundations, participants and flow</h1>
+</div>
 
 
-<section id="foundations" class="level1">
-<h1>Foundations</h1>
-<section id="values-variables-and-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
-<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
-<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
-<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
-<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
-<blockquote class="blockquote">
-<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
-</blockquote>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="one-liner" class="level3">
+<h3 class="anchored" data-anchor-id="one-liner">One Liner</h3>
+<p>The <em>tbDEX</em> protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements.</p>
 </section>
-<section id="high-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
-<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
-<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
-<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
-<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
+<section id="what-is-the-aim" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-aim">What is the aim?</h2>
+<ul>
+<li>be a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)</li>
+<li>utilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world</li>
+<li>provides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers</li>
+</ul>
 </section>
-<section id="low-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
-<p>Variables name memory locations that may or may not hold legal values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
+<section id="foundations" class="level2">
+<h2 class="anchored" data-anchor-id="foundations">Foundations</h2>
+<section id="dids" class="level3">
+<h3 class="anchored" data-anchor-id="dids">DIDs</h3>
+<ul>
+<li>are a new type of identifier that enables verifiable, decentralized digital identity</li>
+<li>A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.</li>
+<li>In contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.</li>
+<li>while other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party</li>
+</ul>
 </section>
-<section id="memory-regions" class="level2">
-<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
-<section id="stack" class="level3">
-<h3 class="anchored" data-anchor-id="stack">Stack</h3>
-<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
+<section id="vcs" class="level3">
+<h3 class="anchored" data-anchor-id="vcs">VCs</h3>
+<ul>
+<li>The Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.</li>
+<li>ZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.</li>
+</ul>
 </section>
-<section id="heap" class="level3">
-<h3 class="anchored" data-anchor-id="heap">Heap</h3>
-<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
-<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
+<section id="identity-hubs" class="level3">
+<h3 class="anchored" data-anchor-id="identity-hubs">Identity Hubs</h3>
+<ul>
+<li>For entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in</li>
+<li>Identity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID</li>
+<li>This enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.</li>
+<li>Identity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols.</li>
+</ul>
 </section>
-<section id="static-memory" class="level3">
-<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
-<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
-<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
-<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
+</section>
+<section id="participants" class="level2">
+<h2 class="anchored" data-anchor-id="participants">Participants</h2>
+<section id="issuers-of-vcs" class="level3">
+<h3 class="anchored" data-anchor-id="issuers-of-vcs">Issuers of VCs</h3>
+<ul>
+<li>Issuers are the source of VCs. Both individuals and organizations can be the source of VCs.
+<ul>
+<li>e.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals</li>
+</ul></li>
+</ul>
+</section>
+<section id="participating-financial-institutionspfis" class="level3">
+<h3 class="anchored" data-anchor-id="participating-financial-institutionspfis">Participating Financial Institutions(PFIs)</h3>
+<ul>
+<li>entities that provide liquidity services on the tdDEX network</li>
+<li>each PFI will be identified via DIDs and VCs</li>
+</ul>
+</section>
+<section id="wallets" class="level3">
+<h3 class="anchored" data-anchor-id="wallets">Wallets</h3>
+<ul>
+<li>act as agents for individuals or institutions by facilitating exchanges with PFIs</li>
+<li>provides:
+<ul>
+<li>Providing secure encrypted storage for VCs</li>
+<li>PFI discovery by crawling identity hubs</li>
+<li>applying signatures and storing history</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="protocol" class="level2">
+<h2 class="anchored" data-anchor-id="protocol">Protocol</h2>
+<p>Divided into:</p>
+<ul>
+<li>Request for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange</li>
+<li>Messaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction</li>
+</ul>
+<section id="topology-and-communication-flow" class="level3">
+<h3 class="anchored" data-anchor-id="topology-and-communication-flow">Topology and communication flow</h3>
+<p><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/188bd0da-8b07-4c5c-a3e3-e9e64f729768/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221212%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20221212T091952Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=054ec018d06e18b00f7fbc6375194e7c582b421dc1a616ff35ac8dae936cd3ef&amp;X-Amz-SignedHeaders=host&amp;response-content-disposition=filename%3D%22Untitled.png%22&amp;x-id=GetObject" class="img-fluid"></p>
 
 
-</section>
 </section>
 </section>
 

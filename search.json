@@ -196,45 +196,122 @@
     "text": "Patterns\nWe can specify patterns for repitition logic:\n    // $($elem:expr),+: 1 or more of this pattern\n    // $(,)?: Zero or one trailing comma\n    ($($elem:expr),+ $(,)?) => {\n        // We want this to be a block so that when we\n        // do `let x = avec![..] cargo doesn't get mad\n        {\n            let mut vs = Vec::new();\n            // Repeat inside these parens the same num of time\n            // as the pattern that had 'elem' in it\n            $(vs.push($elem);)*\n            vs\n        }\n    };"
   },
   {
-    "objectID": "blockchain/tdDEX.html",
-    "href": "blockchain/tdDEX.html",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "",
-    "text": "The tbDEX protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements."
-  },
-  {
-    "objectID": "blockchain/tdDEX.html#what-is-the-aim",
-    "href": "blockchain/tdDEX.html#what-is-the-aim",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "What is the aim?",
-    "text": "What is the aim?\n\nbe a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)\nutilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world\nprovides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers"
-  },
-  {
-    "objectID": "blockchain/tdDEX.html#foundations",
-    "href": "blockchain/tdDEX.html#foundations",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Foundations",
-    "text": "Foundations\n\nDIDs\n\nare a new type of identifier that enables verifiable, decentralized digital identity\nA DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.\nIn contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.\nwhile other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party\n\n\n\nVCs\n\nThe Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.\nZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.\n\n\n\nIdentity Hubs\n\nFor entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in\nIdentity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID\nThis enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.\nIdentity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols."
-  },
-  {
-    "objectID": "blockchain/tdDEX.html#participants",
-    "href": "blockchain/tdDEX.html#participants",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Participants",
-    "text": "Participants\n\nIssuers of VCs\n\nIssuers are the source of VCs. Both individuals and organizations can be the source of VCs.\n\ne.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals\n\n\n\n\nParticipating Financial Institutions(PFIs)\n\nentities that provide liquidity services on the tdDEX network\neach PFI will be identified via DIDs and VCs\n\n\n\nWallets\n\nact as agents for individuals or institutions by facilitating exchanges with PFIs\nprovides:\n\nProviding secure encrypted storage for VCs\nPFI discovery by crawling identity hubs\napplying signatures and storing history"
-  },
-  {
-    "objectID": "blockchain/tdDEX.html#protocol",
-    "href": "blockchain/tdDEX.html#protocol",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Protocol",
-    "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
-  },
-  {
     "objectID": "fastai/lesson_1.html",
     "href": "fastai/lesson_1.html",
     "title": "Is it a duck or a swan?",
     "section": "",
     "text": "Install dependencies\n\n!pip install -Uqq fastai duckduckgo_search\n\n\n\nDefine a function to search for images on DDG. Search for 90 images by default.\n\nfrom duckduckgo_search import ddg_images\nfrom fastcore.all import *\n\ndef search_images(term, max_images=90):\n    print(f\"Searching for '{term}'\")\n    return L(ddg_images(term, max_results=max_images)).itemgot('image')\n\n\n\nLets see the an example of the URL we find using the above function\n\nurls = search_images('duck', max_images=1)\nurls[0]\n\nSearching for 'duck'\n\n\n'http://3.bp.blogspot.com/--XA3iMvaJLY/Tw_GykPs-eI/AAAAAAAAEgU/EmFKS7Cz5xQ/s1600/Duck-04.jpg'\n\n\n\n\nWhat does this image look like? Is it actually a duck?\n\nfrom fastdownload import download_url\ndest = 'duck.jpg'\ndownload_url(urls[0], dest, show_progress=False)\n\nfrom fastai.vision.all import *\nim = Image.open(dest)\nim.to_thumb(256,256)\n\n\n\n\n\n\nHow about a swan?\n\ndownload_url(search_images('swan', max_images=1)[0], 'swan.jpg', show_progress=False)\nImage.open('swan.jpg').to_thumb(256,256)\n\nSearching for 'swan'\n\n\n\n\n\n\n\nLooks like we are on the right path. So go ahead and download 90 of each. Might take a bit of time.\n\nsearches = 'duck','swan'\npath = Path('duck_or_swan')\nfrom time import sleep\n\nfor o in searches:\n    dest = (path/o)\n    dest.mkdir(exist_ok=True, parents=True)\n    download_images(dest, urls=search_images(f'{o} photo'))\n    sleep(30)  # Pause between searches to avoid over-loading server\n    resize_images(path/o, max_size=400, dest=path/o)\n\nSearching for 'duck photo'\nSearching for 'swan photo'\n\n\n\n\nRemove images that didn’t get downloaded properly\n\nfailed = verify_images(get_image_files(path))\nfailed.map(Path.unlink)\nlen(failed)\n\n1\n\n\n\n\nThe easiest way to use FastAI is to use define a DataBlock. We load the data from the path.\n\ndls = DataBlock(\n    blocks=(ImageBlock, CategoryBlock), \n    get_items=get_image_files, \n    splitter=RandomSplitter(valid_pct=0.2, seed=42),\n    get_y=parent_label,\n    item_tfms=[Resize(192, method='squish')]\n).dataloaders(path, bs=32)\n\ndls.show_batch(max_n=6)\n\n\n\n\n\n\nFine tune the pre-trained resnet18 model for our data.\n\nlearn = vision_learner(dls, resnet18, metrics=error_rate)\nlearn.fine_tune(3)\n\n/Users/bnabi/miniforge3/envs/invokeai/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.\n  warnings.warn(\n/Users/bnabi/miniforge3/envs/invokeai/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=ResNet18_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet18_Weights.DEFAULT` to get the most up-to-date weights.\n  warnings.warn(msg)\n\n\n\n\n\n\n\n\n  \n    \n      epoch\n      train_loss\n      valid_loss\n      error_rate\n      time\n    \n  \n  \n    \n      0\n      1.222246\n      0.440960\n      0.290323\n      00:04\n    \n  \n\n\n\n\n\n\n\n\n\n  \n    \n      epoch\n      train_loss\n      valid_loss\n      error_rate\n      time\n    \n  \n  \n    \n      0\n      0.402388\n      0.356703\n      0.193548\n      00:05\n    \n    \n      1\n      0.249177\n      0.256310\n      0.064516\n      00:05\n    \n    \n      2\n      0.192781\n      0.251938\n      0.032258\n      00:05\n    \n  \n\n\n\n\n\nTesting the images\n\nbird,_,probs = learn.predict(PILImage.create('duck.jpg'))\nImage.open('duck.jpg').to_thumb(256,256)\nprint(f\"This is a: {bird}.\")\nprint(f\"Probability it's a duck: {probs[0]:.4f}\")\nprint(f\"Probability it's a swan: {probs[1]:.4f}\")\n\n\n\n\n\n\n\n\nThis is a: duck.\nProbability it's a duck: 0.9990\nProbability it's a swan: 0.0010\n\n\n\nbird,_,probs = learn.predict(PILImage.create('swan.jpg'))\nImage.open('duck.jpg').to_thumb(256,256)\nprint(f\"This is a: {bird}.\")\nprint(f\"Probability it's a duck: {probs[0]:.4f}\")\nprint(f\"Probability it's a swan: {probs[1]:.4f}\")\n\n\n\n\n\n\n\n\nThis is a: swan.\nProbability it's a duck: 0.0006\nProbability it's a swan: 0.9994"
+  },
+  {
+    "objectID": "node-world-order/tdDEX.html",
+    "href": "node-world-order/tdDEX.html",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "",
+    "text": "The tbDEX protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements."
+  },
+  {
+    "objectID": "node-world-order/tdDEX.html#what-is-the-aim",
+    "href": "node-world-order/tdDEX.html#what-is-the-aim",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "What is the aim?",
+    "text": "What is the aim?\n\nbe a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)\nutilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world\nprovides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers"
+  },
+  {
+    "objectID": "node-world-order/tdDEX.html#foundations",
+    "href": "node-world-order/tdDEX.html#foundations",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Foundations",
+    "text": "Foundations\n\nDIDs\n\nare a new type of identifier that enables verifiable, decentralized digital identity\nA DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.\nIn contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.\nwhile other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party\n\n\n\nVCs\n\nThe Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.\nZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.\n\n\n\nIdentity Hubs\n\nFor entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in\nIdentity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID\nThis enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.\nIdentity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols."
+  },
+  {
+    "objectID": "node-world-order/tdDEX.html#participants",
+    "href": "node-world-order/tdDEX.html#participants",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Participants",
+    "text": "Participants\n\nIssuers of VCs\n\nIssuers are the source of VCs. Both individuals and organizations can be the source of VCs.\n\ne.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals\n\n\n\n\nParticipating Financial Institutions(PFIs)\n\nentities that provide liquidity services on the tdDEX network\neach PFI will be identified via DIDs and VCs\n\n\n\nWallets\n\nact as agents for individuals or institutions by facilitating exchanges with PFIs\nprovides:\n\nProviding secure encrypted storage for VCs\nPFI discovery by crawling identity hubs\napplying signatures and storing history"
+  },
+  {
+    "objectID": "node-world-order/tdDEX.html#protocol",
+    "href": "node-world-order/tdDEX.html#protocol",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Protocol",
+    "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html",
+    "href": "node-world-order/btc-transactions.html",
+    "title": "Bitcoin Transactions",
+    "section": "",
+    "text": "Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network.\nBitcoin full nodes track all available and spendable outputs, known as unspent transaction outputs, or UTXO.\nThe collection of all UTXO is known as the UTXO set and currently numbers in the millions of UTXO. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.\n“received” bitcoin, what we mean is that the wallet has detected on the blockchain an UTXO that can be spent with one of the keys controlled by that wallet.\nA transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis\n\nNOTE: Outputs are discrete and indivisible units of value, denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#utxos",
+    "href": "node-world-order/btc-transactions.html#utxos",
+    "title": "Bitcoin Transactions",
+    "section": "UTXOs",
+    "text": "UTXOs\n\nUTXO are tracked by every full-node Bitcoin client in the UTXO set\nThe cryptographic puzzle is also known as a locking script, a witness script, or a scriptPubKey.\nEach output is defined by a value and a cryptographic puzzle.\n\n\nSerialization\n\nThe process of converting from the byte-stream representation of a transaction to a library’s internal representation data structure is called deserialization or transaction parsing."
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#transaction-inputs",
+    "href": "node-world-order/btc-transactions.html#transaction-inputs",
+    "title": "Bitcoin Transactions",
+    "section": "Transaction Inputs",
+    "text": "Transaction Inputs\n\nFor each UTXO that will be consumed to make this payment, the wallet creates one input pointing to the UTXO and unlocks it with an unlocking script.\nThe first part of an input is a pointer to an UTXO by reference to the transaction hash and an output index, which identifies the specific UTXO in that transaction.\nThe second part is an unlocking script, which the wallet constructs in order to satisfy the spending conditions set in the UTXO.\nThe third part is a sequence number\nNotice that because the value of the input is not explicitly stated, we must also use the referenced UTXO in order to calculate the fees that will be paid in this transaction\nWhen writing bitcoin software, anytime you decode a transaction with the intent of validating it or counting the fees or checking the unlocking script, your code will first have to retrieve the referenced UTXO from the blockchain in order to build the context implied but not present in the UTXO references of the inputs."
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#fees",
+    "href": "node-world-order/btc-transactions.html#fees",
+    "title": "Bitcoin Transactions",
+    "section": "Fees",
+    "text": "Fees\n\nMost transactions include transaction fees, which compensate the bitcoin miners for securing the network. Fees also serve as a security mechanism themselves, by making it economically infeasible for attackers to flood the network with transactions.\nfee relay policies are set by the minrelaytxfee option.\nThe current default minrelaytxfee is 0.00001 bitcoin or a hundredth of a millibitcoin per kilobyte. Therefore, by default, transactions with a fee less than 0.00001 bitcoin are treated as free and are only relayed if there is space in the mempool; otherwise, they are dropped\nMost services offer users the option of choosing high, medium, or low priority fees. High priority means users pay higher fees but the transaction is likely to be included in the next block. Medium and low priority means users pay lower transaction fees but the transactions may take much longer to confirm.\nTransaction fees are implied, as the excess of inputs minus outputs:\nthe fee is independent of the transaction’s bitcoin value."
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#transaction-scripts",
+    "href": "node-world-order/btc-transactions.html#transaction-scripts",
+    "title": "Bitcoin Transactions",
+    "section": "Transaction Scripts",
+    "text": "Transaction Scripts\n\nScript, the bitcoin scripting language is a Forth-like reverse-polish notation stack-based execution language\nBoth the locking script placed on an UTXO and the unlocking script are written in this scripting language.\nScript is a very simple language that was designed to be limited in scope and executable on a range of hardware, perhaps as simple as an embedded device\nmost transactions processed through the Bitcoin network have the form “Payment to Bob’s Bitcoin address” and are based on a script called a Pay-to-Public-Key-Hash script\nBitcoin transaction validation is not based on a static pattern, but instead is achieved through the execution of a scripting language.\n\n\nTuring incompleteness\n\nThe bitcoin transaction script language contains many operators, but is deliberately limited in one important way—there are no loops or complex flow control capabilities other than conditional flow control\n\n\n\nStateless verification\n\nThe bitcoin transaction script language is stateless, in that there is no state prior to execution of the script, or state saved after execution of the script."
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#construction",
+    "href": "node-world-order/btc-transactions.html#construction",
+    "title": "Bitcoin Transactions",
+    "section": "Construction",
+    "text": "Construction\n\nall the information needed to execute a script is contained within the script.\nBitcoin’s transaction validation engine relies on two types of scripts to validate transactions: a locking script and an unlocking script.\nA locking script is a spending condition placed on an output: it specifies the conditions that must be met to spend the output in the future.\nAn unlocking script is a script that “solves,” or satisfies, the conditions placed on an output by a locking script and allows the output to be spent.\nUnlocking scripts are part of every transaction input. Most of the time they contain a digital signature produced by the user’s wallet from his or her private key\nEvery bitcoin validating node will validate transactions by executing the locking and unlocking scripts together.\nThe validation software will copy the unlocking script, retrieve the UTXO referenced by the input, and copy the locking script from that UTXO. The unlocking and locking script are then executed in sequence. The input is valid if the unlocking script satisfies the locking script conditions"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#script-execution",
+    "href": "node-world-order/btc-transactions.html#script-execution",
+    "title": "Bitcoin Transactions",
+    "section": "Script Execution",
+    "text": "Script Execution\n\nA stack allows two operations: push and pop.\nThe scripting language executes the script by processing each item from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more parameters from the stack, act on them, and might push a result onto the stack. For example, OP_ADD will pop two items from the stack, add them, and push the resulting sum onto the stack.\nConditional operators evaluate a condition, producing a boolean result of TRUE or FALSE. For example, OP_EQUAL pops two items from the stack and pushes TRUE (TRUE is represented by the number 1) if they are equal or FALSE (represented by zero) if they are not equal. Bitcoin transaction scripts usually contain a conditional operator, so that they can produce the TRUE result that signifies a valid transaction.\nAlthough most locking scripts refer to a public key hash (essentially, a Bitcoin address), thereby requiring proof of ownership to spend the funds, the script does not have to be that complex.\nTransactions are valid if the top result on the stack is TRUE , any other nonzero value, not OP_0, or if the stack is empty after script execution. Transactions are invalid if the top value on the stack is FALSE (a zero-length empty value) or if script execution is halted explicitly by an operator, such as OP_VERIFY, OP_RETURN, or a conditional terminator such as OP_ENDIF\nthe unlocking script is executed, using the stack execution engine\nIf the unlocking script is executed without errors (e.g., it has no “dangling” pointers left over), the main stack is copied and the locking script is executed"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#pay-to-public-key-hashp2pkh",
+    "href": "node-world-order/btc-transactions.html#pay-to-public-key-hashp2pkh",
+    "title": "Bitcoin Transactions",
+    "section": "Pay-To-Public-Key-Hash(P2PKH)",
+    "text": "Pay-To-Public-Key-Hash(P2PKH)\n<sig> <pubk> DUP HASH160 <pubkhash> EQUALVERIFY CHECKSIG\n\nThe vast majority of transactions processed on the Bitcoin network spend outputs locked with a Pay-to-Public-Key-Hash or “P2PKH” script.\nThese outputs contain a locking script that locks the output to a public key hash, more commonly known as a Bitcoin address.\nAn output locked by a P2PKH script can be unlocked (spent) by presenting a public key and a digital signature created by the corresponding private key\nthis combined script will evaluate to TRUE if, and only if, the unlocking script matches the conditions set by the locking script. In other words, the result will be TRUE if the unlocking script has a valid signature from the cafe’s private key that corresponds to the public key hash set as an encumbrance."
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#digital-signatures",
+    "href": "node-world-order/btc-transactions.html#digital-signatures",
+    "title": "Bitcoin Transactions",
+    "section": "Digital Signatures",
+    "text": "Digital Signatures\n\nECDSA is the algorithm used for digital signatures based on elliptic curve private/public key pairs,\nECDSA is used by the script functions OP_CHECKSIG, OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, and OP_CHECKMULTISIGVERIFY.\nthe signature proves that the owner of the private key, who is by implication the owner of the funds, has authorized the spending of those funds\nthe proof of authorization is undeniable\nthe signature proves that the transaction (or specific parts of the transaction) have not and cannot be modified by anyone after it has been signed.\nNote that each transaction input is signed independently\n\nThis is critical, as neither the signatures nor the inputs have to belong to or be applied by the same “owners.”\n\nEach transaction input and any signature it may contain is completely independent of any other input or signature. Multiple parties can collaborate to construct transactions and sign only one input each.\n\nA digital signature is a mathematical scheme for demonstrating the authenticity of a digital message or documents\nA valid digital signature gives a recipient reason to believe that the message was created by a known sender (authentication), that the sender cannot deny having sent the message (nonrepudiation), and that the message was not altered in transit (integrity)"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#math",
+    "href": "node-world-order/btc-transactions.html#math",
+    "title": "Bitcoin Transactions",
+    "section": "Math",
+    "text": "Math\n\nThe function Fsig produces a signature Sig that is composed of two values, commonly referred to as R and S:\nSig = (R, S)\nthey are serialized into a byte-stream using an international standard encoding scheme called the Distinguished Encoding Rules\nThe important numbers are R and S;\nThe signature verification algorithm takes the message (a hash of the transaction or parts of it), the signer’s public key and the signature (R and S values), and returns TRUE if the signature is valid for this message and public key.\nIn the simplest form, the signature applies to the entire transaction, thereby committing all the inputs, outputs, and other transaction fields\nHowever, a signature can commit to only a subset of the data in a transaction, which is useful for a number of scenarios as we will see in this section.\nBitcoin signatures have a way of indicating which part of a transaction’s data is included in the hash signed by the private key using a SIGHASH flag"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions.html#sighash",
+    "href": "node-world-order/btc-transactions.html#sighash",
+    "title": "Bitcoin Transactions",
+    "section": "SIGHASH",
+    "text": "SIGHASH\n\nThe SIGHASH flag is a single byte that is appended to the signature\nEvery signature has a SIGHASH flag and the flag can be different from input to input.\na transaction that contains several inputs may have signatures with different SIGHASH flags that commit different parts of the transaction in each of the inputs\nMany of the SIGHASH flag types only make sense if you think of multiple participants collaborating outside the Bitcoin network and updating a partially signed transaction.\nThere are three SIGHASH flags: ALL, NONE, and SINGLE\n\nNotes from bitcoinbook/ch06"
   }
 ]
