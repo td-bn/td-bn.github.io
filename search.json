@@ -56,6 +56,27 @@
     "text": "Other method in Iterator trait\nProvides default implementation for other methods by using Item and next(). Note that Iterator provides a default implementation of methods such as nth and fold which call next internally. However, it is also possible to write a custom implementation of methods like nth and fold if an iterator can compute them more efficiently without calling next."
   },
   {
+    "objectID": "rust/chanells.html",
+    "href": "rust/chanells.html",
+    "title": "Channels and sync primitives",
+    "section": "",
+    "text": "Channels gives us handles for sender(s) and a receiver. Sender(s) can send the data and the Receiver can receive the data.\nRust provides mpsc(multiple producer, single consumer) channels in the std lib.\nSee this for simple Async channel implementation using Rust sync primitives."
+  },
+  {
+    "objectID": "rust/chanells.html#types-of-channels",
+    "href": "rust/chanells.html#types-of-channels",
+    "title": "Channels and sync primitives",
+    "section": "Types of channels",
+    "text": "Types of channels\n\nAsynchronous Infinite capacity. Non blocking send. Uses Sender.\nSynchronous Fixed size buffer. Blocking till buffer space available. Uses SyncSender.\n\nBoth Senders are clonable such that multiple threads can simultaneoulsy send to a single consumber.\nIn both of these channels all data created on the Sender half will become available on the Receiver in the same order that it was sent. The Sender can be cloned but only one Receiver is supported."
+  },
+  {
+    "objectID": "rust/chanells.html#useful-primitives-used-in-channel-implementations",
+    "href": "rust/chanells.html#useful-primitives-used-in-channel-implementations",
+    "title": "Channels and sync primitives",
+    "section": "Useful primitives used in channel implementations",
+    "text": "Useful primitives used in channel implementations\n\nMutex\nA mutual exclusion primitive for protecting shared data.\nThis mutex will block threads waiting for the lock to become available.\nThe data can only be accessed through the RAII guards returned from lock and try_lock, which guarantees that the data is only ever accessed when the mutex is locked.\n\n\nCondvar\nA conditional variable which represents the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.\nCondition variables are typically associated with a boolean predicate (a condition) and a mutex. The predicate is always verified inside of the mutex before determining that a thread must block.\n.wait : Blocks the current thread until this condition variable receives a notification.\n.notify_one: Wakes up one blocked thread on this condvar.\n\n\nArc\nA thread-safe reference-counting pointer. ‘Arc’ stands for ‘Atomically Reference Counted’.\nThe type Arc<T> provides shared ownership of a value of type T, allocated in the heap."
+  },
+  {
     "objectID": "rust/foundations.html",
     "href": "rust/foundations.html",
     "title": "",

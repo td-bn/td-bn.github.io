@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>tbDEX: Foundations, participants and flow</title>
+<title>Channels and sync primitives</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">tbDEX: Foundations, participants and flow</h1>
+      <h1 class="quarto-secondary-nav-title">Channels and sync primitives</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -128,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../node-world-order/tdDEX.html" class="sidebar-item-text sidebar-link active">tbDEX: Foundations, participants and flow</a>
+  <a href="../node-world-order/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
@@ -148,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
+  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link active">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -182,23 +182,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#one-liner" id="toc-one-liner" class="nav-link active" data-scroll-target="#one-liner">One Liner</a></li>
-  <li><a href="#what-is-the-aim" id="toc-what-is-the-aim" class="nav-link" data-scroll-target="#what-is-the-aim">What is the aim?</a></li>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link" data-scroll-target="#foundations">Foundations</a>
+  <li><a href="#types-of-channels" id="toc-types-of-channels" class="nav-link active" data-scroll-target="#types-of-channels">Types of channels</a></li>
+  <li><a href="#useful-primitives-used-in-channel-implementations" id="toc-useful-primitives-used-in-channel-implementations" class="nav-link" data-scroll-target="#useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</a>
   <ul class="collapse">
-  <li><a href="#dids" id="toc-dids" class="nav-link" data-scroll-target="#dids">DIDs</a></li>
-  <li><a href="#vcs" id="toc-vcs" class="nav-link" data-scroll-target="#vcs">VCs</a></li>
-  <li><a href="#identity-hubs" id="toc-identity-hubs" class="nav-link" data-scroll-target="#identity-hubs">Identity Hubs</a></li>
-  </ul></li>
-  <li><a href="#participants" id="toc-participants" class="nav-link" data-scroll-target="#participants">Participants</a>
-  <ul class="collapse">
-  <li><a href="#issuers-of-vcs" id="toc-issuers-of-vcs" class="nav-link" data-scroll-target="#issuers-of-vcs">Issuers of VCs</a></li>
-  <li><a href="#participating-financial-institutionspfis" id="toc-participating-financial-institutionspfis" class="nav-link" data-scroll-target="#participating-financial-institutionspfis">Participating Financial Institutions(PFIs)</a></li>
-  <li><a href="#wallets" id="toc-wallets" class="nav-link" data-scroll-target="#wallets">Wallets</a></li>
-  </ul></li>
-  <li><a href="#protocol" id="toc-protocol" class="nav-link" data-scroll-target="#protocol">Protocol</a>
-  <ul class="collapse">
-  <li><a href="#topology-and-communication-flow" id="toc-topology-and-communication-flow" class="nav-link" data-scroll-target="#topology-and-communication-flow">Topology and communication flow</a></li>
+  <li><a href="#mutex" id="toc-mutex" class="nav-link" data-scroll-target="#mutex">Mutex</a></li>
+  <li><a href="#condvar" id="toc-condvar" class="nav-link" data-scroll-target="#condvar">Condvar</a></li>
+  <li><a href="#arc" id="toc-arc" class="nav-link" data-scroll-target="#arc">Arc</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -208,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">tbDEX: Foundations, participants and flow</h1>
+<h1 class="title d-none d-lg-block">Channels and sync primitives</h1>
 </div>
 
 
@@ -223,87 +212,37 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="one-liner" class="level3">
-<h3 class="anchored" data-anchor-id="one-liner">One Liner</h3>
-<p>The <em>tbDEX</em> protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements.</p>
+<p><code>Channels</code> gives us handles for sender(s) and a receiver. <code>Sender(s)</code> can send the data and the <code>Receiver</code> can receive the data.</p>
+<p>Rust provides <code>mpsc</code>(multiple producer, single consumer) channels in the std lib.</p>
+<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/crust-of-rust/channel/src/lib.rs">this</a> for simple Async channel implementation using Rust sync primitives.</p>
+<section id="types-of-channels" class="level2">
+<h2 class="anchored" data-anchor-id="types-of-channels">Types of channels</h2>
+<ol type="1">
+<li><p>Asynchronous Infinite capacity. Non blocking send. Uses <code>Sender</code>.</p></li>
+<li><p>Synchronous Fixed size buffer. Blocking till buffer space available. Uses <code>SyncSender</code>.</p></li>
+</ol>
+<p>Both Senders are clonable such that multiple threads can simultaneoulsy send to a single consumber.</p>
+<p>In both of these channels all data created on the <code>Sender</code> half will become available on the <code>Receiver</code> in the same order that it was sent. The <code>Sender</code> can be cloned but only one <code>Receiver</code> is supported.</p>
 </section>
-<section id="what-is-the-aim" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-the-aim">What is the aim?</h2>
-<ul>
-<li>be a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)</li>
-<li>utilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world</li>
-<li>provides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers</li>
-</ul>
+<section id="useful-primitives-used-in-channel-implementations" class="level2">
+<h2 class="anchored" data-anchor-id="useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</h2>
+<section id="mutex" class="level3">
+<h3 class="anchored" data-anchor-id="mutex">Mutex</h3>
+<p>A mutual exclusion primitive for protecting shared data.</p>
+<p>This mutex will block threads waiting for the lock to become available.</p>
+<p>The data can only be accessed through the <code>RAII</code> guards returned from <code>lock</code> and <code>try_lock</code>, which guarantees that the data is only ever accessed when the mutex is locked.</p>
 </section>
-<section id="foundations" class="level2">
-<h2 class="anchored" data-anchor-id="foundations">Foundations</h2>
-<section id="dids" class="level3">
-<h3 class="anchored" data-anchor-id="dids">DIDs</h3>
-<ul>
-<li>are a new type of identifier that enables verifiable, decentralized digital identity</li>
-<li>A DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.</li>
-<li>In contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.</li>
-<li>while other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party</li>
-</ul>
+<section id="condvar" class="level3">
+<h3 class="anchored" data-anchor-id="condvar">Condvar</h3>
+<p>A conditional variable which represents the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.</p>
+<p>Condition variables are typically associated with a boolean predicate (a condition) and a mutex. The predicate is always verified inside of the mutex before determining that a thread must block.</p>
+<p><code>.wait</code> : Blocks the current thread until this condition variable receives a notification.</p>
+<p><code>.notify_one</code>: Wakes up one blocked thread on this condvar.</p>
 </section>
-<section id="vcs" class="level3">
-<h3 class="anchored" data-anchor-id="vcs">VCs</h3>
-<ul>
-<li>The Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.</li>
-<li>ZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.</li>
-</ul>
-</section>
-<section id="identity-hubs" class="level3">
-<h3 class="anchored" data-anchor-id="identity-hubs">Identity Hubs</h3>
-<ul>
-<li>For entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in</li>
-<li>Identity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID</li>
-<li>This enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.</li>
-<li>Identity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols.</li>
-</ul>
-</section>
-</section>
-<section id="participants" class="level2">
-<h2 class="anchored" data-anchor-id="participants">Participants</h2>
-<section id="issuers-of-vcs" class="level3">
-<h3 class="anchored" data-anchor-id="issuers-of-vcs">Issuers of VCs</h3>
-<ul>
-<li>Issuers are the source of VCs. Both individuals and organizations can be the source of VCs.
-<ul>
-<li>e.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals</li>
-</ul></li>
-</ul>
-</section>
-<section id="participating-financial-institutionspfis" class="level3">
-<h3 class="anchored" data-anchor-id="participating-financial-institutionspfis">Participating Financial Institutions(PFIs)</h3>
-<ul>
-<li>entities that provide liquidity services on the tdDEX network</li>
-<li>each PFI will be identified via DIDs and VCs</li>
-</ul>
-</section>
-<section id="wallets" class="level3">
-<h3 class="anchored" data-anchor-id="wallets">Wallets</h3>
-<ul>
-<li>act as agents for individuals or institutions by facilitating exchanges with PFIs</li>
-<li>provides:
-<ul>
-<li>Providing secure encrypted storage for VCs</li>
-<li>PFI discovery by crawling identity hubs</li>
-<li>applying signatures and storing history</li>
-</ul></li>
-</ul>
-</section>
-</section>
-<section id="protocol" class="level2">
-<h2 class="anchored" data-anchor-id="protocol">Protocol</h2>
-<p>Divided into:</p>
-<ul>
-<li>Request for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange</li>
-<li>Messaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction</li>
-</ul>
-<section id="topology-and-communication-flow" class="level3">
-<h3 class="anchored" data-anchor-id="topology-and-communication-flow">Topology and communication flow</h3>
-<p><img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/188bd0da-8b07-4c5c-a3e3-e9e64f729768/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221212%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20221212T091952Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=054ec018d06e18b00f7fbc6375194e7c582b421dc1a616ff35ac8dae936cd3ef&amp;X-Amz-SignedHeaders=host&amp;response-content-disposition=filename%3D%22Untitled.png%22&amp;x-id=GetObject" class="img-fluid"></p>
+<section id="arc" class="level3">
+<h3 class="anchored" data-anchor-id="arc">Arc</h3>
+<p>A thread-safe reference-counting pointer. ‘Arc’ stands for ‘Atomically Reference Counted’.</p>
+<p>The type <code>Arc&lt;T&gt;</code> provides shared ownership of a value of type T, allocated in the heap.</p>
 
 
 </section>
