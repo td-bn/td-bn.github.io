@@ -1,0 +1,99 @@
+---
+title: Bitcoin scripting
+format: html
+---
+
+## Multisig
+Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.
+
+The locking script looks like:
+
+`2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG`
+
+The unlocking script can look something like:
+
+`<Signature B> <Signature C>`
+
+Combining the two, the validation script looks something like:
+
+`<Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG`
+
+NOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0.
+So above actually looks like:
+
+`0 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG`
+
+
+## Pay-to-hash-script(P2HS)
+
+Multisignatures are cumbersome to use. 
+
+Issues for payee:
+
+ - Needs wallet software that can create custom transaction scripts
+ - script is somewhat large and payer has to pay for the large size of the transaction 
+ - UTXO is carried by the RAM of all nodes until spent
+
+P2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash.
+When a transaction attempting to spend the UTXO is presented later, 
+it must contain the script that matches the hash, in addition to the unlocking script.
+
+P2SH means "pay to a script matching this hash, a script that will be presented later when this output is spent.
+In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem 
+script because it is presented to the system at redemption time rather than as a locking script.
+
+
+The locking script looks like:
+
+`HASH160 <20-byte hash of redeem script> EQUAL`
+
+The unlocking script can look something like:
+
+`0 Sig1 Sig2 <redeem script>`
+
+where the redeem script can look something like:
+
+`2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG`
+
+
+
+**NOTE**: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script,
+while P2SH scripts can invalidate transactions by way of their unlocking script only
+
+
+## P2SH Addresses
+
+Another important part of the P2SH feature is the ability to encode a script 
+hash as an address(defined in BIP-13). 
+P2SH addresses are Base58Check encodings of the 20-byte hash of a script, 
+just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. 
+P2SH addresses use the version prefix "5," 
+which results in Base58Check-encoded addresses that start with a "3."
+
+It works in exactly the same way as a payment to a Bitcoin address.
+
+Benefits of P2SH:
+
+- Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.
+- Scripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.
+- P2SH shifts the burden of constructing the script to the recipient, not the sender.
+- P2SH shifts the burden in data storage for the long script from the output 
+    (which additionally to being stored on the blockchain is in the UTXO set) 
+    to the input (only stored on the blockchain).
+- P2SH shifts the burden in data storage for the long script from the present time 
+    (payment) to a future time (when it is spent).
+- P2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, 
+    who has to include the long redeem script to spend it.
+
+
+**NOTE**: Because the redeem script is not presented to the network until you attempt to spend a 
+P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed 
+regardless. The UTXO will be successfully locked. However, you will not be able to spend it 
+because the spending transaction, which includes the redeem script, will not be accepted because 
+it is an invalid script.
+
+
+
+
+
+
