@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://td-bn.github.io/home/index.html</loc>
-    <lastmod>2022-12-29T06:26:43.498Z</lastmod>
+    <lastmod>2022-12-31T14:00:00.600Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/iter.html</loc>
-    <lastmod>2022-12-29T06:26:43.847Z</lastmod>
+    <lastmod>2022-12-31T14:00:00.971Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/chanells.html</loc>
-    <lastmod>2022-12-29T06:26:44.166Z</lastmod>
+    <lastmod>2022-12-31T14:00:01.289Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/foundations.html</loc>
-    <lastmod>2022-12-29T06:26:44.493Z</lastmod>
+    <lastmod>2022-12-31T14:00:01.617Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/async-await.html</loc>
-    <lastmod>2022-12-29T06:26:44.833Z</lastmod>
+    <lastmod>2022-12-31T14:00:01.957Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/pointers.html</loc>
-    <lastmod>2022-12-29T06:26:45.135Z</lastmod>
+    <lastmod>2022-12-31T14:00:02.261Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/declarative_macros.html</loc>
-    <lastmod>2022-12-29T06:26:45.464Z</lastmod>
+    <lastmod>2022-12-31T14:00:02.578Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/fastai/lesson_1.html</loc>
-    <lastmod>2022-12-29T06:26:45.796Z</lastmod>
+    <lastmod>2022-12-31T14:00:02.935Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/tdDEX.html</loc>
-    <lastmod>2022-12-29T06:26:46.122Z</lastmod>
+    <lastmod>2022-12-31T14:00:03.254Z</lastmod>
+  </url>
+  <url>
+    <loc>https://td-bn.github.io/node-world-order/btc-transactions2.html</loc>
+    <lastmod>2022-12-31T14:00:03.570Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/btc-transactions.html</loc>
-    <lastmod>2022-12-29T06:26:46.516Z</lastmod>
+    <lastmod>2022-12-31T14:00:03.973Z</lastmod>
   </url>
 </urlset>

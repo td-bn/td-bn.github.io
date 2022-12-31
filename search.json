@@ -259,6 +259,27 @@
     "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
   },
   {
+    "objectID": "node-world-order/btc-transactions2.html",
+    "href": "node-world-order/btc-transactions2.html",
+    "title": "Bitcoin scripting",
+    "section": "",
+    "text": "Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.\nThe locking script looks like:\n2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nThe unlocking script can look something like:\n<Signature B> <Signature C>\nCombining the two, the validation script looks something like:\n<Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nNOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:\n0 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions2.html#pay-to-hash-scriptp2hs",
+    "href": "node-world-order/btc-transactions2.html#pay-to-hash-scriptp2hs",
+    "title": "Bitcoin scripting",
+    "section": "Pay-to-hash-script(P2HS)",
+    "text": "Pay-to-hash-script(P2HS)\nMultisignatures are cumbersome to use.\nIssues for payee:\n\nNeeds wallet software that can create custom transaction scripts\nscript is somewhat large and payer has to pay for the large size of the transaction\nUTXO is carried by the RAM of all nodes until spent\n\nP2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.\nP2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.\nThe locking script looks like:\nHASH160 <20-byte hash of redeem script> EQUAL\nThe unlocking script can look something like:\n0 Sig1 Sig2 <redeem script>\nwhere the redeem script can look something like:\n2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG\nNOTE: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only"
+  },
+  {
+    "objectID": "node-world-order/btc-transactions2.html#p2sh-addresses",
+    "href": "node-world-order/btc-transactions2.html#p2sh-addresses",
+    "title": "Bitcoin scripting",
+    "section": "P2SH Addresses",
+    "text": "P2SH Addresses\nAnother important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”\nIt works in exactly the same way as a payment to a Bitcoin address.\nBenefits of P2SH:\n\nComplex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.\nScripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.\nP2SH shifts the burden of constructing the script to the recipient, not the sender.\nP2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).\nP2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).\nP2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.\n\nNOTE: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script."
+  },
+  {
     "objectID": "node-world-order/btc-transactions.html",
     "href": "node-world-order/btc-transactions.html",
     "title": "Bitcoin Transactions",

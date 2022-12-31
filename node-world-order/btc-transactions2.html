@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Channels and sync primitives</title>
+<title>Bitcoin scripting</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Channels and sync primitives</h1>
+      <h1 class="quarto-secondary-nav-title">Bitcoin scripting</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../node-world-order/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../node-world-order/btc-transactions2.html" class="sidebar-item-text sidebar-link active">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -153,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link active">Channels and sync primitives</a>
+  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -187,13 +187,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#types-of-channels" id="toc-types-of-channels" class="nav-link active" data-scroll-target="#types-of-channels">Types of channels</a></li>
-  <li><a href="#useful-primitives-used-in-channel-implementations" id="toc-useful-primitives-used-in-channel-implementations" class="nav-link" data-scroll-target="#useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</a>
-  <ul class="collapse">
-  <li><a href="#mutex" id="toc-mutex" class="nav-link" data-scroll-target="#mutex">Mutex</a></li>
-  <li><a href="#condvar" id="toc-condvar" class="nav-link" data-scroll-target="#condvar">Condvar</a></li>
-  <li><a href="#arc" id="toc-arc" class="nav-link" data-scroll-target="#arc">Arc</a></li>
-  </ul></li>
+  <li><a href="#multisig" id="toc-multisig" class="nav-link active" data-scroll-target="#multisig">Multisig</a></li>
+  <li><a href="#pay-to-hash-scriptp2hs" id="toc-pay-to-hash-scriptp2hs" class="nav-link" data-scroll-target="#pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</a></li>
+  <li><a href="#p2sh-addresses" id="toc-p2sh-addresses" class="nav-link" data-scroll-target="#p2sh-addresses">P2SH Addresses</a></li>
   </ul>
 </nav>
     </div>
@@ -202,7 +198,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Channels and sync primitives</h1>
+<h1 class="title d-none d-lg-block">Bitcoin scripting</h1>
 </div>
 
 
@@ -217,40 +213,53 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><code>Channels</code> gives us handles for sender(s) and a receiver. <code>Sender(s)</code> can send the data and the <code>Receiver</code> can receive the data.</p>
-<p>Rust provides <code>mpsc</code>(multiple producer, single consumer) channels in the std lib.</p>
-<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/crust-of-rust/channel/src/lib.rs">this</a> for simple Async channel implementation using Rust sync primitives.</p>
-<section id="types-of-channels" class="level2">
-<h2 class="anchored" data-anchor-id="types-of-channels">Types of channels</h2>
-<ol type="1">
-<li><p>Asynchronous Infinite capacity. Non blocking send. Uses <code>Sender</code>.</p></li>
-<li><p>Synchronous Fixed size buffer. Blocking till buffer space available. Uses <code>SyncSender</code>.</p></li>
-</ol>
-<p>Both Senders are clonable such that multiple threads can simultaneoulsy send to a single consumber.</p>
-<p>In both of these channels all data created on the <code>Sender</code> half will become available on the <code>Receiver</code> in the same order that it was sent. The <code>Sender</code> can be cloned but only one <code>Receiver</code> is supported.</p>
+<section id="multisig" class="level2">
+<h2 class="anchored" data-anchor-id="multisig">Multisig</h2>
+<p>Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.</p>
+<p>The locking script looks like:</p>
+<p><code>2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
+<p>The unlocking script can look something like:</p>
+<p><code>&lt;Signature B&gt; &lt;Signature C&gt;</code></p>
+<p>Combining the two, the validation script looks something like:</p>
+<p><code>&lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
+<p>NOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:</p>
+<p><code>0 &lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
 </section>
-<section id="useful-primitives-used-in-channel-implementations" class="level2">
-<h2 class="anchored" data-anchor-id="useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</h2>
-<section id="mutex" class="level3">
-<h3 class="anchored" data-anchor-id="mutex">Mutex</h3>
-<p>A mutual exclusion primitive for protecting shared data.</p>
-<p>This mutex will block threads waiting for the lock to become available.</p>
-<p>The data can only be accessed through the <code>RAII</code> guards returned from <code>lock</code> and <code>try_lock</code>, which guarantees that the data is only ever accessed when the mutex is locked.</p>
+<section id="pay-to-hash-scriptp2hs" class="level2">
+<h2 class="anchored" data-anchor-id="pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</h2>
+<p>Multisignatures are cumbersome to use.</p>
+<p>Issues for payee:</p>
+<ul>
+<li>Needs wallet software that can create custom transaction scripts</li>
+<li>script is somewhat large and payer has to pay for the large size of the transaction</li>
+<li>UTXO is carried by the RAM of all nodes until spent</li>
+</ul>
+<p>P2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.</p>
+<p>P2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.</p>
+<p>The locking script looks like:</p>
+<p><code>HASH160 &lt;20-byte hash of redeem script&gt; EQUAL</code></p>
+<p>The unlocking script can look something like:</p>
+<p><code>0 Sig1 Sig2 &lt;redeem script&gt;</code></p>
+<p>where the redeem script can look something like:</p>
+<p><code>2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG</code></p>
+<p><strong>NOTE</strong>: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only</p>
 </section>
-<section id="condvar" class="level3">
-<h3 class="anchored" data-anchor-id="condvar">Condvar</h3>
-<p>A conditional variable which represents the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.</p>
-<p>Condition variables are typically associated with a boolean predicate (a condition) and a mutex. The predicate is always verified inside of the mutex before determining that a thread must block.</p>
-<p><code>.wait</code> : Blocks the current thread until this condition variable receives a notification.</p>
-<p><code>.notify_one</code>: Wakes up one blocked thread on this condvar.</p>
-</section>
-<section id="arc" class="level3">
-<h3 class="anchored" data-anchor-id="arc">Arc</h3>
-<p>A thread-safe reference-counting pointer. ‘Arc’ stands for ‘Atomically Reference Counted’.</p>
-<p>The type <code>Arc&lt;T&gt;</code> provides shared ownership of a value of type T, allocated in the heap.</p>
+<section id="p2sh-addresses" class="level2">
+<h2 class="anchored" data-anchor-id="p2sh-addresses">P2SH Addresses</h2>
+<p>Another important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”</p>
+<p>It works in exactly the same way as a payment to a Bitcoin address.</p>
+<p>Benefits of P2SH:</p>
+<ul>
+<li>Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.</li>
+<li>Scripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.</li>
+<li>P2SH shifts the burden of constructing the script to the recipient, not the sender.</li>
+<li>P2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).</li>
+<li>P2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).</li>
+<li>P2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.</li>
+</ul>
+<p><strong>NOTE</strong>: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
