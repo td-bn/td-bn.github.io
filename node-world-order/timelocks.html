@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>foundations</title>
+<title>Timelocks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,7 +71,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Timelocks</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -201,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../node-world-order/timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../node-world-order/timelocks.html" class="sidebar-item-text sidebar-link active">Timelocks</a>
   </div>
 </li>
       </ul>
@@ -231,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -255,17 +192,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
+  <li><a href="#transaction-locktime" id="toc-transaction-locktime" class="nav-link active" data-scroll-target="#transaction-locktime">Transaction Locktime</a></li>
+  <li><a href="#check-lock-time-verify-cltv" id="toc-check-lock-time-verify-cltv" class="nav-link" data-scroll-target="#check-lock-time-verify-cltv">Check Lock Time Verify (CLTV)</a></li>
+  <li><a href="#relative-timelocks" id="toc-relative-timelocks" class="nav-link" data-scroll-target="#relative-timelocks">Relative Timelocks</a>
   <ul class="collapse">
-  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
-  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
-  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
-  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
-  <ul class="collapse">
-  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
-  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
-  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
-  </ul></li>
+  <li><a href="#nsequence" id="toc-nsequence" class="nav-link" data-scroll-target="#nsequence">nSequence</a></li>
+  <li><a href="#csv" id="toc-csv" class="nav-link" data-scroll-target="#csv">CSV</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -273,53 +205,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Timelocks</h1>
+</div>
 
 
-<section id="foundations" class="level1">
-<h1>Foundations</h1>
-<section id="values-variables-and-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
-<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
-<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
-<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
-<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
-<blockquote class="blockquote">
-<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
-</blockquote>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Timelocks are restrictions on transactions or outputs that only allow spending after a point in time. Timelocks extend Bitcoin scripting in the dimension of time.</p>
+<section id="transaction-locktime" class="level2">
+<h2 class="anchored" data-anchor-id="transaction-locktime">Transaction Locktime</h2>
+<p>Transaction locktime is a transaction-level setting (a field in the transaction data structure) that defines the earliest time that a transaction is valid and can be relayed on the network or added to the blockchain.</p>
+<p>Locktime is also known as nLocktime from the variable name used in the Bitcoin Core codebase.</p>
+<p>If <code>nLocktime</code> is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not valid and is not relayed or included in the blockchain prior to the specified block height. If it is greater than or equal to 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not valid prior to the specified time</p>
+<p><strong>NOTE</strong>: nLocktime has the limitation that while it makes it possible to spend some outputs in the future, it does not make it impossible to spend them until that time</p>
 </section>
-<section id="high-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
-<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
-<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
-<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
-<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
+<section id="check-lock-time-verify-cltv" class="level2">
+<h2 class="anchored" data-anchor-id="check-lock-time-verify-cltv">Check Lock Time Verify (CLTV)</h2>
+<p>CLTV is a per-output timelock, rather than a per-transaction timelock as is the case with nLocktime. In simple terms, by adding the CLTV opcode in the redeem script of an output it restricts the output, so that it can only be spent after the specified time has elapsed.</p>
+<p><strong>NOTE</strong>: While nLocktime is a transaction-level timelock, CLTV is an output-based timelock.</p>
+<p>CLTV doesn’t replace nLocktime, but rather restricts specific UTXO such that they can only be spent in a future transaction with nLocktime set to a greater or equal value.</p>
+<p>To lock an output to a time, say 3 months from now, the transaction would be a P2SH transaction with a redeem script like this: <code>&lt;now + 3 months&gt; CHECKLOCKTIMEVERIFY DROP DUP HASH160 &lt;Payee Public Key Hash&gt; EQUALVERIFY CHECKSIG</code></p>
+<p><strong>NOTE</strong>: <code>DROP</code> pops from the stack</p>
 </section>
-<section id="low-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
-<p>Variables name memory locations that may or may not hold legal values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
+<section id="relative-timelocks" class="level2">
+<h2 class="anchored" data-anchor-id="relative-timelocks">Relative Timelocks</h2>
+<p><code>nLocktime</code> and <code>CLTV</code> are both absolute timelocks in that they specify an absolute point in time.</p>
+<p>Relative timelocks are useful because they allow a chain of two or more interdependent transactions to be held off chain, while imposing a time constraint on one transaction that is dependent on the elapsed time from the confirmation of a previous transaction. This functionality is especially useful in bidirectional state channels and Lightning Networks.</p>
+<p>Relative timelocks, like absolute timelocks, are implemented with both a transaction-level feature and a script-level opcode. The transaction-level relative timelock is implemented as a consensus rule on the value of <code>nSequence</code>, a transaction field that is set in every transaction input. Script-level relative timelocks are implemented with the <code>CHECKSEQUENCEVERIFY</code> (CSV) opcode.</p>
+<section id="nsequence" class="level3">
+<h3 class="anchored" data-anchor-id="nsequence">nSequence</h3>
+<p>Since the activation of BIP-68, new consensus rules apply for any transaction containing an input whose <code>nSequence</code> value is less than 231 (bit 1&lt;&lt;31 is not set). Programmatically, that means that if the most significant bit (bit 1&lt;&lt;31) is not set, it is a flag that means “relative locktime.” Otherwise (bit 1&lt;&lt;31 set), the <code>nSequence</code> value is reserved for other uses such as enabling CHECKLOCKTIMEVERIFY, nLocktime, Opt-In-Replace-By-Fee, and other future developments.</p>
+<p>Transaction inputs with <code>nSequence</code> values less than 231 are interpreted as having a relative timelock. Such a transaction is only valid once the input has aged by the relative timelock amount. For example, a transaction with one input with an <code>nSequence</code> relative timelock of 30 blocks is only valid when at least 30 blocks have elapsed from the time the UTXO referenced in the input was mined. Since <code>nSequence</code> is a per-input field, a transaction may contain any number of timelocked inputs, all of which must have sufficiently aged for the transaction to be valid.</p>
+<p>The <code>nSequence</code> value is specified in either blocks or seconds, but in a slightly different format than we saw used in nLocktime. A type-flag is used to differentiate between values counting blocks and values counting time in seconds. The type-flag is set in the 23rd least-significant bit (i.e., value 1&lt;&lt;22). If the type-flag is set, then the <code>nSequence</code> value is interpreted as a multiple of 512 seconds. If the type-flag is not set, the nSequence value is interpreted as a number of blocks. When interpreting <code>nSequence</code> as a relative timelock, only the 16 least significant bits are considered.</p>
 </section>
-<section id="memory-regions" class="level2">
-<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
-<section id="stack" class="level3">
-<h3 class="anchored" data-anchor-id="stack">Stack</h3>
-<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
-</section>
-<section id="heap" class="level3">
-<h3 class="anchored" data-anchor-id="heap">Heap</h3>
-<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
-<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
-</section>
-<section id="static-memory" class="level3">
-<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
-<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
-<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
-<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
+<section id="csv" class="level3">
+<h3 class="anchored" data-anchor-id="csv">CSV</h3>
+<p>The <code>CSV</code> opcode when evaluated in an UTXO’s redeem script allows spending only in a transaction whose input <code>nSequence</code> value is greater than or equal to the <code>CSV</code> parameter. Essentially, this restricts spending the UTXO until a certain number of blocks or seconds have elapsed relative to the time the UTXO was mined.</p>
+<p>As with CLTV, the value in CSV must match the format in the corresponding nSequence value. If CSV is specified in terms of blocks, then so must nSequence. If CSV is specified in terms of seconds, then so must nSequence.</p>
 
 
-</section>
 </section>
 </section>
 
