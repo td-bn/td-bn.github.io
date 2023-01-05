@@ -1,0 +1,97 @@
+---
+title: Conditional Flows
+format: html
+---
+
+Conditional operators allows us to write scripts that have two ways of 
+being unlocked, depending on whether the condition evluates to TRUE or FALSE.
+
+Conditionals can be nested indefinitely, only limited by the maximum size of 
+a script.
+
+Operators used to write conditionals are: `IF`, `ELSE`, `ENDIF`, `NOTIF`
+
+**Note**: In a stack based language like Bitcoin Script, the condition comes
+before the IF.
+e.g.
+```bash
+condition
+IF
+  code to run when condition is true
+ELSE
+  code to run when condition is false
+ENDIF
+code to run in either case
+```
+
+## VERIFY opcodes
+
+Verify means that if a condition is not TRUE, then the evaluation is stopped
+immediately.
+
+Thus VERIFY suffixes act like guard clauses, continuing only if the 
+pre-condition is met.
+
+e.g. redeem script with an EQUALVERIFY guard clause.
+
+```bash
+HASH160 <expected hash> EQUALVERIFY <Bob's Pubkey> CHECKSIG
+```
+
+This can also be written using an `IF` instead:
+
+```bash
+HASH160 <expected hash> EQUAL
+IF
+   <Bob's Pubkey> CHECKSIG
+ENDIF
+```
+
+Note
+
+- the VERIFY construction is more efficient, it uses two fewer opcodes.
+- VERIFY opcodes do not leave anything on the stack, unlike say an EQUAL 
+opcode.
+
+## Example script using conditionals 
+
+Following is an example of a script with multiple outcomes:
+
+```bash
+01  IF
+02    IF
+03      2
+04    ELSE
+05      <30 days> CHECKSEQUENCEVERIFY DROP
+06      <A's Pubkey> CHECKSIGVERIFY
+07      1
+08    ENDIF
+09    <M's Pubkey> <S's Pubkey> <Z's Pubkey> 3 CHECKMULTISIG
+10  ELSE
+11    <90 days> CHECKSEQUENCEVERIFY DROP
+12    <A's Pubkey> CHECKSIG
+13  ENDIF
+```
+We can evaluate the script in 3 ways:
+
+### 1. two of three multisig
+
+We can unlock for 2 of 3 multisig using:
+```bash
+0 <M's Sig> <Z's Sig> TRUE TRUE
+```
+Here `TRUE TRUE` force evaluation of the nested if's.
+
+### 2. one of three multisig + A's Pubkey
+
+We can use 1 of 3, along with A's Pubkey using:
+```bash
+0 <A's Sig> <S/M/Z's Sig> FALSE TRUE
+```
+
+### 3. For A's SIG only path
+```bash
+<A's Sig> FALSE 
+```
+
+
