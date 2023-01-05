@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Iterators</title>
+<title>Conditional Flows</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Iterators</h1>
+      <h1 class="quarto-secondary-nav-title">Conditional Flows</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -196,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../node-world-order/conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  <a href="../node-world-order/conditionals.html" class="sidebar-item-text sidebar-link active">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -241,7 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link active">Iterators</a>
+  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -260,12 +260,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#three-forms-of-iterators" id="toc-three-forms-of-iterators" class="nav-link active" data-scroll-target="#three-forms-of-iterators">Three forms of iterators</a></li>
-  <li><a href="#how-for-loop-works-under-the-hood" id="toc-how-for-loop-works-under-the-hood" class="nav-link" data-scroll-target="#how-for-loop-works-under-the-hood">How for loop works under the hood</a></li>
-  <li><a href="#into-iter" id="toc-into-iter" class="nav-link" data-scroll-target="#into-iter">Into iter</a></li>
-  <li><a href="#associated-type-vs-generic-type" id="toc-associated-type-vs-generic-type" class="nav-link" data-scroll-target="#associated-type-vs-generic-type">Associated type vs generic type</a></li>
-  <li><a href="#different-types-of-for-loops" id="toc-different-types-of-for-loops" class="nav-link" data-scroll-target="#different-types-of-for-loops">Different types of for loops</a></li>
-  <li><a href="#other-method-in-iterator-trait" id="toc-other-method-in-iterator-trait" class="nav-link" data-scroll-target="#other-method-in-iterator-trait">Other method in Iterator trait</a></li>
+  <li><a href="#verify-opcodes" id="toc-verify-opcodes" class="nav-link active" data-scroll-target="#verify-opcodes">VERIFY opcodes</a></li>
+  <li><a href="#example-script-using-conditionals" id="toc-example-script-using-conditionals" class="nav-link" data-scroll-target="#example-script-using-conditionals">Example script using conditionals</a>
+  <ul class="collapse">
+  <li><a href="#two-of-three-multisig" id="toc-two-of-three-multisig" class="nav-link" data-scroll-target="#two-of-three-multisig">1. two of three multisig</a></li>
+  <li><a href="#one-of-three-multisig-as-pubkey" id="toc-one-of-three-multisig-as-pubkey" class="nav-link" data-scroll-target="#one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</a></li>
+  <li><a href="#for-as-sig-only-path" id="toc-for-as-sig-only-path" class="nav-link" data-scroll-target="#for-as-sig-only-path">3. For A’s SIG only path</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -274,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Iterators</h1>
+<h1 class="title d-none d-lg-block">Conditional Flows</h1>
 </div>
 
 
@@ -289,104 +290,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/iter-flatten/src/lib.rs">this</a> for exercise.</p>
-<p>Iterator in Rust is a trait. It has an associate type named <code>Item</code> and a method called <code>next</code>.</p>
-<p>Item is the type of item that the iterator will yield. It will call next and return items until they are exhausted at which point it returns <code>None</code>.</p>
-<p>Iterators are also composable, and it’s common to chain them together to do more complex forms of processing.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> next(<span class="op">&amp;</span><span class="kw">mut</span> <span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="three-forms-of-iterators" class="level2">
-<h2 class="anchored" data-anchor-id="three-forms-of-iterators">Three forms of iterators</h2>
-<p>Three common ways to create iterators form a collection:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iter() <span class="co">// which iterates over &amp;T.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iter_mut() <span class="co">// which iterates over &amp;mut T.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>into_iter() <span class="co">// which iterates over T.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.</p>
+<p>Conditionals can be nested indefinitely, only limited by the maximum size of a script.</p>
+<p>Operators used to write conditionals are: <code>IF</code>, <code>ELSE</code>, <code>ENDIF</code>, <code>NOTIF</code></p>
+<p><strong>Note</strong>: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">condition</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is true</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ELSE</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is false</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ENDIF</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> to run in either case</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="verify-opcodes" class="level2">
+<h2 class="anchored" data-anchor-id="verify-opcodes">VERIFY opcodes</h2>
+<p>Verify means that if a condition is not TRUE, then the evaluation is stopped immediately.</p>
+<p>Thus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.</p>
+<p>e.g.&nbsp;redeem script with an EQUALVERIFY guard clause.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUALVERIFY <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This can also be written using an <code>IF</code> instead:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUAL</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note</p>
+<ul>
+<li>the VERIFY construction is more efficient, it uses two fewer opcodes.</li>
+<li>VERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode.</li>
+</ul>
 </section>
-<section id="how-for-loop-works-under-the-hood" class="level2">
-<h2 class="anchored" data-anchor-id="how-for-loop-works-under-the-hood">How for loop works under the hood</h2>
-<p>A for loop like</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="pp">vec!</span>[<span class="st">"a"</span><span class="op">,</span> <span class="st">"b"</span><span class="op">,</span> <span class="st">"c"</span>] </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>turns into something like:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> iter <span class="op">=</span> <span class="pp">vec!</span>[<span class="op">...</span>]<span class="op">.</span>into_iter()<span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="kw">let</span> <span class="cn">Some</span>(x) <span class="op">=</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In actuality it is something like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// let values = vec![...];</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> result <span class="op">=</span> <span class="cf">match</span> <span class="bu">IntoIterator</span><span class="pp">::</span>into_iter(values) <span class="op">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">mut</span> iter <span class="op">=&gt;</span> <span class="cf">loop</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> next<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">match</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="cn">Some</span>(val) <span class="op">=&gt;</span> next <span class="op">=</span> val<span class="op">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">None</span> <span class="op">=&gt;</span> <span class="cf">break</span><span class="op">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> x <span class="op">=</span> next<span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="co">// ....</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="example-script-using-conditionals" class="level2">
+<h2 class="anchored" data-anchor-id="example-script-using-conditionals">Example script using conditionals</h2>
+<p>Following is an example of a script with multiple outcomes:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">01</span>  IF</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">02</span>    IF</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">03</span>      2</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">04</span>    ELSE</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">05</span>      <span class="op">&lt;</span>30 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">06</span>      <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIGVERIFY</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">07      1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">08    ENDIF</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">09    &lt;M'</span>s Pubkey<span class="op">&gt;</span> <span class="op">&lt;</span>S<span class="st">'s Pubkey&gt; &lt;Z'</span>s Pubkey<span class="op">&gt;</span> 3 CHECKMULTISIG</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span>  ELSE</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">11</span>    <span class="op">&lt;</span>90 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span>    <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">13  ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can evaluate the script in 3 ways:</p>
+<section id="two-of-three-multisig" class="level3">
+<h3 class="anchored" data-anchor-id="two-of-three-multisig">1. two of three multisig</h3>
+<p>We can unlock for 2 of 3 multisig using:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>M<span class="st">'s Sig&gt; &lt;Z'</span>s Sig<span class="op">&gt;</span> TRUE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here <code>TRUE TRUE</code> force evaluation of the nested if’s.</p>
 </section>
-<section id="into-iter" class="level2">
-<h2 class="anchored" data-anchor-id="into-iter">Into iter</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">IntoIterator</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> IntoIter: Iterator<span class="op">&lt;</span>Item <span class="op">=</span> <span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> into_iter(<span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>IntoIter<span class="op">;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Sort of a wrapper trait around iter. Anything that can be turned into an iterator. Usually used for collections. By definiting <code>IntoIter</code> for a type, we define how it can be converted into an iterator.</p>
-<p>In addition to an associated type <code>Item</code>, it also has an associtaed type <code>IntoIter</code>.</p>
-<p>If a collection <code>C</code> implements <code>iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;C</code>, with an implementation that just calles <code>iter()</code>. Likewise, a collection <code>C</code> that implements <code>mut_iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;mut C</code>, with an implementation that just calles <code>iter_mut()</code>.</p>
-<p>This enables convenient shorthands like:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> values <span class="op">=</span> <span class="pp">vec!</span>[<span class="dv">41</span>]<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span><span class="kw">mut</span> values <span class="op">{</span> <span class="co">// same as `values.iter_mut()`</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>x <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span>values <span class="op">{</span> <span class="co">// same as `values.iter()`</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">assert_eq!</span>(<span class="op">*</span>x<span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="pp">assert_eq!</span>(values<span class="op">.</span>len()<span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="one-of-three-multisig-as-pubkey" class="level3">
+<h3 class="anchored" data-anchor-id="one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</h3>
+<p>We can use 1 of 3, along with A’s Pubkey using:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>A<span class="st">'s Sig&gt; &lt;S/M/Z'</span>s Sig<span class="op">&gt;</span> FALSE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="associated-type-vs-generic-type" class="level2">
-<h2 class="anchored" data-anchor-id="associated-type-vs-generic-type">Associated type vs generic type</h2>
-<p>Why do we have?</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">..</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>and not</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span><span class="op">&lt;</span>Item<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Both of these would work. An associated type is used when we expect there to be only one implementation of the trait for a given type.</p>
-<p>e.g.&nbsp;if we have an iterator type for a HashMap there is only one implementation for it keys and values.</p>
-<p>On the other hand we want generic types for a trait when we expect to have multiple implementation for the same type.</p>
-<p>e.g a service trait that supports multiple types of requests.</p>
-<p><strong>Why don’t we use generic always?</strong> It saves the type checker some headache. We make its job easier. Reduces extra generic type params that we need to use.</p>
-</section>
-<section id="different-types-of-for-loops" class="level2">
-<h2 class="anchored" data-anchor-id="different-types-of-for-loops">Different types of for loops</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General idea of Rust: being explicit is good</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// consumes vs and owned acess to v</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs<span class="op">.</span>iter() <span class="op">{</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// borrows vs, &amp; to v</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> <span class="op">&amp;</span>vs <span class="op">{</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// eq to vs.iter()</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="other-method-in-iterator-trait" class="level2">
-<h2 class="anchored" data-anchor-id="other-method-in-iterator-trait">Other method in Iterator trait</h2>
-<p>Provides default implementation for other methods by using Item and next(). Note that <code>Iterator</code> provides a default implementation of methods such as <code>nth</code> and <code>fold</code> which call next internally. However, it is also possible to write a custom implementation of methods like <code>nth</code> and <code>fold</code> if an iterator can compute them more efficiently without calling <code>next</code>.</p>
+<section id="for-as-sig-only-path" class="level3">
+<h3 class="anchored" data-anchor-id="for-as-sig-only-path">3. For A’s SIG only path</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>A<span class="st">'s Sig&gt; FALSE </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

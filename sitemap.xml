@@ -2,50 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://td-bn.github.io/home/index.html</loc>
-    <lastmod>2023-01-02T08:29:58.468Z</lastmod>
+    <lastmod>2023-01-05T12:37:47.480Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/iter.html</loc>
-    <lastmod>2023-01-02T08:29:58.868Z</lastmod>
+    <lastmod>2023-01-05T12:37:47.839Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/chanells.html</loc>
-    <lastmod>2023-01-02T08:29:59.200Z</lastmod>
+    <lastmod>2023-01-05T12:37:48.156Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/foundations.html</loc>
-    <lastmod>2023-01-02T08:29:59.525Z</lastmod>
+    <lastmod>2023-01-05T12:37:48.481Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/async-await.html</loc>
-    <lastmod>2023-01-02T08:29:59.864Z</lastmod>
+    <lastmod>2023-01-05T12:37:48.820Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/pointers.html</loc>
-    <lastmod>2023-01-02T08:30:00.182Z</lastmod>
+    <lastmod>2023-01-05T12:37:49.122Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/declarative_macros.html</loc>
-    <lastmod>2023-01-02T08:30:00.512Z</lastmod>
+    <lastmod>2023-01-05T12:37:49.445Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/fastai/lesson_1.html</loc>
-    <lastmod>2023-01-02T08:30:00.857Z</lastmod>
+    <lastmod>2023-01-05T12:37:49.793Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/tdDEX.html</loc>
-    <lastmod>2023-01-02T08:30:01.173Z</lastmod>
+    <lastmod>2023-01-05T12:37:50.114Z</lastmod>
+  </url>
+  <url>
+    <loc>https://td-bn.github.io/node-world-order/conditionals.html</loc>
+    <lastmod>2023-01-05T12:37:50.433Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/btc-transactions2.html</loc>
-    <lastmod>2023-01-02T08:30:01.515Z</lastmod>
+    <lastmod>2023-01-05T12:37:50.758Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/btc-transactions.html</loc>
-    <lastmod>2023-01-02T08:30:01.907Z</lastmod>
+    <lastmod>2023-01-05T12:37:51.165Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/node-world-order/timelocks.html</loc>
-    <lastmod>2023-01-02T08:30:02.236Z</lastmod>
+    <lastmod>2023-01-05T12:37:51.531Z</lastmod>
   </url>
 </urlset>

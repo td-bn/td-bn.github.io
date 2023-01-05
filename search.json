@@ -259,6 +259,27 @@
     "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
   },
   {
+    "objectID": "node-world-order/conditionals.html",
+    "href": "node-world-order/conditionals.html",
+    "title": "Conditional Flows",
+    "section": "",
+    "text": "Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.\nConditionals can be nested indefinitely, only limited by the maximum size of a script.\nOperators used to write conditionals are: IF, ELSE, ENDIF, NOTIF\nNote: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g."
+  },
+  {
+    "objectID": "node-world-order/conditionals.html#verify-opcodes",
+    "href": "node-world-order/conditionals.html#verify-opcodes",
+    "title": "Conditional Flows",
+    "section": "VERIFY opcodes",
+    "text": "VERIFY opcodes\nVerify means that if a condition is not TRUE, then the evaluation is stopped immediately.\nThus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.\ne.g. redeem script with an EQUALVERIFY guard clause.\nHASH160 <expected hash> EQUALVERIFY <Bob's Pubkey> CHECKSIG\nThis can also be written using an IF instead:\nHASH160 <expected hash> EQUAL\nIF\n   <Bob's Pubkey> CHECKSIG\nENDIF\nNote\n\nthe VERIFY construction is more efficient, it uses two fewer opcodes.\nVERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode."
+  },
+  {
+    "objectID": "node-world-order/conditionals.html#example-script-using-conditionals",
+    "href": "node-world-order/conditionals.html#example-script-using-conditionals",
+    "title": "Conditional Flows",
+    "section": "Example script using conditionals",
+    "text": "Example script using conditionals\nFollowing is an example of a script with multiple outcomes:\n01  IF\n02    IF\n03      2\n04    ELSE\n05      <30 days> CHECKSEQUENCEVERIFY DROP\n06      <A's Pubkey> CHECKSIGVERIFY\n07      1\n08    ENDIF\n09    <M's Pubkey> <S's Pubkey> <Z's Pubkey> 3 CHECKMULTISIG\n10  ELSE\n11    <90 days> CHECKSEQUENCEVERIFY DROP\n12    <A's Pubkey> CHECKSIG\n13  ENDIF\nWe can evaluate the script in 3 ways:\n\n1. two of three multisig\nWe can unlock for 2 of 3 multisig using:\n0 <M's Sig> <Z's Sig> TRUE TRUE\nHere TRUE TRUE force evaluation of the nested if’s.\n\n\n2. one of three multisig + A’s Pubkey\nWe can use 1 of 3, along with A’s Pubkey using:\n0 <A's Sig> <S/M/Z's Sig> FALSE TRUE\n\n\n3. For A’s SIG only path\n<A's Sig> FALSE"
+  },
+  {
     "objectID": "node-world-order/btc-transactions2.html",
     "href": "node-world-order/btc-transactions2.html",
     "title": "Bitcoin scripting",
