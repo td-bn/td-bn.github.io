@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Async/Await</title>
+<title>Conditional Flows</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,24 +86,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -125,7 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Async/Await</h1>
+      <h1 class="quarto-secondary-nav-title">Conditional Flows</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -166,40 +166,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link active">Async/Await</a>
+  <a href="../../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
+  <a href="../../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
+  <a href="../../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
+  <a href="../../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
   </div>
 </li>
       </ul>
@@ -224,37 +224,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Bitcoin</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Bitcoin</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  <a href="../../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  <a href="../../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link active">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
   </div>
 </li>
       </ul>
@@ -271,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
   </div>
 </li>
       </ul>
@@ -285,14 +285,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cooperative-scheduling" id="toc-cooperative-scheduling" class="nav-link active" data-scroll-target="#cooperative-scheduling">Cooperative scheduling</a></li>
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why">Why?</a></li>
-  <li><a href="#future-and-asyncawait" id="toc-future-and-asyncawait" class="nav-link" data-scroll-target="#future-and-asyncawait">Future and async/await</a></li>
-  <li><a href="#executor" id="toc-executor" class="nav-link" data-scroll-target="#executor">Executor</a></li>
-  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
-  <li><a href="#sharing-state" id="toc-sharing-state" class="nav-link" data-scroll-target="#sharing-state">Sharing state</a></li>
-  <li><a href="#cancelling-future-execution" id="toc-cancelling-future-execution" class="nav-link" data-scroll-target="#cancelling-future-execution">Cancelling Future execution</a></li>
-  <li><a href="#resources-and-references" id="toc-resources-and-references" class="nav-link" data-scroll-target="#resources-and-references">Resources and References</a></li>
+  <li><a href="#verify-opcodes" id="toc-verify-opcodes" class="nav-link active" data-scroll-target="#verify-opcodes">VERIFY opcodes</a></li>
+  <li><a href="#example-script-using-conditionals" id="toc-example-script-using-conditionals" class="nav-link" data-scroll-target="#example-script-using-conditionals">Example script using conditionals</a>
+  <ul class="collapse">
+  <li><a href="#two-of-three-multisig" id="toc-two-of-three-multisig" class="nav-link" data-scroll-target="#two-of-three-multisig">1. two of three multisig</a></li>
+  <li><a href="#one-of-three-multisig-as-pubkey" id="toc-one-of-three-multisig-as-pubkey" class="nav-link" data-scroll-target="#one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</a></li>
+  <li><a href="#for-as-sig-only-path" id="toc-for-as-sig-only-path" class="nav-link" data-scroll-target="#for-as-sig-only-path">3. For A’s SIG only path</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -301,7 +300,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Async/Await</h1>
+<h1 class="title d-none d-lg-block">Conditional Flows</h1>
 </div>
 
 
@@ -316,138 +315,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="cooperative-scheduling" class="level2">
-<h2 class="anchored" data-anchor-id="cooperative-scheduling">Cooperative scheduling</h2>
+<p>Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.</p>
+<p>Conditionals can be nested indefinitely, only limited by the maximum size of a script.</p>
+<p>Operators used to write conditionals are: <code>IF</code>, <code>ELSE</code>, <code>ENDIF</code>, <code>NOTIF</code></p>
+<p><strong>Note</strong>: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">condition</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is true</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ELSE</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is false</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ENDIF</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> to run in either case</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="verify-opcodes" class="level2">
+<h2 class="anchored" data-anchor-id="verify-opcodes">VERIFY opcodes</h2>
+<p>Verify means that if a condition is not TRUE, then the evaluation is stopped immediately.</p>
+<p>Thus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.</p>
+<p>e.g.&nbsp;redeem script with an EQUALVERIFY guard clause.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUALVERIFY <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This can also be written using an <code>IF</code> instead:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUAL</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note</p>
 <ul>
-<li>tasks voluntarily give up control to the CPU through a yield operation</li>
-<li>different from preemptive scheduling where the OS forcibly switches between running tasks</li>
-</ul>
-<p>Basically comes down to:</p>
-<p><code>If I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me</code></p>
-</section>
-<section id="why" class="level2">
-<h2 class="anchored" data-anchor-id="why">Why?</h2>
-<ul>
-<li>I/O is costly</li>
-<li>Threads are nice</li>
-<li>But not too many</li>
-<li>Switching threads = context switches, costly</li>
-</ul>
-</section>
-<section id="future-and-asyncawait" class="level2">
-<h2 class="anchored" data-anchor-id="future-and-asyncawait">Future and async/await</h2>
-<ul>
-<li>Async/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield</li>
-<li>Cooperative scheduling also means that you have to be vigilant about running blocking code in a future
-<ul>
-<li>see tokio::task::spawn_blocking</li>
-</ul></li>
-<li>Async/await is rust is implemented using what is called a <code>Future</code></li>
-<li>Future represents a value that is not available yet.</li>
-<li>Instead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.</li>
-<li>Future has a <code>poll</code> method is used to initiate the resolution of the Future. Rust Futures are lazy.</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">Future</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> poll(<span class="kw">self</span><span class="op">:</span> Pin<span class="op">&lt;&amp;</span><span class="kw">mut</span> <span class="dt">Self</span><span class="op">&gt;,</span> cx<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> Context) <span class="op">-&gt;</span> Poll<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Output<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">Output -&gt; Type of the asynchronous value that the future resolves to.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">Pin -&gt; Reference which is pinned in memory</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">Context -&gt; Contains information about the Waker(responsible for letting executor</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">know about resolution of the Future)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">**/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Async/await facilitates the creation of nested Futures to better utilize CPU resources.</li>
+<li>the VERIFY construction is more efficient, it uses two fewer opcodes.</li>
+<li>VERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode.</li>
 </ul>
 </section>
-<section id="executor" class="level2">
-<h2 class="anchored" data-anchor-id="executor">Executor</h2>
-<ul>
-<li>So is it turtles all the way down?
-<ul>
-<li>Something has to hold all our futures</li>
-<li>It can’t yield, because its a top level Future describing the flow of our application</li>
-<li>So it kind of checks on all the futures in our application flow</li>
-</ul></li>
-<li>This is what an executor does in a very basic sense</li>
-<li>Executor create (e.g.&nbsp;tokio):
-<ul>
-<li>provides lowest resources on network sockets and timers</li>
-<li>provides the executor loop at the top</li>
-<li>wired up together behind the scenes</li>
-<li>e.g.&nbsp;if we are waiting for a network socket, tokio manages all that for us</li>
-</ul></li>
-<li>This is what happens when we wrap our Rust main function in tokio::main
-<ul>
-<li>it kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await</li>
-</ul></li>
-</ul>
+<section id="example-script-using-conditionals" class="level2">
+<h2 class="anchored" data-anchor-id="example-script-using-conditionals">Example script using conditionals</h2>
+<p>Following is an example of a script with multiple outcomes:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">01</span>  IF</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">02</span>    IF</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">03</span>      2</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">04</span>    ELSE</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">05</span>      <span class="op">&lt;</span>30 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">06</span>      <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIGVERIFY</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">07      1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">08    ENDIF</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">09    &lt;M'</span>s Pubkey<span class="op">&gt;</span> <span class="op">&lt;</span>S<span class="st">'s Pubkey&gt; &lt;Z'</span>s Pubkey<span class="op">&gt;</span> 3 CHECKMULTISIG</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span>  ELSE</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">11</span>    <span class="op">&lt;</span>90 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span>    <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">13  ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can evaluate the script in 3 ways:</p>
+<section id="two-of-three-multisig" class="level3">
+<h3 class="anchored" data-anchor-id="two-of-three-multisig">1. two of three multisig</h3>
+<p>We can unlock for 2 of 3 multisig using:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>M<span class="st">'s Sig&gt; &lt;Z'</span>s Sig<span class="op">&gt;</span> TRUE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here <code>TRUE TRUE</code> force evaluation of the nested if’s.</p>
 </section>
-<section id="efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
-<ul>
-<li>Spawn:
-<ul>
-<li>Problem: async/await runs on 1 thread if you are not spawning anything</li>
-<li>spawning lets us take advantage of parallelism</li>
-</ul></li>
-<li>Under the hood futures are implemented as state machines that contain the state of all the futures that they contain
-<ul>
-<li>this can become a problem when we are dealing with large states</li>
-<li>futures become too big</li>
-<li>alternatives
-<ul>
-<li>have state on heap; Box our futures</li>
-<li>use tokio::spawn, uses pointer to future</li>
-</ul></li>
-</ul></li>
-<li>async-trait used to have traits with async functions
-<ul>
-<li>why? Because its not possible for compiler to know size of futures</li>
-<li>async-trait box that in a pointer for dynamic dispatch</li>
-</ul></li>
-</ul>
+<section id="one-of-three-multisig-as-pubkey" class="level3">
+<h3 class="anchored" data-anchor-id="one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</h3>
+<p>We can use 1 of 3, along with A’s Pubkey using:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>A<span class="st">'s Sig&gt; &lt;S/M/Z'</span>s Sig<span class="op">&gt;</span> FALSE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="sharing-state" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-state">Sharing state</h2>
-<ul>
-<li>sharing state across Futures
-<ul>
-<li>Arc, Mutex</li>
-<li>clone arc and pass it into futures</li>
-</ul></li>
-<li>Tokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.
-<ul>
-<li>risk of deadlock</li>
-<li>tokio mutex helps but is slower</li>
-</ul></li>
-</ul>
-</section>
-<section id="cancelling-future-execution" class="level2">
-<h2 class="anchored" data-anchor-id="cancelling-future-execution">Cancelling Future execution</h2>
-<ul>
-<li>Cancellation is possible: see select macro tokio
-<ul>
-<li>Need to aware of all the edge cases</li>
-</ul></li>
-</ul>
-<p>Threads vs Futures:</p>
-<ul>
-<li>general rule of thumb, use threads for compute heavy stuff</li>
-<li>use async for IO applications</li>
-</ul>
-</section>
-<section id="resources-and-references" class="level2">
-<h2 class="anchored" data-anchor-id="resources-and-references">Resources and References</h2>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=ThjvMReOXYM">Jon Gjengset deep dive into async/await from an implementation PoV</a></li>
-<li><a href="https://www.youtube.com/watch?v=9_3krAQtD2k">Jon Gjengset overview of async/await from an application dev PoV</a></li>
-<li><a href="https://os.phil-opp.com/async-await">OS rust section on async/await</a></li>
-</ul>
+<section id="for-as-sig-only-path" class="level3">
+<h3 class="anchored" data-anchor-id="for-as-sig-only-path">3. For A’s SIG only path</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>A<span class="st">'s Sig&gt; FALSE </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

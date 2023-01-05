@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Async/Await</title>
+<title>Timelocks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,7 +71,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Async/Await</h1>
+      <h1 class="quarto-secondary-nav-title">Timelocks</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -166,15 +103,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link active">Async/Await</a>
+  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -214,66 +151,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">tbDEX and SSI</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
-  </div>
-</li>
-      </ul>
+  decentralization/tbDEX.qmd
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Bitcoin</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Bitcoin</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
-  </div>
-</li>
-      </ul>
-  </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">ML/AI</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Decentralization</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth3 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../decentralization/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../decentralization/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../decentralization/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../decentralization/btc-timelocks.html" class="sidebar-item-text sidebar-link active">Timelocks</a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -285,14 +205,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cooperative-scheduling" id="toc-cooperative-scheduling" class="nav-link active" data-scroll-target="#cooperative-scheduling">Cooperative scheduling</a></li>
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why">Why?</a></li>
-  <li><a href="#future-and-asyncawait" id="toc-future-and-asyncawait" class="nav-link" data-scroll-target="#future-and-asyncawait">Future and async/await</a></li>
-  <li><a href="#executor" id="toc-executor" class="nav-link" data-scroll-target="#executor">Executor</a></li>
-  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
-  <li><a href="#sharing-state" id="toc-sharing-state" class="nav-link" data-scroll-target="#sharing-state">Sharing state</a></li>
-  <li><a href="#cancelling-future-execution" id="toc-cancelling-future-execution" class="nav-link" data-scroll-target="#cancelling-future-execution">Cancelling Future execution</a></li>
-  <li><a href="#resources-and-references" id="toc-resources-and-references" class="nav-link" data-scroll-target="#resources-and-references">Resources and References</a></li>
+  <li><a href="#transaction-locktime" id="toc-transaction-locktime" class="nav-link active" data-scroll-target="#transaction-locktime">Transaction Locktime</a></li>
+  <li><a href="#check-lock-time-verify-cltv" id="toc-check-lock-time-verify-cltv" class="nav-link" data-scroll-target="#check-lock-time-verify-cltv">Check Lock Time Verify (CLTV)</a></li>
+  <li><a href="#relative-timelocks" id="toc-relative-timelocks" class="nav-link" data-scroll-target="#relative-timelocks">Relative Timelocks</a>
+  <ul class="collapse">
+  <li><a href="#nsequence" id="toc-nsequence" class="nav-link" data-scroll-target="#nsequence">nSequence</a></li>
+  <li><a href="#csv" id="toc-csv" class="nav-link" data-scroll-target="#csv">CSV</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -301,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Async/Await</h1>
+<h1 class="title d-none d-lg-block">Timelocks</h1>
 </div>
 
 
@@ -316,138 +235,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="cooperative-scheduling" class="level2">
-<h2 class="anchored" data-anchor-id="cooperative-scheduling">Cooperative scheduling</h2>
-<ul>
-<li>tasks voluntarily give up control to the CPU through a yield operation</li>
-<li>different from preemptive scheduling where the OS forcibly switches between running tasks</li>
-</ul>
-<p>Basically comes down to:</p>
-<p><code>If I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me</code></p>
+<p>Timelocks are restrictions on transactions or outputs that only allow spending after a point in time. Timelocks extend Bitcoin scripting in the dimension of time.</p>
+<section id="transaction-locktime" class="level2">
+<h2 class="anchored" data-anchor-id="transaction-locktime">Transaction Locktime</h2>
+<p>Transaction locktime is a transaction-level setting (a field in the transaction data structure) that defines the earliest time that a transaction is valid and can be relayed on the network or added to the blockchain.</p>
+<p>Locktime is also known as nLocktime from the variable name used in the Bitcoin Core codebase.</p>
+<p>If <code>nLocktime</code> is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not valid and is not relayed or included in the blockchain prior to the specified block height. If it is greater than or equal to 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not valid prior to the specified time</p>
+<p><strong>NOTE</strong>: nLocktime has the limitation that while it makes it possible to spend some outputs in the future, it does not make it impossible to spend them until that time</p>
 </section>
-<section id="why" class="level2">
-<h2 class="anchored" data-anchor-id="why">Why?</h2>
-<ul>
-<li>I/O is costly</li>
-<li>Threads are nice</li>
-<li>But not too many</li>
-<li>Switching threads = context switches, costly</li>
-</ul>
+<section id="check-lock-time-verify-cltv" class="level2">
+<h2 class="anchored" data-anchor-id="check-lock-time-verify-cltv">Check Lock Time Verify (CLTV)</h2>
+<p>CLTV is a per-output timelock, rather than a per-transaction timelock as is the case with nLocktime. In simple terms, by adding the CLTV opcode in the redeem script of an output it restricts the output, so that it can only be spent after the specified time has elapsed.</p>
+<p><strong>NOTE</strong>: While nLocktime is a transaction-level timelock, CLTV is an output-based timelock.</p>
+<p>CLTV doesn’t replace nLocktime, but rather restricts specific UTXO such that they can only be spent in a future transaction with nLocktime set to a greater or equal value.</p>
+<p>To lock an output to a time, say 3 months from now, the transaction would be a P2SH transaction with a redeem script like this: <code>&lt;now + 3 months&gt; CHECKLOCKTIMEVERIFY DROP DUP HASH160 &lt;Payee Public Key Hash&gt; EQUALVERIFY CHECKSIG</code></p>
+<p><strong>NOTE</strong>: <code>DROP</code> pops from the stack</p>
 </section>
-<section id="future-and-asyncawait" class="level2">
-<h2 class="anchored" data-anchor-id="future-and-asyncawait">Future and async/await</h2>
-<ul>
-<li>Async/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield</li>
-<li>Cooperative scheduling also means that you have to be vigilant about running blocking code in a future
-<ul>
-<li>see tokio::task::spawn_blocking</li>
-</ul></li>
-<li>Async/await is rust is implemented using what is called a <code>Future</code></li>
-<li>Future represents a value that is not available yet.</li>
-<li>Instead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.</li>
-<li>Future has a <code>poll</code> method is used to initiate the resolution of the Future. Rust Futures are lazy.</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">Future</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> poll(<span class="kw">self</span><span class="op">:</span> Pin<span class="op">&lt;&amp;</span><span class="kw">mut</span> <span class="dt">Self</span><span class="op">&gt;,</span> cx<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> Context) <span class="op">-&gt;</span> Poll<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Output<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">Output -&gt; Type of the asynchronous value that the future resolves to.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">Pin -&gt; Reference which is pinned in memory</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">Context -&gt; Contains information about the Waker(responsible for letting executor</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">know about resolution of the Future)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">**/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Async/await facilitates the creation of nested Futures to better utilize CPU resources.</li>
-</ul>
+<section id="relative-timelocks" class="level2">
+<h2 class="anchored" data-anchor-id="relative-timelocks">Relative Timelocks</h2>
+<p><code>nLocktime</code> and <code>CLTV</code> are both absolute timelocks in that they specify an absolute point in time.</p>
+<p>Relative timelocks are useful because they allow a chain of two or more interdependent transactions to be held off chain, while imposing a time constraint on one transaction that is dependent on the elapsed time from the confirmation of a previous transaction. This functionality is especially useful in bidirectional state channels and Lightning Networks.</p>
+<p>Relative timelocks, like absolute timelocks, are implemented with both a transaction-level feature and a script-level opcode. The transaction-level relative timelock is implemented as a consensus rule on the value of <code>nSequence</code>, a transaction field that is set in every transaction input. Script-level relative timelocks are implemented with the <code>CHECKSEQUENCEVERIFY</code> (CSV) opcode.</p>
+<section id="nsequence" class="level3">
+<h3 class="anchored" data-anchor-id="nsequence">nSequence</h3>
+<p>Since the activation of BIP-68, new consensus rules apply for any transaction containing an input whose <code>nSequence</code> value is less than 231 (bit 1&lt;&lt;31 is not set). Programmatically, that means that if the most significant bit (bit 1&lt;&lt;31) is not set, it is a flag that means “relative locktime.” Otherwise (bit 1&lt;&lt;31 set), the <code>nSequence</code> value is reserved for other uses such as enabling CHECKLOCKTIMEVERIFY, nLocktime, Opt-In-Replace-By-Fee, and other future developments.</p>
+<p>Transaction inputs with <code>nSequence</code> values less than 231 are interpreted as having a relative timelock. Such a transaction is only valid once the input has aged by the relative timelock amount. For example, a transaction with one input with an <code>nSequence</code> relative timelock of 30 blocks is only valid when at least 30 blocks have elapsed from the time the UTXO referenced in the input was mined. Since <code>nSequence</code> is a per-input field, a transaction may contain any number of timelocked inputs, all of which must have sufficiently aged for the transaction to be valid.</p>
+<p>The <code>nSequence</code> value is specified in either blocks or seconds, but in a slightly different format than we saw used in nLocktime. A type-flag is used to differentiate between values counting blocks and values counting time in seconds. The type-flag is set in the 23rd least-significant bit (i.e., value 1&lt;&lt;22). If the type-flag is set, then the <code>nSequence</code> value is interpreted as a multiple of 512 seconds. If the type-flag is not set, the nSequence value is interpreted as a number of blocks. When interpreting <code>nSequence</code> as a relative timelock, only the 16 least significant bits are considered.</p>
 </section>
-<section id="executor" class="level2">
-<h2 class="anchored" data-anchor-id="executor">Executor</h2>
-<ul>
-<li>So is it turtles all the way down?
-<ul>
-<li>Something has to hold all our futures</li>
-<li>It can’t yield, because its a top level Future describing the flow of our application</li>
-<li>So it kind of checks on all the futures in our application flow</li>
-</ul></li>
-<li>This is what an executor does in a very basic sense</li>
-<li>Executor create (e.g.&nbsp;tokio):
-<ul>
-<li>provides lowest resources on network sockets and timers</li>
-<li>provides the executor loop at the top</li>
-<li>wired up together behind the scenes</li>
-<li>e.g.&nbsp;if we are waiting for a network socket, tokio manages all that for us</li>
-</ul></li>
-<li>This is what happens when we wrap our Rust main function in tokio::main
-<ul>
-<li>it kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await</li>
-</ul></li>
-</ul>
-</section>
-<section id="efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
-<ul>
-<li>Spawn:
-<ul>
-<li>Problem: async/await runs on 1 thread if you are not spawning anything</li>
-<li>spawning lets us take advantage of parallelism</li>
-</ul></li>
-<li>Under the hood futures are implemented as state machines that contain the state of all the futures that they contain
-<ul>
-<li>this can become a problem when we are dealing with large states</li>
-<li>futures become too big</li>
-<li>alternatives
-<ul>
-<li>have state on heap; Box our futures</li>
-<li>use tokio::spawn, uses pointer to future</li>
-</ul></li>
-</ul></li>
-<li>async-trait used to have traits with async functions
-<ul>
-<li>why? Because its not possible for compiler to know size of futures</li>
-<li>async-trait box that in a pointer for dynamic dispatch</li>
-</ul></li>
-</ul>
-</section>
-<section id="sharing-state" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-state">Sharing state</h2>
-<ul>
-<li>sharing state across Futures
-<ul>
-<li>Arc, Mutex</li>
-<li>clone arc and pass it into futures</li>
-</ul></li>
-<li>Tokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.
-<ul>
-<li>risk of deadlock</li>
-<li>tokio mutex helps but is slower</li>
-</ul></li>
-</ul>
-</section>
-<section id="cancelling-future-execution" class="level2">
-<h2 class="anchored" data-anchor-id="cancelling-future-execution">Cancelling Future execution</h2>
-<ul>
-<li>Cancellation is possible: see select macro tokio
-<ul>
-<li>Need to aware of all the edge cases</li>
-</ul></li>
-</ul>
-<p>Threads vs Futures:</p>
-<ul>
-<li>general rule of thumb, use threads for compute heavy stuff</li>
-<li>use async for IO applications</li>
-</ul>
-</section>
-<section id="resources-and-references" class="level2">
-<h2 class="anchored" data-anchor-id="resources-and-references">Resources and References</h2>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=ThjvMReOXYM">Jon Gjengset deep dive into async/await from an implementation PoV</a></li>
-<li><a href="https://www.youtube.com/watch?v=9_3krAQtD2k">Jon Gjengset overview of async/await from an application dev PoV</a></li>
-<li><a href="https://os.phil-opp.com/async-await">OS rust section on async/await</a></li>
-</ul>
+<section id="csv" class="level3">
+<h3 class="anchored" data-anchor-id="csv">CSV</h3>
+<p>The <code>CSV</code> opcode when evaluated in an UTXO’s redeem script allows spending only in a transaction whose input <code>nSequence</code> value is greater than or equal to the <code>CSV</code> parameter. Essentially, this restricts spending the UTXO until a certain number of blocks or seconds have elapsed relative to the time the UTXO was mined.</p>
+<p>As with CLTV, the value in CSV must match the format in the corresponding nSequence value. If CSV is specified in terms of blocks, then so must nSequence. If CSV is specified in terms of seconds, then so must nSequence.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

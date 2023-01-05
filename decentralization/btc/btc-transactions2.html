@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Async/Await</title>
+<title>Bitcoin scripting</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,90 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -125,7 +62,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -134,7 +71,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Async/Await</h1>
+      <h1 class="quarto-secondary-nav-title">Bitcoin scripting</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -166,40 +103,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link active">Async/Await</a>
+  <a href="../../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
+  <a href="../../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
+  <a href="../../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
+  <a href="../../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
   </div>
 </li>
       </ul>
@@ -224,37 +161,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Bitcoin</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Bitcoin</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link active">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  <a href="../../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  <a href="../../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
   </div>
 </li>
       </ul>
@@ -271,7 +208,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
   </div>
 </li>
       </ul>
@@ -285,14 +222,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cooperative-scheduling" id="toc-cooperative-scheduling" class="nav-link active" data-scroll-target="#cooperative-scheduling">Cooperative scheduling</a></li>
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why">Why?</a></li>
-  <li><a href="#future-and-asyncawait" id="toc-future-and-asyncawait" class="nav-link" data-scroll-target="#future-and-asyncawait">Future and async/await</a></li>
-  <li><a href="#executor" id="toc-executor" class="nav-link" data-scroll-target="#executor">Executor</a></li>
-  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
-  <li><a href="#sharing-state" id="toc-sharing-state" class="nav-link" data-scroll-target="#sharing-state">Sharing state</a></li>
-  <li><a href="#cancelling-future-execution" id="toc-cancelling-future-execution" class="nav-link" data-scroll-target="#cancelling-future-execution">Cancelling Future execution</a></li>
-  <li><a href="#resources-and-references" id="toc-resources-and-references" class="nav-link" data-scroll-target="#resources-and-references">Resources and References</a></li>
+  <li><a href="#multisig" id="toc-multisig" class="nav-link active" data-scroll-target="#multisig">Multisig</a></li>
+  <li><a href="#pay-to-hash-scriptp2hs" id="toc-pay-to-hash-scriptp2hs" class="nav-link" data-scroll-target="#pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</a></li>
+  <li><a href="#p2sh-addresses" id="toc-p2sh-addresses" class="nav-link" data-scroll-target="#p2sh-addresses">P2SH Addresses</a></li>
   </ul>
 </nav>
     </div>
@@ -301,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Async/Await</h1>
+<h1 class="title d-none d-lg-block">Bitcoin scripting</h1>
 </div>
 
 
@@ -316,136 +248,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="cooperative-scheduling" class="level2">
-<h2 class="anchored" data-anchor-id="cooperative-scheduling">Cooperative scheduling</h2>
-<ul>
-<li>tasks voluntarily give up control to the CPU through a yield operation</li>
-<li>different from preemptive scheduling where the OS forcibly switches between running tasks</li>
-</ul>
-<p>Basically comes down to:</p>
-<p><code>If I don’t run, I’m gonna let whoever is above me decide who runs next, and it might not be me</code></p>
+<section id="multisig" class="level2">
+<h2 class="anchored" data-anchor-id="multisig">Multisig</h2>
+<p>Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.</p>
+<p>The locking script looks like:</p>
+<p><code>2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
+<p>The unlocking script can look something like:</p>
+<p><code>&lt;Signature B&gt; &lt;Signature C&gt;</code></p>
+<p>Combining the two, the validation script looks something like:</p>
+<p><code>&lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
+<p>NOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:</p>
+<p><code>0 &lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
 </section>
-<section id="why" class="level2">
-<h2 class="anchored" data-anchor-id="why">Why?</h2>
+<section id="pay-to-hash-scriptp2hs" class="level2">
+<h2 class="anchored" data-anchor-id="pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</h2>
+<p>Multisignatures are cumbersome to use.</p>
+<p>Issues for payee:</p>
 <ul>
-<li>I/O is costly</li>
-<li>Threads are nice</li>
-<li>But not too many</li>
-<li>Switching threads = context switches, costly</li>
+<li>Needs wallet software that can create custom transaction scripts</li>
+<li>script is somewhat large and payer has to pay for the large size of the transaction</li>
+<li>UTXO is carried by the RAM of all nodes until spent</li>
 </ul>
+<p>P2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.</p>
+<p>P2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.</p>
+<p>The locking script looks like:</p>
+<p><code>HASH160 &lt;20-byte hash of redeem script&gt; EQUAL</code></p>
+<p>The unlocking script can look something like:</p>
+<p><code>0 Sig1 Sig2 &lt;redeem script&gt;</code></p>
+<p>where the redeem script can look something like:</p>
+<p><code>2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG</code></p>
+<p><strong>NOTE</strong>: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only</p>
 </section>
-<section id="future-and-asyncawait" class="level2">
-<h2 class="anchored" data-anchor-id="future-and-asyncawait">Future and async/await</h2>
+<section id="p2sh-addresses" class="level2">
+<h2 class="anchored" data-anchor-id="p2sh-addresses">P2SH Addresses</h2>
+<p>Another important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”</p>
+<p>It works in exactly the same way as a payment to a Bitcoin address.</p>
+<p>Benefits of P2SH:</p>
 <ul>
-<li>Async/await let us take advantage of cooperative scheduling by allowing us to describe under what circumstances code can make progress and under what circumstances code can yield</li>
-<li>Cooperative scheduling also means that you have to be vigilant about running blocking code in a future
-<ul>
-<li>see tokio::task::spawn_blocking</li>
-</ul></li>
-<li>Async/await is rust is implemented using what is called a <code>Future</code></li>
-<li>Future represents a value that is not available yet.</li>
-<li>Instead of waiting for the value to become available, Futures allow the execution to continue till the value is needed.</li>
-<li>Future has a <code>poll</code> method is used to initiate the resolution of the Future. Rust Futures are lazy.</li>
+<li>Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.</li>
+<li>Scripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.</li>
+<li>P2SH shifts the burden of constructing the script to the recipient, not the sender.</li>
+<li>P2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).</li>
+<li>P2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).</li>
+<li>P2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">Future</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Output<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> poll(<span class="kw">self</span><span class="op">:</span> Pin<span class="op">&lt;&amp;</span><span class="kw">mut</span> <span class="dt">Self</span><span class="op">&gt;,</span> cx<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> Context) <span class="op">-&gt;</span> Poll<span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Output<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">Output -&gt; Type of the asynchronous value that the future resolves to.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">Pin -&gt; Reference which is pinned in memory</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">Context -&gt; Contains information about the Waker(responsible for letting executor</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">know about resolution of the Future)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">**/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Async/await facilitates the creation of nested Futures to better utilize CPU resources.</li>
-</ul>
-</section>
-<section id="executor" class="level2">
-<h2 class="anchored" data-anchor-id="executor">Executor</h2>
-<ul>
-<li>So is it turtles all the way down?
-<ul>
-<li>Something has to hold all our futures</li>
-<li>It can’t yield, because its a top level Future describing the flow of our application</li>
-<li>So it kind of checks on all the futures in our application flow</li>
-</ul></li>
-<li>This is what an executor does in a very basic sense</li>
-<li>Executor create (e.g.&nbsp;tokio):
-<ul>
-<li>provides lowest resources on network sockets and timers</li>
-<li>provides the executor loop at the top</li>
-<li>wired up together behind the scenes</li>
-<li>e.g.&nbsp;if we are waiting for a network socket, tokio manages all that for us</li>
-</ul></li>
-<li>This is what happens when we wrap our Rust main function in tokio::main
-<ul>
-<li>it kind bundles up that whole thing into an executor and handles everything to do with the OS for us, so we can focus on application logic and control flow using async await</li>
-</ul></li>
-</ul>
-</section>
-<section id="efficiency" class="level2">
-<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
-<ul>
-<li>Spawn:
-<ul>
-<li>Problem: async/await runs on 1 thread if you are not spawning anything</li>
-<li>spawning lets us take advantage of parallelism</li>
-</ul></li>
-<li>Under the hood futures are implemented as state machines that contain the state of all the futures that they contain
-<ul>
-<li>this can become a problem when we are dealing with large states</li>
-<li>futures become too big</li>
-<li>alternatives
-<ul>
-<li>have state on heap; Box our futures</li>
-<li>use tokio::spawn, uses pointer to future</li>
-</ul></li>
-</ul></li>
-<li>async-trait used to have traits with async functions
-<ul>
-<li>why? Because its not possible for compiler to know size of futures</li>
-<li>async-trait box that in a pointer for dynamic dispatch</li>
-</ul></li>
-</ul>
-</section>
-<section id="sharing-state" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-state">Sharing state</h2>
-<ul>
-<li>sharing state across Futures
-<ul>
-<li>Arc, Mutex</li>
-<li>clone arc and pass it into futures</li>
-</ul></li>
-<li>Tokio also provides a mutex, but it is advised to use the standard library mutex as long as the critical section is short or has an await.
-<ul>
-<li>risk of deadlock</li>
-<li>tokio mutex helps but is slower</li>
-</ul></li>
-</ul>
-</section>
-<section id="cancelling-future-execution" class="level2">
-<h2 class="anchored" data-anchor-id="cancelling-future-execution">Cancelling Future execution</h2>
-<ul>
-<li>Cancellation is possible: see select macro tokio
-<ul>
-<li>Need to aware of all the edge cases</li>
-</ul></li>
-</ul>
-<p>Threads vs Futures:</p>
-<ul>
-<li>general rule of thumb, use threads for compute heavy stuff</li>
-<li>use async for IO applications</li>
-</ul>
-</section>
-<section id="resources-and-references" class="level2">
-<h2 class="anchored" data-anchor-id="resources-and-references">Resources and References</h2>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=ThjvMReOXYM">Jon Gjengset deep dive into async/await from an implementation PoV</a></li>
-<li><a href="https://www.youtube.com/watch?v=9_3krAQtD2k">Jon Gjengset overview of async/await from an application dev PoV</a></li>
-<li><a href="https://os.phil-opp.com/async-await">OS rust section on async/await</a></li>
-</ul>
+<p><strong>NOTE</strong>: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script.</p>
 
 
 </section>

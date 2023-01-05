@@ -7,6 +7,188 @@
     "text": "Teliwain daand referred to bulls who used to move around in circles while grouding mustard seeds to produce mustard oil in my native land.\nSee a video of how it worked here.\nI think that bull is a good analogy for the human existence - we are all blind to the bigger picture, we move around in circles (hopefully helixes), and we carry our owner version of loads without knowing how it all comes together.\nBut being such a being does not mean that we cannot improve things around us.\nLike the telwain daand, I want to add some value to the world."
   },
   {
+    "objectID": "decentralization/btc/btc-timelocks.html",
+    "href": "decentralization/btc/btc-timelocks.html",
+    "title": "Timelocks",
+    "section": "",
+    "text": "Timelocks are restrictions on transactions or outputs that only allow spending after a point in time. Timelocks extend Bitcoin scripting in the dimension of time."
+  },
+  {
+    "objectID": "decentralization/btc/btc-timelocks.html#transaction-locktime",
+    "href": "decentralization/btc/btc-timelocks.html#transaction-locktime",
+    "title": "Timelocks",
+    "section": "Transaction Locktime",
+    "text": "Transaction Locktime\nTransaction locktime is a transaction-level setting (a field in the transaction data structure) that defines the earliest time that a transaction is valid and can be relayed on the network or added to the blockchain.\nLocktime is also known as nLocktime from the variable name used in the Bitcoin Core codebase.\nIf nLocktime is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not valid and is not relayed or included in the blockchain prior to the specified block height. If it is greater than or equal to 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not valid prior to the specified time\nNOTE: nLocktime has the limitation that while it makes it possible to spend some outputs in the future, it does not make it impossible to spend them until that time"
+  },
+  {
+    "objectID": "decentralization/btc/btc-timelocks.html#check-lock-time-verify-cltv",
+    "href": "decentralization/btc/btc-timelocks.html#check-lock-time-verify-cltv",
+    "title": "Timelocks",
+    "section": "Check Lock Time Verify (CLTV)",
+    "text": "Check Lock Time Verify (CLTV)\nCLTV is a per-output timelock, rather than a per-transaction timelock as is the case with nLocktime. In simple terms, by adding the CLTV opcode in the redeem script of an output it restricts the output, so that it can only be spent after the specified time has elapsed.\nNOTE: While nLocktime is a transaction-level timelock, CLTV is an output-based timelock.\nCLTV doesn’t replace nLocktime, but rather restricts specific UTXO such that they can only be spent in a future transaction with nLocktime set to a greater or equal value.\nTo lock an output to a time, say 3 months from now, the transaction would be a P2SH transaction with a redeem script like this: <now + 3 months> CHECKLOCKTIMEVERIFY DROP DUP HASH160 <Payee Public Key Hash> EQUALVERIFY CHECKSIG\nNOTE: DROP pops from the stack"
+  },
+  {
+    "objectID": "decentralization/btc/btc-timelocks.html#relative-timelocks",
+    "href": "decentralization/btc/btc-timelocks.html#relative-timelocks",
+    "title": "Timelocks",
+    "section": "Relative Timelocks",
+    "text": "Relative Timelocks\nnLocktime and CLTV are both absolute timelocks in that they specify an absolute point in time.\nRelative timelocks are useful because they allow a chain of two or more interdependent transactions to be held off chain, while imposing a time constraint on one transaction that is dependent on the elapsed time from the confirmation of a previous transaction. This functionality is especially useful in bidirectional state channels and Lightning Networks.\nRelative timelocks, like absolute timelocks, are implemented with both a transaction-level feature and a script-level opcode. The transaction-level relative timelock is implemented as a consensus rule on the value of nSequence, a transaction field that is set in every transaction input. Script-level relative timelocks are implemented with the CHECKSEQUENCEVERIFY (CSV) opcode.\n\nnSequence\nSince the activation of BIP-68, new consensus rules apply for any transaction containing an input whose nSequence value is less than 231 (bit 1<<31 is not set). Programmatically, that means that if the most significant bit (bit 1<<31) is not set, it is a flag that means “relative locktime.” Otherwise (bit 1<<31 set), the nSequence value is reserved for other uses such as enabling CHECKLOCKTIMEVERIFY, nLocktime, Opt-In-Replace-By-Fee, and other future developments.\nTransaction inputs with nSequence values less than 231 are interpreted as having a relative timelock. Such a transaction is only valid once the input has aged by the relative timelock amount. For example, a transaction with one input with an nSequence relative timelock of 30 blocks is only valid when at least 30 blocks have elapsed from the time the UTXO referenced in the input was mined. Since nSequence is a per-input field, a transaction may contain any number of timelocked inputs, all of which must have sufficiently aged for the transaction to be valid.\nThe nSequence value is specified in either blocks or seconds, but in a slightly different format than we saw used in nLocktime. A type-flag is used to differentiate between values counting blocks and values counting time in seconds. The type-flag is set in the 23rd least-significant bit (i.e., value 1<<22). If the type-flag is set, then the nSequence value is interpreted as a multiple of 512 seconds. If the type-flag is not set, the nSequence value is interpreted as a number of blocks. When interpreting nSequence as a relative timelock, only the 16 least significant bits are considered.\n\n\nCSV\nThe CSV opcode when evaluated in an UTXO’s redeem script allows spending only in a transaction whose input nSequence value is greater than or equal to the CSV parameter. Essentially, this restricts spending the UTXO until a certain number of blocks or seconds have elapsed relative to the time the UTXO was mined.\nAs with CLTV, the value in CSV must match the format in the corresponding nSequence value. If CSV is specified in terms of blocks, then so must nSequence. If CSV is specified in terms of seconds, then so must nSequence."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions2.html",
+    "href": "decentralization/btc/btc-transactions2.html",
+    "title": "Bitcoin scripting",
+    "section": "",
+    "text": "Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.\nThe locking script looks like:\n2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nThe unlocking script can look something like:\n<Signature B> <Signature C>\nCombining the two, the validation script looks something like:\n<Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nNOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:\n0 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions2.html#pay-to-hash-scriptp2hs",
+    "href": "decentralization/btc/btc-transactions2.html#pay-to-hash-scriptp2hs",
+    "title": "Bitcoin scripting",
+    "section": "Pay-to-hash-script(P2HS)",
+    "text": "Pay-to-hash-script(P2HS)\nMultisignatures are cumbersome to use.\nIssues for payee:\n\nNeeds wallet software that can create custom transaction scripts\nscript is somewhat large and payer has to pay for the large size of the transaction\nUTXO is carried by the RAM of all nodes until spent\n\nP2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.\nP2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.\nThe locking script looks like:\nHASH160 <20-byte hash of redeem script> EQUAL\nThe unlocking script can look something like:\n0 Sig1 Sig2 <redeem script>\nwhere the redeem script can look something like:\n2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG\nNOTE: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions2.html#p2sh-addresses",
+    "href": "decentralization/btc/btc-transactions2.html#p2sh-addresses",
+    "title": "Bitcoin scripting",
+    "section": "P2SH Addresses",
+    "text": "P2SH Addresses\nAnother important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”\nIt works in exactly the same way as a payment to a Bitcoin address.\nBenefits of P2SH:\n\nComplex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.\nScripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.\nP2SH shifts the burden of constructing the script to the recipient, not the sender.\nP2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).\nP2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).\nP2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.\n\nNOTE: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script."
+  },
+  {
+    "objectID": "decentralization/btc/btc-conditionals.html",
+    "href": "decentralization/btc/btc-conditionals.html",
+    "title": "Conditional Flows",
+    "section": "",
+    "text": "Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.\nConditionals can be nested indefinitely, only limited by the maximum size of a script.\nOperators used to write conditionals are: IF, ELSE, ENDIF, NOTIF\nNote: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g."
+  },
+  {
+    "objectID": "decentralization/btc/btc-conditionals.html#verify-opcodes",
+    "href": "decentralization/btc/btc-conditionals.html#verify-opcodes",
+    "title": "Conditional Flows",
+    "section": "VERIFY opcodes",
+    "text": "VERIFY opcodes\nVerify means that if a condition is not TRUE, then the evaluation is stopped immediately.\nThus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.\ne.g. redeem script with an EQUALVERIFY guard clause.\nHASH160 <expected hash> EQUALVERIFY <Bob's Pubkey> CHECKSIG\nThis can also be written using an IF instead:\nHASH160 <expected hash> EQUAL\nIF\n   <Bob's Pubkey> CHECKSIG\nENDIF\nNote\n\nthe VERIFY construction is more efficient, it uses two fewer opcodes.\nVERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode."
+  },
+  {
+    "objectID": "decentralization/btc/btc-conditionals.html#example-script-using-conditionals",
+    "href": "decentralization/btc/btc-conditionals.html#example-script-using-conditionals",
+    "title": "Conditional Flows",
+    "section": "Example script using conditionals",
+    "text": "Example script using conditionals\nFollowing is an example of a script with multiple outcomes:\n01  IF\n02    IF\n03      2\n04    ELSE\n05      <30 days> CHECKSEQUENCEVERIFY DROP\n06      <A's Pubkey> CHECKSIGVERIFY\n07      1\n08    ENDIF\n09    <M's Pubkey> <S's Pubkey> <Z's Pubkey> 3 CHECKMULTISIG\n10  ELSE\n11    <90 days> CHECKSEQUENCEVERIFY DROP\n12    <A's Pubkey> CHECKSIG\n13  ENDIF\nWe can evaluate the script in 3 ways:\n\n1. two of three multisig\nWe can unlock for 2 of 3 multisig using:\n0 <M's Sig> <Z's Sig> TRUE TRUE\nHere TRUE TRUE force evaluation of the nested if’s.\n\n\n2. one of three multisig + A’s Pubkey\nWe can use 1 of 3, along with A’s Pubkey using:\n0 <A's Sig> <S/M/Z's Sig> FALSE TRUE\n\n\n3. For A’s SIG only path\n<A's Sig> FALSE"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html",
+    "href": "decentralization/btc/btc-transactions.html",
+    "title": "Bitcoin Transactions",
+    "section": "",
+    "text": "Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network.\nBitcoin full nodes track all available and spendable outputs, known as unspent transaction outputs, or UTXO.\nThe collection of all UTXO is known as the UTXO set and currently numbers in the millions of UTXO. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.\n“received” bitcoin, what we mean is that the wallet has detected on the blockchain an UTXO that can be spent with one of the keys controlled by that wallet.\nA transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis\n\nNOTE: Outputs are discrete and indivisible units of value, denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#utxos",
+    "href": "decentralization/btc/btc-transactions.html#utxos",
+    "title": "Bitcoin Transactions",
+    "section": "UTXOs",
+    "text": "UTXOs\n\nUTXO are tracked by every full-node Bitcoin client in the UTXO set\nThe cryptographic puzzle is also known as a locking script, a witness script, or a scriptPubKey.\nEach output is defined by a value and a cryptographic puzzle.\n\n\nSerialization\n\nThe process of converting from the byte-stream representation of a transaction to a library’s internal representation data structure is called deserialization or transaction parsing."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#transaction-inputs",
+    "href": "decentralization/btc/btc-transactions.html#transaction-inputs",
+    "title": "Bitcoin Transactions",
+    "section": "Transaction Inputs",
+    "text": "Transaction Inputs\n\nFor each UTXO that will be consumed to make this payment, the wallet creates one input pointing to the UTXO and unlocks it with an unlocking script.\nThe first part of an input is a pointer to an UTXO by reference to the transaction hash and an output index, which identifies the specific UTXO in that transaction.\nThe second part is an unlocking script, which the wallet constructs in order to satisfy the spending conditions set in the UTXO.\nThe third part is a sequence number\nNotice that because the value of the input is not explicitly stated, we must also use the referenced UTXO in order to calculate the fees that will be paid in this transaction\nWhen writing bitcoin software, anytime you decode a transaction with the intent of validating it or counting the fees or checking the unlocking script, your code will first have to retrieve the referenced UTXO from the blockchain in order to build the context implied but not present in the UTXO references of the inputs."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#fees",
+    "href": "decentralization/btc/btc-transactions.html#fees",
+    "title": "Bitcoin Transactions",
+    "section": "Fees",
+    "text": "Fees\n\nMost transactions include transaction fees, which compensate the bitcoin miners for securing the network. Fees also serve as a security mechanism themselves, by making it economically infeasible for attackers to flood the network with transactions.\nfee relay policies are set by the minrelaytxfee option.\nThe current default minrelaytxfee is 0.00001 bitcoin or a hundredth of a millibitcoin per kilobyte. Therefore, by default, transactions with a fee less than 0.00001 bitcoin are treated as free and are only relayed if there is space in the mempool; otherwise, they are dropped\nMost services offer users the option of choosing high, medium, or low priority fees. High priority means users pay higher fees but the transaction is likely to be included in the next block. Medium and low priority means users pay lower transaction fees but the transactions may take much longer to confirm.\nTransaction fees are implied, as the excess of inputs minus outputs:\nthe fee is independent of the transaction’s bitcoin value."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#transaction-scripts",
+    "href": "decentralization/btc/btc-transactions.html#transaction-scripts",
+    "title": "Bitcoin Transactions",
+    "section": "Transaction Scripts",
+    "text": "Transaction Scripts\n\nScript, the bitcoin scripting language is a Forth-like reverse-polish notation stack-based execution language\nBoth the locking script placed on an UTXO and the unlocking script are written in this scripting language.\nScript is a very simple language that was designed to be limited in scope and executable on a range of hardware, perhaps as simple as an embedded device\nmost transactions processed through the Bitcoin network have the form “Payment to Bob’s Bitcoin address” and are based on a script called a Pay-to-Public-Key-Hash script\nBitcoin transaction validation is not based on a static pattern, but instead is achieved through the execution of a scripting language.\n\n\nTuring incompleteness\n\nThe bitcoin transaction script language contains many operators, but is deliberately limited in one important way—there are no loops or complex flow control capabilities other than conditional flow control\n\n\n\nStateless verification\n\nThe bitcoin transaction script language is stateless, in that there is no state prior to execution of the script, or state saved after execution of the script."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#construction",
+    "href": "decentralization/btc/btc-transactions.html#construction",
+    "title": "Bitcoin Transactions",
+    "section": "Construction",
+    "text": "Construction\n\nall the information needed to execute a script is contained within the script.\nBitcoin’s transaction validation engine relies on two types of scripts to validate transactions: a locking script and an unlocking script.\nA locking script is a spending condition placed on an output: it specifies the conditions that must be met to spend the output in the future.\nAn unlocking script is a script that “solves,” or satisfies, the conditions placed on an output by a locking script and allows the output to be spent.\nUnlocking scripts are part of every transaction input. Most of the time they contain a digital signature produced by the user’s wallet from his or her private key\nEvery bitcoin validating node will validate transactions by executing the locking and unlocking scripts together.\nThe validation software will copy the unlocking script, retrieve the UTXO referenced by the input, and copy the locking script from that UTXO. The unlocking and locking script are then executed in sequence. The input is valid if the unlocking script satisfies the locking script conditions"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#script-execution",
+    "href": "decentralization/btc/btc-transactions.html#script-execution",
+    "title": "Bitcoin Transactions",
+    "section": "Script Execution",
+    "text": "Script Execution\n\nA stack allows two operations: push and pop.\nThe scripting language executes the script by processing each item from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more parameters from the stack, act on them, and might push a result onto the stack. For example, OP_ADD will pop two items from the stack, add them, and push the resulting sum onto the stack.\nConditional operators evaluate a condition, producing a boolean result of TRUE or FALSE. For example, OP_EQUAL pops two items from the stack and pushes TRUE (TRUE is represented by the number 1) if they are equal or FALSE (represented by zero) if they are not equal. Bitcoin transaction scripts usually contain a conditional operator, so that they can produce the TRUE result that signifies a valid transaction.\nAlthough most locking scripts refer to a public key hash (essentially, a Bitcoin address), thereby requiring proof of ownership to spend the funds, the script does not have to be that complex.\nTransactions are valid if the top result on the stack is TRUE , any other nonzero value, not OP_0, or if the stack is empty after script execution. Transactions are invalid if the top value on the stack is FALSE (a zero-length empty value) or if script execution is halted explicitly by an operator, such as OP_VERIFY, OP_RETURN, or a conditional terminator such as OP_ENDIF\nthe unlocking script is executed, using the stack execution engine\nIf the unlocking script is executed without errors (e.g., it has no “dangling” pointers left over), the main stack is copied and the locking script is executed"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#pay-to-public-key-hashp2pkh",
+    "href": "decentralization/btc/btc-transactions.html#pay-to-public-key-hashp2pkh",
+    "title": "Bitcoin Transactions",
+    "section": "Pay-To-Public-Key-Hash(P2PKH)",
+    "text": "Pay-To-Public-Key-Hash(P2PKH)\n<sig> <pubk> DUP HASH160 <pubkhash> EQUALVERIFY CHECKSIG\n\nThe vast majority of transactions processed on the Bitcoin network spend outputs locked with a Pay-to-Public-Key-Hash or “P2PKH” script.\nThese outputs contain a locking script that locks the output to a public key hash, more commonly known as a Bitcoin address.\nAn output locked by a P2PKH script can be unlocked (spent) by presenting a public key and a digital signature created by the corresponding private key\nthis combined script will evaluate to TRUE if, and only if, the unlocking script matches the conditions set by the locking script. In other words, the result will be TRUE if the unlocking script has a valid signature from the cafe’s private key that corresponds to the public key hash set as an encumbrance."
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#digital-signatures",
+    "href": "decentralization/btc/btc-transactions.html#digital-signatures",
+    "title": "Bitcoin Transactions",
+    "section": "Digital Signatures",
+    "text": "Digital Signatures\n\nECDSA is the algorithm used for digital signatures based on elliptic curve private/public key pairs,\nECDSA is used by the script functions OP_CHECKSIG, OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, and OP_CHECKMULTISIGVERIFY.\nthe signature proves that the owner of the private key, who is by implication the owner of the funds, has authorized the spending of those funds\nthe proof of authorization is undeniable\nthe signature proves that the transaction (or specific parts of the transaction) have not and cannot be modified by anyone after it has been signed.\nNote that each transaction input is signed independently\n\nThis is critical, as neither the signatures nor the inputs have to belong to or be applied by the same “owners.”\n\nEach transaction input and any signature it may contain is completely independent of any other input or signature. Multiple parties can collaborate to construct transactions and sign only one input each.\n\nA digital signature is a mathematical scheme for demonstrating the authenticity of a digital message or documents\nA valid digital signature gives a recipient reason to believe that the message was created by a known sender (authentication), that the sender cannot deny having sent the message (nonrepudiation), and that the message was not altered in transit (integrity)"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#math",
+    "href": "decentralization/btc/btc-transactions.html#math",
+    "title": "Bitcoin Transactions",
+    "section": "Math",
+    "text": "Math\n\nThe function Fsig produces a signature Sig that is composed of two values, commonly referred to as R and S:\nSig = (R, S)\nthey are serialized into a byte-stream using an international standard encoding scheme called the Distinguished Encoding Rules\nThe important numbers are R and S;\nThe signature verification algorithm takes the message (a hash of the transaction or parts of it), the signer’s public key and the signature (R and S values), and returns TRUE if the signature is valid for this message and public key.\nIn the simplest form, the signature applies to the entire transaction, thereby committing all the inputs, outputs, and other transaction fields\nHowever, a signature can commit to only a subset of the data in a transaction, which is useful for a number of scenarios as we will see in this section.\nBitcoin signatures have a way of indicating which part of a transaction’s data is included in the hash signed by the private key using a SIGHASH flag"
+  },
+  {
+    "objectID": "decentralization/btc/btc-transactions.html#sighash",
+    "href": "decentralization/btc/btc-transactions.html#sighash",
+    "title": "Bitcoin Transactions",
+    "section": "SIGHASH",
+    "text": "SIGHASH\n\nThe SIGHASH flag is a single byte that is appended to the signature\nEvery signature has a SIGHASH flag and the flag can be different from input to input.\na transaction that contains several inputs may have signatures with different SIGHASH flags that commit different parts of the transaction in each of the inputs\nMany of the SIGHASH flag types only make sense if you think of multiple participants collaborating outside the Bitcoin network and updating a partially signed transaction.\nThere are three SIGHASH flags: ALL, NONE, and SINGLE\n\nNotes from bitcoinbook/ch06"
+  },
+  {
+    "objectID": "decentralization/tbd/tdDEX.html",
+    "href": "decentralization/tbd/tdDEX.html",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "",
+    "text": "The tbDEX protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements."
+  },
+  {
+    "objectID": "decentralization/tbd/tdDEX.html#what-is-the-aim",
+    "href": "decentralization/tbd/tdDEX.html#what-is-the-aim",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "What is the aim?",
+    "text": "What is the aim?\n\nbe a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)\nutilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world\nprovides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers"
+  },
+  {
+    "objectID": "decentralization/tbd/tdDEX.html#foundations",
+    "href": "decentralization/tbd/tdDEX.html#foundations",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Foundations",
+    "text": "Foundations\n\nDIDs\n\nare a new type of identifier that enables verifiable, decentralized digital identity\nA DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.\nIn contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.\nwhile other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party\n\n\n\nVCs\n\nThe Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.\nZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.\n\n\n\nIdentity Hubs\n\nFor entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in\nIdentity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID\nThis enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.\nIdentity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols."
+  },
+  {
+    "objectID": "decentralization/tbd/tdDEX.html#participants",
+    "href": "decentralization/tbd/tdDEX.html#participants",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Participants",
+    "text": "Participants\n\nIssuers of VCs\n\nIssuers are the source of VCs. Both individuals and organizations can be the source of VCs.\n\ne.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals\n\n\n\n\nParticipating Financial Institutions(PFIs)\n\nentities that provide liquidity services on the tdDEX network\neach PFI will be identified via DIDs and VCs\n\n\n\nWallets\n\nact as agents for individuals or institutions by facilitating exchanges with PFIs\nprovides:\n\nProviding secure encrypted storage for VCs\nPFI discovery by crawling identity hubs\napplying signatures and storing history"
+  },
+  {
+    "objectID": "decentralization/tbd/tdDEX.html#protocol",
+    "href": "decentralization/tbd/tdDEX.html#protocol",
+    "title": "tbDEX: Foundations, participants and flow",
+    "section": "Protocol",
+    "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
+  },
+  {
     "objectID": "rust/iter.html",
     "href": "rust/iter.html",
     "title": "Iterators",
@@ -222,187 +404,5 @@
     "title": "Is it a duck or a swan?",
     "section": "",
     "text": "Install dependencies\n\n!pip install -Uqq fastai duckduckgo_search\n\n\n\nDefine a function to search for images on DDG. Search for 90 images by default.\n\nfrom duckduckgo_search import ddg_images\nfrom fastcore.all import *\n\ndef search_images(term, max_images=90):\n    print(f\"Searching for '{term}'\")\n    return L(ddg_images(term, max_results=max_images)).itemgot('image')\n\n\n\nLets see the an example of the URL we find using the above function\n\nurls = search_images('duck', max_images=1)\nurls[0]\n\nSearching for 'duck'\n\n\n'http://3.bp.blogspot.com/--XA3iMvaJLY/Tw_GykPs-eI/AAAAAAAAEgU/EmFKS7Cz5xQ/s1600/Duck-04.jpg'\n\n\n\n\nWhat does this image look like? Is it actually a duck?\n\nfrom fastdownload import download_url\ndest = 'duck.jpg'\ndownload_url(urls[0], dest, show_progress=False)\n\nfrom fastai.vision.all import *\nim = Image.open(dest)\nim.to_thumb(256,256)\n\n\n\n\n\n\nHow about a swan?\n\ndownload_url(search_images('swan', max_images=1)[0], 'swan.jpg', show_progress=False)\nImage.open('swan.jpg').to_thumb(256,256)\n\nSearching for 'swan'\n\n\n\n\n\n\n\nLooks like we are on the right path. So go ahead and download 90 of each. Might take a bit of time.\n\nsearches = 'duck','swan'\npath = Path('duck_or_swan')\nfrom time import sleep\n\nfor o in searches:\n    dest = (path/o)\n    dest.mkdir(exist_ok=True, parents=True)\n    download_images(dest, urls=search_images(f'{o} photo'))\n    sleep(30)  # Pause between searches to avoid over-loading server\n    resize_images(path/o, max_size=400, dest=path/o)\n\nSearching for 'duck photo'\nSearching for 'swan photo'\n\n\n\n\nRemove images that didn’t get downloaded properly\n\nfailed = verify_images(get_image_files(path))\nfailed.map(Path.unlink)\nlen(failed)\n\n1\n\n\n\n\nThe easiest way to use FastAI is to use define a DataBlock. We load the data from the path.\n\ndls = DataBlock(\n    blocks=(ImageBlock, CategoryBlock), \n    get_items=get_image_files, \n    splitter=RandomSplitter(valid_pct=0.2, seed=42),\n    get_y=parent_label,\n    item_tfms=[Resize(192, method='squish')]\n).dataloaders(path, bs=32)\n\ndls.show_batch(max_n=6)\n\n\n\n\n\n\nFine tune the pre-trained resnet18 model for our data.\n\nlearn = vision_learner(dls, resnet18, metrics=error_rate)\nlearn.fine_tune(3)\n\n/Users/bnabi/miniforge3/envs/invokeai/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.\n  warnings.warn(\n/Users/bnabi/miniforge3/envs/invokeai/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=ResNet18_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet18_Weights.DEFAULT` to get the most up-to-date weights.\n  warnings.warn(msg)\n\n\n\n\n\n\n\n\n  \n    \n      epoch\n      train_loss\n      valid_loss\n      error_rate\n      time\n    \n  \n  \n    \n      0\n      1.222246\n      0.440960\n      0.290323\n      00:04\n    \n  \n\n\n\n\n\n\n\n\n\n  \n    \n      epoch\n      train_loss\n      valid_loss\n      error_rate\n      time\n    \n  \n  \n    \n      0\n      0.402388\n      0.356703\n      0.193548\n      00:05\n    \n    \n      1\n      0.249177\n      0.256310\n      0.064516\n      00:05\n    \n    \n      2\n      0.192781\n      0.251938\n      0.032258\n      00:05\n    \n  \n\n\n\n\n\nTesting the images\n\nbird,_,probs = learn.predict(PILImage.create('duck.jpg'))\nImage.open('duck.jpg').to_thumb(256,256)\nprint(f\"This is a: {bird}.\")\nprint(f\"Probability it's a duck: {probs[0]:.4f}\")\nprint(f\"Probability it's a swan: {probs[1]:.4f}\")\n\n\n\n\n\n\n\n\nThis is a: duck.\nProbability it's a duck: 0.9990\nProbability it's a swan: 0.0010\n\n\n\nbird,_,probs = learn.predict(PILImage.create('swan.jpg'))\nImage.open('duck.jpg').to_thumb(256,256)\nprint(f\"This is a: {bird}.\")\nprint(f\"Probability it's a duck: {probs[0]:.4f}\")\nprint(f\"Probability it's a swan: {probs[1]:.4f}\")\n\n\n\n\n\n\n\n\nThis is a: swan.\nProbability it's a duck: 0.0006\nProbability it's a swan: 0.9994"
-  },
-  {
-    "objectID": "node-world-order/tdDEX.html",
-    "href": "node-world-order/tdDEX.html",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "",
-    "text": "The tbDEX protocol facilitates the formation of networks of mutual trust between counterparties that are not centrally controlled; it allows participants to negotiate trust directly with each other (or rely on mutually trusted third-parties to vouch for counterparties), and price their exchanges to account for perceived risk and specific requirements."
-  },
-  {
-    "objectID": "node-world-order/tdDEX.html#what-is-the-aim",
-    "href": "node-world-order/tdDEX.html#what-is-the-aim",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "What is the aim?",
-    "text": "What is the aim?\n\nbe a protocol for discovering liquidity and exchanging assets (such as bitcoin, fiat money, crypto assets or real world goods)\nutilize decentralized identity (DID) and verifiable credentials(VCs) to establish the provenance of identity in the real world\nprovides the infrastructure necessary to create a ubiquity of on-ramps and off-ramps directly between the fiat and crypto financial systems without the need for centralized intermediaries and trust brokers"
-  },
-  {
-    "objectID": "node-world-order/tdDEX.html#foundations",
-    "href": "node-world-order/tdDEX.html#foundations",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Foundations",
-    "text": "Foundations\n\nDIDs\n\nare a new type of identifier that enables verifiable, decentralized digital identity\nA DID refers to any subject (e.g., a person, organization, thing, data model, abstract entity, etc.) determined by the controller of the DID.\nIn contrast to typical federated identifiers, DIDs have been designed so they may be decoupled from centralized registries, identity providers, and certificate authorities.\nwhile other parties may be used to help enable the discovery of information related to a DID, the design enables the owner of a DID to prove control over it without requiring permission from any other party\n\n\n\nVCs\n\nThe Verifiable Credentials specification provides a standard way to express credentials across the digital world in a way that is cryptographically secure, privacy respecting, and machine verifiable.\nZK tech can further advance privacy and safety by preventing linkability across disclosures, reducing the amount of data disclosed, and in some cases removing the need to expose raw data values at all.\n\n\n\nIdentity Hubs\n\nFor entities to exchange messages and data for credential, app, or service flows, they need an interface through which to store, discover, and fetch data related to the flows and experiences they are participating in\nIdentity Hubs are a data storage and message relay mechanism entities can use to locate public or permissioned private data related to a given DID\nThis enables the owning entity to secure, manage, and transact their data with others without reliance on location or provider-specific infrastructure, interfaces, or routing mechanisms.\nIdentity Hubs feature semantically encoded message and data interfaces that provide inferential APIs any party can interact with simply by knowing the semantic type of data they wish to exchange. A diverse set of interactions and flows can be modeled within these interfaces by externally codifying sets of message schemas and processing directives to form meta-protocols."
-  },
-  {
-    "objectID": "node-world-order/tdDEX.html#participants",
-    "href": "node-world-order/tdDEX.html#participants",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Participants",
-    "text": "Participants\n\nIssuers of VCs\n\nIssuers are the source of VCs. Both individuals and organizations can be the source of VCs.\n\ne.g: a reputable organization that already conducts KYC checks could begin issuing a KYC credential to individuals\n\n\n\n\nParticipating Financial Institutions(PFIs)\n\nentities that provide liquidity services on the tdDEX network\neach PFI will be identified via DIDs and VCs\n\n\n\nWallets\n\nact as agents for individuals or institutions by facilitating exchanges with PFIs\nprovides:\n\nProviding secure encrypted storage for VCs\nPFI discovery by crawling identity hubs\napplying signatures and storing history"
-  },
-  {
-    "objectID": "node-world-order/tdDEX.html#protocol",
-    "href": "node-world-order/tdDEX.html#protocol",
-    "title": "tbDEX: Foundations, participants and flow",
-    "section": "Protocol",
-    "text": "Protocol\nDivided into:\n\nRequest for Quote(RFQ): wallet broadcasts its intent to seek PFIs to exchange\nMessaging Protocol: P2P negotiation protocol which permits secure communication between a wallet and a PFI, to exchange required data and execute a transaction\n\n\nTopology and communication flow"
-  },
-  {
-    "objectID": "node-world-order/conditionals.html",
-    "href": "node-world-order/conditionals.html",
-    "title": "Conditional Flows",
-    "section": "",
-    "text": "Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.\nConditionals can be nested indefinitely, only limited by the maximum size of a script.\nOperators used to write conditionals are: IF, ELSE, ENDIF, NOTIF\nNote: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g."
-  },
-  {
-    "objectID": "node-world-order/conditionals.html#verify-opcodes",
-    "href": "node-world-order/conditionals.html#verify-opcodes",
-    "title": "Conditional Flows",
-    "section": "VERIFY opcodes",
-    "text": "VERIFY opcodes\nVerify means that if a condition is not TRUE, then the evaluation is stopped immediately.\nThus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.\ne.g. redeem script with an EQUALVERIFY guard clause.\nHASH160 <expected hash> EQUALVERIFY <Bob's Pubkey> CHECKSIG\nThis can also be written using an IF instead:\nHASH160 <expected hash> EQUAL\nIF\n   <Bob's Pubkey> CHECKSIG\nENDIF\nNote\n\nthe VERIFY construction is more efficient, it uses two fewer opcodes.\nVERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode."
-  },
-  {
-    "objectID": "node-world-order/conditionals.html#example-script-using-conditionals",
-    "href": "node-world-order/conditionals.html#example-script-using-conditionals",
-    "title": "Conditional Flows",
-    "section": "Example script using conditionals",
-    "text": "Example script using conditionals\nFollowing is an example of a script with multiple outcomes:\n01  IF\n02    IF\n03      2\n04    ELSE\n05      <30 days> CHECKSEQUENCEVERIFY DROP\n06      <A's Pubkey> CHECKSIGVERIFY\n07      1\n08    ENDIF\n09    <M's Pubkey> <S's Pubkey> <Z's Pubkey> 3 CHECKMULTISIG\n10  ELSE\n11    <90 days> CHECKSEQUENCEVERIFY DROP\n12    <A's Pubkey> CHECKSIG\n13  ENDIF\nWe can evaluate the script in 3 ways:\n\n1. two of three multisig\nWe can unlock for 2 of 3 multisig using:\n0 <M's Sig> <Z's Sig> TRUE TRUE\nHere TRUE TRUE force evaluation of the nested if’s.\n\n\n2. one of three multisig + A’s Pubkey\nWe can use 1 of 3, along with A’s Pubkey using:\n0 <A's Sig> <S/M/Z's Sig> FALSE TRUE\n\n\n3. For A’s SIG only path\n<A's Sig> FALSE"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions2.html",
-    "href": "node-world-order/btc-transactions2.html",
-    "title": "Bitcoin scripting",
-    "section": "",
-    "text": "Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.\nThe locking script looks like:\n2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nThe unlocking script can look something like:\n<Signature B> <Signature C>\nCombining the two, the validation script looks something like:\n<Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG\nNOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:\n0 <Signature B> <Signature C> 2 <Public Key A> <Public Key B> <Public Key C> 3 CHECKMULTISIG"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions2.html#pay-to-hash-scriptp2hs",
-    "href": "node-world-order/btc-transactions2.html#pay-to-hash-scriptp2hs",
-    "title": "Bitcoin scripting",
-    "section": "Pay-to-hash-script(P2HS)",
-    "text": "Pay-to-hash-script(P2HS)\nMultisignatures are cumbersome to use.\nIssues for payee:\n\nNeeds wallet software that can create custom transaction scripts\nscript is somewhat large and payer has to pay for the large size of the transaction\nUTXO is carried by the RAM of all nodes until spent\n\nP2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.\nP2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.\nThe locking script looks like:\nHASH160 <20-byte hash of redeem script> EQUAL\nThe unlocking script can look something like:\n0 Sig1 Sig2 <redeem script>\nwhere the redeem script can look something like:\n2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG\nNOTE: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions2.html#p2sh-addresses",
-    "href": "node-world-order/btc-transactions2.html#p2sh-addresses",
-    "title": "Bitcoin scripting",
-    "section": "P2SH Addresses",
-    "text": "P2SH Addresses\nAnother important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”\nIt works in exactly the same way as a payment to a Bitcoin address.\nBenefits of P2SH:\n\nComplex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.\nScripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.\nP2SH shifts the burden of constructing the script to the recipient, not the sender.\nP2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).\nP2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).\nP2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.\n\nNOTE: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html",
-    "href": "node-world-order/btc-transactions.html",
-    "title": "Bitcoin Transactions",
-    "section": "",
-    "text": "Transaction outputs are indivisible chunks of bitcoin currency, recorded on the blockchain, and recognized as valid by the entire network.\nBitcoin full nodes track all available and spendable outputs, known as unspent transaction outputs, or UTXO.\nThe collection of all UTXO is known as the UTXO set and currently numbers in the millions of UTXO. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every transaction represents a change (state transition) in the UTXO set.\n“received” bitcoin, what we mean is that the wallet has detected on the blockchain an UTXO that can be spent with one of the keys controlled by that wallet.\nA transaction output can have an arbitrary (integer) value denominated as a multiple of satoshis\n\nNOTE: Outputs are discrete and indivisible units of value, denominated in integer satoshis. An unspent output can only be consumed in its entirety by a transaction"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#utxos",
-    "href": "node-world-order/btc-transactions.html#utxos",
-    "title": "Bitcoin Transactions",
-    "section": "UTXOs",
-    "text": "UTXOs\n\nUTXO are tracked by every full-node Bitcoin client in the UTXO set\nThe cryptographic puzzle is also known as a locking script, a witness script, or a scriptPubKey.\nEach output is defined by a value and a cryptographic puzzle.\n\n\nSerialization\n\nThe process of converting from the byte-stream representation of a transaction to a library’s internal representation data structure is called deserialization or transaction parsing."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#transaction-inputs",
-    "href": "node-world-order/btc-transactions.html#transaction-inputs",
-    "title": "Bitcoin Transactions",
-    "section": "Transaction Inputs",
-    "text": "Transaction Inputs\n\nFor each UTXO that will be consumed to make this payment, the wallet creates one input pointing to the UTXO and unlocks it with an unlocking script.\nThe first part of an input is a pointer to an UTXO by reference to the transaction hash and an output index, which identifies the specific UTXO in that transaction.\nThe second part is an unlocking script, which the wallet constructs in order to satisfy the spending conditions set in the UTXO.\nThe third part is a sequence number\nNotice that because the value of the input is not explicitly stated, we must also use the referenced UTXO in order to calculate the fees that will be paid in this transaction\nWhen writing bitcoin software, anytime you decode a transaction with the intent of validating it or counting the fees or checking the unlocking script, your code will first have to retrieve the referenced UTXO from the blockchain in order to build the context implied but not present in the UTXO references of the inputs."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#fees",
-    "href": "node-world-order/btc-transactions.html#fees",
-    "title": "Bitcoin Transactions",
-    "section": "Fees",
-    "text": "Fees\n\nMost transactions include transaction fees, which compensate the bitcoin miners for securing the network. Fees also serve as a security mechanism themselves, by making it economically infeasible for attackers to flood the network with transactions.\nfee relay policies are set by the minrelaytxfee option.\nThe current default minrelaytxfee is 0.00001 bitcoin or a hundredth of a millibitcoin per kilobyte. Therefore, by default, transactions with a fee less than 0.00001 bitcoin are treated as free and are only relayed if there is space in the mempool; otherwise, they are dropped\nMost services offer users the option of choosing high, medium, or low priority fees. High priority means users pay higher fees but the transaction is likely to be included in the next block. Medium and low priority means users pay lower transaction fees but the transactions may take much longer to confirm.\nTransaction fees are implied, as the excess of inputs minus outputs:\nthe fee is independent of the transaction’s bitcoin value."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#transaction-scripts",
-    "href": "node-world-order/btc-transactions.html#transaction-scripts",
-    "title": "Bitcoin Transactions",
-    "section": "Transaction Scripts",
-    "text": "Transaction Scripts\n\nScript, the bitcoin scripting language is a Forth-like reverse-polish notation stack-based execution language\nBoth the locking script placed on an UTXO and the unlocking script are written in this scripting language.\nScript is a very simple language that was designed to be limited in scope and executable on a range of hardware, perhaps as simple as an embedded device\nmost transactions processed through the Bitcoin network have the form “Payment to Bob’s Bitcoin address” and are based on a script called a Pay-to-Public-Key-Hash script\nBitcoin transaction validation is not based on a static pattern, but instead is achieved through the execution of a scripting language.\n\n\nTuring incompleteness\n\nThe bitcoin transaction script language contains many operators, but is deliberately limited in one important way—there are no loops or complex flow control capabilities other than conditional flow control\n\n\n\nStateless verification\n\nThe bitcoin transaction script language is stateless, in that there is no state prior to execution of the script, or state saved after execution of the script."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#construction",
-    "href": "node-world-order/btc-transactions.html#construction",
-    "title": "Bitcoin Transactions",
-    "section": "Construction",
-    "text": "Construction\n\nall the information needed to execute a script is contained within the script.\nBitcoin’s transaction validation engine relies on two types of scripts to validate transactions: a locking script and an unlocking script.\nA locking script is a spending condition placed on an output: it specifies the conditions that must be met to spend the output in the future.\nAn unlocking script is a script that “solves,” or satisfies, the conditions placed on an output by a locking script and allows the output to be spent.\nUnlocking scripts are part of every transaction input. Most of the time they contain a digital signature produced by the user’s wallet from his or her private key\nEvery bitcoin validating node will validate transactions by executing the locking and unlocking scripts together.\nThe validation software will copy the unlocking script, retrieve the UTXO referenced by the input, and copy the locking script from that UTXO. The unlocking and locking script are then executed in sequence. The input is valid if the unlocking script satisfies the locking script conditions"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#script-execution",
-    "href": "node-world-order/btc-transactions.html#script-execution",
-    "title": "Bitcoin Transactions",
-    "section": "Script Execution",
-    "text": "Script Execution\n\nA stack allows two operations: push and pop.\nThe scripting language executes the script by processing each item from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more parameters from the stack, act on them, and might push a result onto the stack. For example, OP_ADD will pop two items from the stack, add them, and push the resulting sum onto the stack.\nConditional operators evaluate a condition, producing a boolean result of TRUE or FALSE. For example, OP_EQUAL pops two items from the stack and pushes TRUE (TRUE is represented by the number 1) if they are equal or FALSE (represented by zero) if they are not equal. Bitcoin transaction scripts usually contain a conditional operator, so that they can produce the TRUE result that signifies a valid transaction.\nAlthough most locking scripts refer to a public key hash (essentially, a Bitcoin address), thereby requiring proof of ownership to spend the funds, the script does not have to be that complex.\nTransactions are valid if the top result on the stack is TRUE , any other nonzero value, not OP_0, or if the stack is empty after script execution. Transactions are invalid if the top value on the stack is FALSE (a zero-length empty value) or if script execution is halted explicitly by an operator, such as OP_VERIFY, OP_RETURN, or a conditional terminator such as OP_ENDIF\nthe unlocking script is executed, using the stack execution engine\nIf the unlocking script is executed without errors (e.g., it has no “dangling” pointers left over), the main stack is copied and the locking script is executed"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#pay-to-public-key-hashp2pkh",
-    "href": "node-world-order/btc-transactions.html#pay-to-public-key-hashp2pkh",
-    "title": "Bitcoin Transactions",
-    "section": "Pay-To-Public-Key-Hash(P2PKH)",
-    "text": "Pay-To-Public-Key-Hash(P2PKH)\n<sig> <pubk> DUP HASH160 <pubkhash> EQUALVERIFY CHECKSIG\n\nThe vast majority of transactions processed on the Bitcoin network spend outputs locked with a Pay-to-Public-Key-Hash or “P2PKH” script.\nThese outputs contain a locking script that locks the output to a public key hash, more commonly known as a Bitcoin address.\nAn output locked by a P2PKH script can be unlocked (spent) by presenting a public key and a digital signature created by the corresponding private key\nthis combined script will evaluate to TRUE if, and only if, the unlocking script matches the conditions set by the locking script. In other words, the result will be TRUE if the unlocking script has a valid signature from the cafe’s private key that corresponds to the public key hash set as an encumbrance."
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#digital-signatures",
-    "href": "node-world-order/btc-transactions.html#digital-signatures",
-    "title": "Bitcoin Transactions",
-    "section": "Digital Signatures",
-    "text": "Digital Signatures\n\nECDSA is the algorithm used for digital signatures based on elliptic curve private/public key pairs,\nECDSA is used by the script functions OP_CHECKSIG, OP_CHECKSIGVERIFY, OP_CHECKMULTISIG, and OP_CHECKMULTISIGVERIFY.\nthe signature proves that the owner of the private key, who is by implication the owner of the funds, has authorized the spending of those funds\nthe proof of authorization is undeniable\nthe signature proves that the transaction (or specific parts of the transaction) have not and cannot be modified by anyone after it has been signed.\nNote that each transaction input is signed independently\n\nThis is critical, as neither the signatures nor the inputs have to belong to or be applied by the same “owners.”\n\nEach transaction input and any signature it may contain is completely independent of any other input or signature. Multiple parties can collaborate to construct transactions and sign only one input each.\n\nA digital signature is a mathematical scheme for demonstrating the authenticity of a digital message or documents\nA valid digital signature gives a recipient reason to believe that the message was created by a known sender (authentication), that the sender cannot deny having sent the message (nonrepudiation), and that the message was not altered in transit (integrity)"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#math",
-    "href": "node-world-order/btc-transactions.html#math",
-    "title": "Bitcoin Transactions",
-    "section": "Math",
-    "text": "Math\n\nThe function Fsig produces a signature Sig that is composed of two values, commonly referred to as R and S:\nSig = (R, S)\nthey are serialized into a byte-stream using an international standard encoding scheme called the Distinguished Encoding Rules\nThe important numbers are R and S;\nThe signature verification algorithm takes the message (a hash of the transaction or parts of it), the signer’s public key and the signature (R and S values), and returns TRUE if the signature is valid for this message and public key.\nIn the simplest form, the signature applies to the entire transaction, thereby committing all the inputs, outputs, and other transaction fields\nHowever, a signature can commit to only a subset of the data in a transaction, which is useful for a number of scenarios as we will see in this section.\nBitcoin signatures have a way of indicating which part of a transaction’s data is included in the hash signed by the private key using a SIGHASH flag"
-  },
-  {
-    "objectID": "node-world-order/btc-transactions.html#sighash",
-    "href": "node-world-order/btc-transactions.html#sighash",
-    "title": "Bitcoin Transactions",
-    "section": "SIGHASH",
-    "text": "SIGHASH\n\nThe SIGHASH flag is a single byte that is appended to the signature\nEvery signature has a SIGHASH flag and the flag can be different from input to input.\na transaction that contains several inputs may have signatures with different SIGHASH flags that commit different parts of the transaction in each of the inputs\nMany of the SIGHASH flag types only make sense if you think of multiple participants collaborating outside the Bitcoin network and updating a partially signed transaction.\nThere are three SIGHASH flags: ALL, NONE, and SINGLE\n\nNotes from bitcoinbook/ch06"
-  },
-  {
-    "objectID": "node-world-order/timelocks.html",
-    "href": "node-world-order/timelocks.html",
-    "title": "Timelocks",
-    "section": "",
-    "text": "Timelocks are restrictions on transactions or outputs that only allow spending after a point in time. Timelocks extend Bitcoin scripting in the dimension of time."
-  },
-  {
-    "objectID": "node-world-order/timelocks.html#transaction-locktime",
-    "href": "node-world-order/timelocks.html#transaction-locktime",
-    "title": "Timelocks",
-    "section": "Transaction Locktime",
-    "text": "Transaction Locktime\nTransaction locktime is a transaction-level setting (a field in the transaction data structure) that defines the earliest time that a transaction is valid and can be relayed on the network or added to the blockchain.\nLocktime is also known as nLocktime from the variable name used in the Bitcoin Core codebase.\nIf nLocktime is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not valid and is not relayed or included in the blockchain prior to the specified block height. If it is greater than or equal to 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not valid prior to the specified time\nNOTE: nLocktime has the limitation that while it makes it possible to spend some outputs in the future, it does not make it impossible to spend them until that time"
-  },
-  {
-    "objectID": "node-world-order/timelocks.html#check-lock-time-verify-cltv",
-    "href": "node-world-order/timelocks.html#check-lock-time-verify-cltv",
-    "title": "Timelocks",
-    "section": "Check Lock Time Verify (CLTV)",
-    "text": "Check Lock Time Verify (CLTV)\nCLTV is a per-output timelock, rather than a per-transaction timelock as is the case with nLocktime. In simple terms, by adding the CLTV opcode in the redeem script of an output it restricts the output, so that it can only be spent after the specified time has elapsed.\nNOTE: While nLocktime is a transaction-level timelock, CLTV is an output-based timelock.\nCLTV doesn’t replace nLocktime, but rather restricts specific UTXO such that they can only be spent in a future transaction with nLocktime set to a greater or equal value.\nTo lock an output to a time, say 3 months from now, the transaction would be a P2SH transaction with a redeem script like this: <now + 3 months> CHECKLOCKTIMEVERIFY DROP DUP HASH160 <Payee Public Key Hash> EQUALVERIFY CHECKSIG\nNOTE: DROP pops from the stack"
-  },
-  {
-    "objectID": "node-world-order/timelocks.html#relative-timelocks",
-    "href": "node-world-order/timelocks.html#relative-timelocks",
-    "title": "Timelocks",
-    "section": "Relative Timelocks",
-    "text": "Relative Timelocks\nnLocktime and CLTV are both absolute timelocks in that they specify an absolute point in time.\nRelative timelocks are useful because they allow a chain of two or more interdependent transactions to be held off chain, while imposing a time constraint on one transaction that is dependent on the elapsed time from the confirmation of a previous transaction. This functionality is especially useful in bidirectional state channels and Lightning Networks.\nRelative timelocks, like absolute timelocks, are implemented with both a transaction-level feature and a script-level opcode. The transaction-level relative timelock is implemented as a consensus rule on the value of nSequence, a transaction field that is set in every transaction input. Script-level relative timelocks are implemented with the CHECKSEQUENCEVERIFY (CSV) opcode.\n\nnSequence\nSince the activation of BIP-68, new consensus rules apply for any transaction containing an input whose nSequence value is less than 231 (bit 1<<31 is not set). Programmatically, that means that if the most significant bit (bit 1<<31) is not set, it is a flag that means “relative locktime.” Otherwise (bit 1<<31 set), the nSequence value is reserved for other uses such as enabling CHECKLOCKTIMEVERIFY, nLocktime, Opt-In-Replace-By-Fee, and other future developments.\nTransaction inputs with nSequence values less than 231 are interpreted as having a relative timelock. Such a transaction is only valid once the input has aged by the relative timelock amount. For example, a transaction with one input with an nSequence relative timelock of 30 blocks is only valid when at least 30 blocks have elapsed from the time the UTXO referenced in the input was mined. Since nSequence is a per-input field, a transaction may contain any number of timelocked inputs, all of which must have sufficiently aged for the transaction to be valid.\nThe nSequence value is specified in either blocks or seconds, but in a slightly different format than we saw used in nLocktime. A type-flag is used to differentiate between values counting blocks and values counting time in seconds. The type-flag is set in the 23rd least-significant bit (i.e., value 1<<22). If the type-flag is set, then the nSequence value is interpreted as a multiple of 512 seconds. If the type-flag is not set, the nSequence value is interpreted as a number of blocks. When interpreting nSequence as a relative timelock, only the 16 least significant bits are considered.\n\n\nCSV\nThe CSV opcode when evaluated in an UTXO’s redeem script allows spending only in a transaction whose input nSequence value is greater than or equal to the CSV parameter. Essentially, this restricts spending the UTXO until a certain number of blocks or seconds have elapsed relative to the time the UTXO was mined.\nAs with CLTV, the value in CSV must match the format in the corresponding nSequence value. If CSV is specified in terms of blocks, then so must nSequence. If CSV is specified in terms of seconds, then so must nSequence."
   }
 ]
