@@ -10,7 +10,17 @@ website:
         href: https://github.com/td-bn
     style: docked
     search: true
-    contents: auto
+    contents: 
+      - section: Programming
+        contents: rust
+      - section: Decentralization
+        contents: 
+          - section: tbDEX and SSI
+            contents: decentralization/tbd/*
+          - section: Bitcoin
+            contents: decentralization/btc/*
+      - section: ML/AI
+        contents: fastai/*
 
   page-footer:  "This website that is build using [Quarto](https://quarto.org/docs/websites)."
       
