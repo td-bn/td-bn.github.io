@@ -303,7 +303,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#p2wpkh" id="toc-p2wpkh" class="nav-link" data-scroll-target="#p2wpkh">P2WPKH</a></li>
   <li><a href="#p2wsh" id="toc-p2wsh" class="nav-link" data-scroll-target="#p2wsh">P2WSH</a></li>
-  <li><a href="#differentiating-between-p2sh-and-p2wsh" id="toc-differentiating-between-p2sh-and-p2wsh" class="nav-link" data-scroll-target="#differentiating-between-p2sh-and-p2wsh">Differentiating between P2SH and P2WSH</a></li>
+  </ul></li>
+  <li><a href="#upgrading-to-segwit" id="toc-upgrading-to-segwit" class="nav-link" data-scroll-target="#upgrading-to-segwit">Upgrading to segwit</a>
+  <ul class="collapse">
+  <li><a href="#differentiating-between-p2wpkh-and-p2wsh" id="toc-differentiating-between-p2wpkh-and-p2wsh" class="nav-link" data-scroll-target="#differentiating-between-p2wpkh-and-p2wsh">Differentiating between P2WPKH and P2WSH</a></li>
+  <li><a href="#segwit-scripts-inside-p2sh" id="toc-segwit-scripts-inside-p2sh" class="nav-link" data-scroll-target="#segwit-scripts-inside-p2sh">Segwit scripts inside P2SH</a></li>
   </ul></li>
   <li><a href="#doubts" id="toc-doubts" class="nav-link" data-scroll-target="#doubts">Doubts</a></li>
   </ul>
@@ -415,13 +419,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="er">“witness”:</span> <span class="er">“&lt;SigA&gt;</span> <span class="er">&lt;SigB&gt;</span> <span class="er">&lt;2</span> <span class="er">PubA</span> <span class="er">PubB</span> <span class="er">PubC</span> <span class="er">PubD</span> <span class="er">PubE</span> <span class="er">5</span> <span class="er">CHECKMULTISIG&gt;”</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="er">...</span><span class="ot">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="differentiating-between-p2sh-and-p2wsh" class="level3">
-<h3 class="anchored" data-anchor-id="differentiating-between-p2sh-and-p2wsh">Differentiating between P2SH and P2WSH</h3>
+</section>
+<section id="upgrading-to-segwit" class="level2">
+<h2 class="anchored" data-anchor-id="upgrading-to-segwit">Upgrading to segwit</h2>
+<p>Not all wallets and user facing applications will move to segwit at the same time. Backward compatibility needs to maintained.</p>
+<section id="differentiating-between-p2wpkh-and-p2wsh" class="level3">
+<h3 class="anchored" data-anchor-id="differentiating-between-p2wpkh-and-p2wsh">Differentiating between P2WPKH and P2WSH</h3>
 <p>The critical difference between them is the length of the hash:</p>
 <ol type="1">
 <li>The public key hash in P2WPKH is 20 bytes</li>
 <li>The script hash in P2WSH is 32 bytes</li>
 </ol>
+</section>
+<section id="segwit-scripts-inside-p2sh" class="level3">
+<h3 class="anchored" data-anchor-id="segwit-scripts-inside-p2sh">Segwit scripts inside P2SH</h3>
+<p>This is made simpler by the fact that both form of witness scripts can be embedded inside the a P2SH address.</p>
+<p>The users wallet creates a witness program. This witness program is then hashed. The resulting hash is embedded inside a P2SH script.</p>
+<p>The P2SH hash is converted to a Bitcoin address(one that starts with a 3). This address can be shared be shared with anyone who wants to make a payment to the user, as if sending to a normal Bitcoin address.</p>
+<p>This way both P2WSH and P2WPKH type payments can be used inside P2SH.</p>
 </section>
 </section>
 <section id="doubts" class="level2">
