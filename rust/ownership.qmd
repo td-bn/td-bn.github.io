@@ -1,0 +1,108 @@
+---
+title: Ownership, Borrowing and Lifetimes
+format: html
+---
+
+All rust values have a **single** owner.
+This means that exactly one location(usually a scope) is responsible for 
+deallocating each value.
+
+If the value is moved, e.g. by assigning it to a new variable, pushing it to 
+a vector or placing it on the heap, the ownership changes.
+
+> **NOTE**: If a variable type implements the Copy trait, then the variable is 
+> not considered to have moved even if the reassignment happens.
+> Most primitives in Rust are Copy.
+
+
+The owner has the responsibility of cleanup after a value is no longer needed. 
+This is called **dropping**, and happens automatically when the variable that 
+holds the value is no longer in scope. 
+
+
+> **NOTE**: A variable that holds a reference to another value does not own
+> that other value, so the value is not dropped when the variable drops.
+
+```rust
+let x = 1;
+let y = Box::new(2);
+{
+    let z = (x, y); // x is Copy, y is moved 
+}
+let x1 = x; // works
+// let y1 = y; // Fails, because it was moved into z
+
+/*
+    let y = Box::new(2);
+        - move occurs because `y` has type `Box<i32>`, which does not implement the `Copy` trait
+    {
+        let z = (x, y); // x is Copy, y is moved 
+                    - value moved here
+
+    let y1 = y; // Fails, because it was moved into z
+             ^ value used here after move
+*/
+```
+
+## Borrowing and Lifetimes
+
+Rust allows owners of a value to lend it out to others, without giving up 
+ownership, through references. 
+
+References are pointers with an additional contract for how they can be used. 
+Whether they are exclusive references or whether they are shared references.
+
+### Shared References (&T)
+
+Values behind shared references are not mutable. There can be no modification,
+reassignment or casting to a mutable reference. 
+The value that lives behind a shared reference does not change while the
+reference is alive.
+
+
+### Mutable References (&mut T)
+
+There is no other thread that is accessing this reference whether through 
+a shared reference or through a mutable one. Mutable references are exclusive.
+
+A mutable reference allows us to mutate **only** the memory location that the
+reference points to.
+Whether we can mutate values that lie beyond the immediate reference depends
+on the methods provided by the type that lies between.
+
+We can change the value of y, by changing what it references, but not the 
+value at the reference.
+```rust
+    let x = 1;
+    let a = 2;
+    let mut y = &x;
+    let z = &mut y;
+    
+    y = &a;
+    
+    *y = 42;
+    
+    /*
+         *y = 42;
+         ^^^^^^^ `y` is a `&` reference, so the data it refers to cannot be written
+    */
+```
+
+We can reference held in y, through z.
+```rust
+    let x = 1;
+    let a = 2;
+    let mut y = &x;
+    let z = &mut y;
+    
+    *z = &x; // Works!
+```
+We cannot change z itself in the above example.
+
+> **NOTE** 
+> The primary difference between an mutable reference and an owned value is 
+> that the owner is responsible for dropping the value. 
+> Another ceaveat is that: **_if we move the value behind the mutable reference
+> then one must leave another value in its place_**
+
+
