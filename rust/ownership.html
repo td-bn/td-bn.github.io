@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>foundations</title>
+<title>Ownership, Borrowing and Lifetimes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Ownership, Borrowing and Lifetimes</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -189,7 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
+  <a href="../rust/ownership.html" class="sidebar-item-text sidebar-link active">Ownership, Borrowing and Lifetimes</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -295,17 +295,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
+  <li><a href="#borrowing-and-lifetimes" id="toc-borrowing-and-lifetimes" class="nav-link active" data-scroll-target="#borrowing-and-lifetimes">Borrowing and Lifetimes</a>
   <ul class="collapse">
-  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
-  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
-  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
-  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
-  <ul class="collapse">
-  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
-  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
-  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
-  </ul></li>
+  <li><a href="#shared-references-t" id="toc-shared-references-t" class="nav-link" data-scroll-target="#shared-references-t">Shared References (&amp;T)</a></li>
+  <li><a href="#mutable-references-mut-t" id="toc-mutable-references-mut-t" class="nav-link" data-scroll-target="#mutable-references-mut-t">Mutable References (&amp;mut T)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -313,53 +306,89 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Ownership, Borrowing and Lifetimes</h1>
+</div>
 
 
-<section id="foundations" class="level1">
-<h1>Foundations</h1>
-<section id="values-variables-and-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
-<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
-<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
-<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
-<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>All rust values have a <strong>single</strong> owner. This means that exactly one location(usually a scope) is responsible for deallocating each value.</p>
+<p>If the value is moved, e.g.&nbsp;by assigning it to a new variable, pushing it to a vector or placing it on the heap, the ownership changes.</p>
 <blockquote class="blockquote">
-<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
+<p><strong>NOTE</strong>: If a variable type implements the Copy trait, then the variable is not considered to have moved even if the reassignment happens. Most primitives in Rust are Copy.</p>
 </blockquote>
+<p>The owner has the responsibility of cleanup after a value is no longer needed. This is called <strong>dropping</strong>, and happens automatically when the variable that holds the value is no longer in scope.</p>
+<blockquote class="blockquote">
+<p><strong>NOTE</strong>: A variable that holds a reference to another value does not own that other value, so the value is not dropped when the variable drops.</p>
+</blockquote>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> y <span class="op">=</span> <span class="dt">Box</span><span class="pp">::</span>new(<span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> z <span class="op">=</span> (x<span class="op">,</span> y)<span class="op">;</span> <span class="co">// x is Copy, y is moved </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x1 <span class="op">=</span> x<span class="op">;</span> <span class="co">// works</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">// let y1 = y; // Fails, because it was moved into z</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    let y = Box::new(2);</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">        - move occurs because `y` has type `Box&lt;i32&gt;`, which does not implement the `Copy` trait</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    {</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">        let z = (x, y); // x is Copy, y is moved </span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">                    - value moved here</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    let y1 = y; // Fails, because it was moved into z</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">             ^ value used here after move</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="borrowing-and-lifetimes" class="level2">
+<h2 class="anchored" data-anchor-id="borrowing-and-lifetimes">Borrowing and Lifetimes</h2>
+<p>Rust allows owners of a value to lend it out to others, without giving up ownership, through references.</p>
+<p>References are pointers with an additional contract for how they can be used. Whether they are exclusive references or whether they are shared references.</p>
+<section id="shared-references-t" class="level3">
+<h3 class="anchored" data-anchor-id="shared-references-t">Shared References (&amp;T)</h3>
+<p>Values behind shared references are not mutable. There can be no modification, reassignment or casting to a mutable reference. The value that lives behind a shared reference does not change while the reference is alive.</p>
 </section>
-<section id="high-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
-<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
-<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
-<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
-<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
-</section>
-<section id="low-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
-<p>Variables name memory locations that may or may not hold legal values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
-</section>
-<section id="memory-regions" class="level2">
-<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
-<section id="stack" class="level3">
-<h3 class="anchored" data-anchor-id="stack">Stack</h3>
-<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
-</section>
-<section id="heap" class="level3">
-<h3 class="anchored" data-anchor-id="heap">Heap</h3>
-<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
-<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
-</section>
-<section id="static-memory" class="level3">
-<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
-<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
-<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
-<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
+<section id="mutable-references-mut-t" class="level3">
+<h3 class="anchored" data-anchor-id="mutable-references-mut-t">Mutable References (&amp;mut T)</h3>
+<p>There is no other thread that is accessing this reference whether through a shared reference or through a mutable one. Mutable references are exclusive.</p>
+<p>A mutable reference allows us to mutate <strong>only</strong> the memory location that the reference points to. Whether we can mutate values that lie beyond the immediate reference depends on the methods provided by the type that lies between.</p>
+<p>We can change the value of y, by changing what it references, but not the value at the reference.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> x <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> a <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> y <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> z <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> y<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>y <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">/*</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">         *y = 42;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">         ^^^^^^^ `y` is a `&amp;` reference, so the data it refers to cannot be written</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">    */</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can reference held in y, through z.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> x <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> a <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> y <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> z <span class="op">=</span> <span class="op">&amp;</span><span class="kw">mut</span> y<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>z <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span> <span class="co">// Works!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We cannot change z itself in the above example.</p>
+<blockquote class="blockquote">
+<p><strong>NOTE</strong> The primary difference between an mutable reference and an owned value is that the owner is responsible for dropping the value. Another ceaveat is that: <strong><em>if we move the value behind the mutable reference then one must leave another value in its place</em></strong></p>
+</blockquote>
 
 
-</section>
 </section>
 </section>
 

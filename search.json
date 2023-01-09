@@ -434,6 +434,20 @@
     "text": "Patterns\nWe can specify patterns for repitition logic:\n    // $($elem:expr),+: 1 or more of this pattern\n    // $(,)?: Zero or one trailing comma\n    ($($elem:expr),+ $(,)?) => {\n        // We want this to be a block so that when we\n        // do `let x = avec![..] cargo doesn't get mad\n        {\n            let mut vs = Vec::new();\n            // Repeat inside these parens the same num of time\n            // as the pattern that had 'elem' in it\n            $(vs.push($elem);)*\n            vs\n        }\n    };"
   },
   {
+    "objectID": "rust/ownership.html",
+    "href": "rust/ownership.html",
+    "title": "Ownership, Borrowing and Lifetimes",
+    "section": "",
+    "text": "All rust values have a single owner. This means that exactly one location(usually a scope) is responsible for deallocating each value.\nIf the value is moved, e.g. by assigning it to a new variable, pushing it to a vector or placing it on the heap, the ownership changes.\nThe owner has the responsibility of cleanup after a value is no longer needed. This is called dropping, and happens automatically when the variable that holds the value is no longer in scope."
+  },
+  {
+    "objectID": "rust/ownership.html#borrowing-and-lifetimes",
+    "href": "rust/ownership.html#borrowing-and-lifetimes",
+    "title": "Ownership, Borrowing and Lifetimes",
+    "section": "Borrowing and Lifetimes",
+    "text": "Borrowing and Lifetimes\nRust allows owners of a value to lend it out to others, without giving up ownership, through references.\nReferences are pointers with an additional contract for how they can be used. Whether they are exclusive references or whether they are shared references.\n\nShared References (&T)\nValues behind shared references are not mutable. There can be no modification, reassignment or casting to a mutable reference. The value that lives behind a shared reference does not change while the reference is alive.\n\n\nMutable References (&mut T)\nThere is no other thread that is accessing this reference whether through a shared reference or through a mutable one. Mutable references are exclusive.\nA mutable reference allows us to mutate only the memory location that the reference points to. Whether we can mutate values that lie beyond the immediate reference depends on the methods provided by the type that lies between.\nWe can change the value of y, by changing what it references, but not the value at the reference.\n    let x = 1;\n    let a = 2;\n    let mut y = &x;\n    let z = &mut y;\n    \n    y = &a;\n    \n    *y = 42;\n    \n    /*\n         *y = 42;\n         ^^^^^^^ `y` is a `&` reference, so the data it refers to cannot be written\n    */\nWe can reference held in y, through z.\n    let x = 1;\n    let a = 2;\n    let mut y = &x;\n    let z = &mut y;\n    \n    *z = &x; // Works!\nWe cannot change z itself in the above example.\n\nNOTE The primary difference between an mutable reference and an owned value is that the owner is responsible for dropping the value. Another ceaveat is that: if we move the value behind the mutable reference then one must leave another value in its place"
+  },
+  {
     "objectID": "fastai/lesson_1.html",
     "href": "fastai/lesson_1.html",
     "title": "Is it a duck or a swan?",
