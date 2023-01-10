@@ -105,4 +105,26 @@ We cannot change z itself in the above example.
 > Another ceaveat is that: **_if we move the value behind the mutable reference
 > then one must leave another value in its place_**
 
+This is because there would be no value for the owner to drop otherwise.
 
+```rust
+fn replace(b: &mut Box<i32>) {
+    // let was = *b;
+    /*
+    error[E0507]: cannot move out of `*b` which is behind a mutable reference
+    */
+    // let was = std::mem::take(b);
+    // *b = was; // Works!!
+    
+    let mut a = Box::new(42);
+    std::mem::swap(b, &mut a);
+}
+
+fn main() {
+    let mut s = Box::new(1);
+    
+    replace(&mut s);
+    
+    assert_eq!(*s, 42);
+}
+```
