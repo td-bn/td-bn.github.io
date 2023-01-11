@@ -1,0 +1,90 @@
+---
+title: Alignment and memory layout of types
+---
+Rust value has a type.
+One of the most fundamental role of types is to tell how to reference bits in memory.
+
+e.g.
+`0b11011101` can have different values based on whether this is
+interpreted as a `u32` of an `i32`.
+
+## Alignment
+Alignment dictates where the bytes for a type can be stored.
+
+Note pointers point to _bytes_ not _bits_. For this reason they must start at a
+byte boundary. This means that all pointers must be _byte aligned_ i.e. they
+must be placed at an address that is a multiple of 8.
+
+Whenever possible we want to ensure that the hardware is operating in
+its native alignment. For 64 bit CPUs, most values are accessed in 8 byte
+words, hence most operations start at a 8-byte-aligned address.
+
+>e.g. it would be silly to have a `u64` spanning across two 8-byte words. It would be ineffiencient for the CPU to read this as compared to one that is in a single word.
+
+CPU operations require or strongly prefer that their arguments are naturally aligned.
+Since naturally aligned access provides better performance and other advatages, the compiler tries to take advantage of these properties.
+It gives every type an alignment that's computed based on the types that it contains.
+
+Built in types are usually aligned to their size. e.g
+> a `u8` is byte-aligned, `u16` is two byte-aligned and so on
+
+Complex types are typically assigned the largest alignment of the types they contain.
+> a type containing a `u8`, `u16` and a `u32` will be 4-byte aligned
+
+
+## Layout
+
+Layout refers to the in-memory representation of the type.
+Rust provides a `repr` attribute that can be used on type definitions to request a particular memory layout.
+
+```rust
+struct Foo {
+  tiny: bool,
+  normal: u32,
+  small: u8,
+  long: u64,
+  short: u16,
+
+}
+```
+
+### _repr(C)_
+
+The most common one is `repr(C)`  which lays out the type in a way that is compatible with  how a C or C++ compiler would lay out the same type.
+This is useful when writing Rust code that interfaces with foreign-function interfaces.
+
+See: [representation of a struct using `repr(C)`](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=bec8b756cb3f4ef4f335ace528f5ba4f)
+
+Note: Foo takes 32 bytes in the above example.
+
+One of the limitations is that this requires that we place all fields in the same order that they appear in the original struct definition.
+
+### _repr(Rust)_, the default Rust representation
+
+Does not provide guarantees for deterministic field ordering for types that happen to have the same fields. Also doesn't follow the representation of fields in the same order that they have been defined in.
+
+Can reorder fields, which means that they can be placed in decreasing order of size.
+This allows for no padding in the above example. The fields themselves can be used to achieve the necessary alignment.
+
+See: [representation of a struct using `repr(Rust)`](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=c6416596913d891ac85497d25c6f7aa4)
+
+Note: Foo takes 16 bytes in the above example.
+
+
+### _repr(packed)_
+
+Tells the compiler that we do not want any padding between our fields.
+This implies that we are willing to take the performance hit of using misaligned accesses.
+
+See: [representation of a struct using `repr(packed)`](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=da726a144f41ec06745f671dbfb7ca60)
+
+Note: Foo takes 16 bytes in the above example.
+
+### Other options
+1.  `repr(transparent`)
+    Used on types with a single field which guarantees that the layout of the outer type
+    is the same as the inner type.
+2. `repr(align(n))`
+    When we want to give a particular field a larger alignment that it required.
+    A common use for this is to ensure that values stored in contiguous memory end up in different cache lines in the CPU. (Helps avoid _false sharing_.)
+    
