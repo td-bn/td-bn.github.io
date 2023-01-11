@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Iterators</title>
+<title>Alignment and memory layout of types</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Iterators</h1>
+      <h1 class="quarto-secondary-nav-title">Alignment and memory layout of types</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -174,7 +174,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
+  <a href="../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link active">Alignment and memory layout of types</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link active">Iterators</a>
+  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -300,12 +300,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#three-forms-of-iterators" id="toc-three-forms-of-iterators" class="nav-link active" data-scroll-target="#three-forms-of-iterators">Three forms of iterators</a></li>
-  <li><a href="#how-for-loop-works-under-the-hood" id="toc-how-for-loop-works-under-the-hood" class="nav-link" data-scroll-target="#how-for-loop-works-under-the-hood">How for loop works under the hood</a></li>
-  <li><a href="#into-iter" id="toc-into-iter" class="nav-link" data-scroll-target="#into-iter">Into iter</a></li>
-  <li><a href="#associated-type-vs-generic-type" id="toc-associated-type-vs-generic-type" class="nav-link" data-scroll-target="#associated-type-vs-generic-type">Associated type vs generic type</a></li>
-  <li><a href="#different-types-of-for-loops" id="toc-different-types-of-for-loops" class="nav-link" data-scroll-target="#different-types-of-for-loops">Different types of for loops</a></li>
-  <li><a href="#other-method-in-iterator-trait" id="toc-other-method-in-iterator-trait" class="nav-link" data-scroll-target="#other-method-in-iterator-trait">Other method in Iterator trait</a></li>
+  <li><a href="#alignment" id="toc-alignment" class="nav-link active" data-scroll-target="#alignment">Alignment</a></li>
+  <li><a href="#layout" id="toc-layout" class="nav-link" data-scroll-target="#layout">Layout</a>
+  <ul class="collapse">
+  <li><a href="#reprc" id="toc-reprc" class="nav-link" data-scroll-target="#reprc"><em>repr(C)</em></a></li>
+  <li><a href="#reprrust-the-default-rust-representation" id="toc-reprrust-the-default-rust-representation" class="nav-link" data-scroll-target="#reprrust-the-default-rust-representation"><em>repr(Rust)</em>, the default Rust representation</a></li>
+  <li><a href="#reprpacked" id="toc-reprpacked" class="nav-link" data-scroll-target="#reprpacked"><em>repr(packed)</em></a></li>
+  <li><a href="#other-options" id="toc-other-options" class="nav-link" data-scroll-target="#other-options">Other options</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -314,7 +316,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Iterators</h1>
+<h1 class="title d-none d-lg-block">Alignment and memory layout of types</h1>
 </div>
 
 
@@ -329,104 +331,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/iter-flatten/src/lib.rs">this</a> for exercise.</p>
-<p>Iterator in Rust is a trait. It has an associate type named <code>Item</code> and a method called <code>next</code>.</p>
-<p>Item is the type of item that the iterator will yield. It will call next and return items until they are exhausted at which point it returns <code>None</code>.</p>
-<p>Iterators are also composable, and it’s common to chain them together to do more complex forms of processing.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> next(<span class="op">&amp;</span><span class="kw">mut</span> <span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="three-forms-of-iterators" class="level2">
-<h2 class="anchored" data-anchor-id="three-forms-of-iterators">Three forms of iterators</h2>
-<p>Three common ways to create iterators form a collection:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iter() <span class="co">// which iterates over &amp;T.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iter_mut() <span class="co">// which iterates over &amp;mut T.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>into_iter() <span class="co">// which iterates over T.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Rust value has a type. One of the most fundamental role of types is to tell how to reference bits in memory.</p>
+<p>e.g. <code>0b11011101</code> can have different values based on whether this is interpreted as a <code>u32</code> of an <code>i32</code>.</p>
+<section id="alignment" class="level2">
+<h2 class="anchored" data-anchor-id="alignment">Alignment</h2>
+<p>Alignment dictates where the bytes for a type can be stored.</p>
+<p>Note pointers point to <em>bytes</em> not <em>bits</em>. For this reason they must start at a byte boundary. This means that all pointers must be <em>byte aligned</em> i.e.&nbsp;they must be placed at an address that is a multiple of 8.</p>
+<p>Whenever possible we want to ensure that the hardware is operating in its native alignment. For 64 bit CPUs, most values are accessed in 8 byte words, hence most operations start at a 8-byte-aligned address.</p>
+<blockquote class="blockquote">
+<p>e.g.&nbsp;it would be silly to have a <code>u64</code> spanning across two 8-byte words. It would be ineffiencient for the CPU to read this as compared to one that is in a single word.</p>
+</blockquote>
+<p>CPU operations require or strongly prefer that their arguments are naturally aligned. Since naturally aligned access provides better performance and other advatages, the compiler tries to take advantage of these properties. It gives every type an alignment that’s computed based on the types that it contains.</p>
+<p>Built in types are usually aligned to their size. e.g &gt; a <code>u8</code> is byte-aligned, <code>u16</code> is two byte-aligned and so on</p>
+<p>Complex types are typically assigned the largest alignment of the types they contain. &gt; a type containing a <code>u8</code>, <code>u16</code> and a <code>u32</code> will be 4-byte aligned</p>
 </section>
-<section id="how-for-loop-works-under-the-hood" class="level2">
-<h2 class="anchored" data-anchor-id="how-for-loop-works-under-the-hood">How for loop works under the hood</h2>
-<p>A for loop like</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="pp">vec!</span>[<span class="st">"a"</span><span class="op">,</span> <span class="st">"b"</span><span class="op">,</span> <span class="st">"c"</span>] </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>turns into something like:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> iter <span class="op">=</span> <span class="pp">vec!</span>[<span class="op">...</span>]<span class="op">.</span>into_iter()<span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="kw">let</span> <span class="cn">Some</span>(x) <span class="op">=</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In actuality it is something like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// let values = vec![...];</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> result <span class="op">=</span> <span class="cf">match</span> <span class="bu">IntoIterator</span><span class="pp">::</span>into_iter(values) <span class="op">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">mut</span> iter <span class="op">=&gt;</span> <span class="cf">loop</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> next<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">match</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="cn">Some</span>(val) <span class="op">=&gt;</span> next <span class="op">=</span> val<span class="op">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">None</span> <span class="op">=&gt;</span> <span class="cf">break</span><span class="op">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> x <span class="op">=</span> next<span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="co">// ....</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="layout" class="level2">
+<h2 class="anchored" data-anchor-id="layout">Layout</h2>
+<p>Layout refers to the in-memory representation of the type. Rust provides a <code>repr</code> attribute that can be used on type definitions to request a particular memory layout.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Foo <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  tiny<span class="op">:</span> <span class="dt">bool</span><span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  normal<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  small<span class="op">:</span> <span class="dt">u8</span><span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  long<span class="op">:</span> <span class="dt">u64</span><span class="op">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  short<span class="op">:</span> <span class="dt">u16</span><span class="op">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="reprc" class="level3">
+<h3 class="anchored" data-anchor-id="reprc"><em>repr(C)</em></h3>
+<p>The most common one is <code>repr(C)</code> which lays out the type in a way that is compatible with how a C or C++ compiler would lay out the same type. This is useful when writing Rust code that interfaces with foreign-function interfaces.</p>
+<p>See: <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=bec8b756cb3f4ef4f335ace528f5ba4f">representation of a struct using <code>repr(C)</code></a></p>
+<p>Note: Foo takes 32 bytes in the above example.</p>
+<p>One of the limitations is that this requires that we place all fields in the same order that they appear in the original struct definition.</p>
 </section>
-<section id="into-iter" class="level2">
-<h2 class="anchored" data-anchor-id="into-iter">Into iter</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">IntoIterator</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> IntoIter: Iterator<span class="op">&lt;</span>Item <span class="op">=</span> <span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> into_iter(<span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>IntoIter<span class="op">;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Sort of a wrapper trait around iter. Anything that can be turned into an iterator. Usually used for collections. By definiting <code>IntoIter</code> for a type, we define how it can be converted into an iterator.</p>
-<p>In addition to an associated type <code>Item</code>, it also has an associtaed type <code>IntoIter</code>.</p>
-<p>If a collection <code>C</code> implements <code>iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;C</code>, with an implementation that just calles <code>iter()</code>. Likewise, a collection <code>C</code> that implements <code>mut_iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;mut C</code>, with an implementation that just calles <code>iter_mut()</code>.</p>
-<p>This enables convenient shorthands like:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> values <span class="op">=</span> <span class="pp">vec!</span>[<span class="dv">41</span>]<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span><span class="kw">mut</span> values <span class="op">{</span> <span class="co">// same as `values.iter_mut()`</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>x <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span>values <span class="op">{</span> <span class="co">// same as `values.iter()`</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">assert_eq!</span>(<span class="op">*</span>x<span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="pp">assert_eq!</span>(values<span class="op">.</span>len()<span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="reprrust-the-default-rust-representation" class="level3">
+<h3 class="anchored" data-anchor-id="reprrust-the-default-rust-representation"><em>repr(Rust)</em>, the default Rust representation</h3>
+<p>Does not provide guarantees for deterministic field ordering for types that happen to have the same fields. Also doesn’t follow the representation of fields in the same order that they have been defined in.</p>
+<p>Can reorder fields, which means that they can be placed in decreasing order of size. This allows for no padding in the above example. The fields themselves can be used to achieve the necessary alignment.</p>
+<p>See: <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=c6416596913d891ac85497d25c6f7aa4">representation of a struct using <code>repr(Rust)</code></a></p>
+<p>Note: Foo takes 16 bytes in the above example.</p>
 </section>
-<section id="associated-type-vs-generic-type" class="level2">
-<h2 class="anchored" data-anchor-id="associated-type-vs-generic-type">Associated type vs generic type</h2>
-<p>Why do we have?</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">..</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>and not</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span><span class="op">&lt;</span>Item<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Both of these would work. An associated type is used when we expect there to be only one implementation of the trait for a given type.</p>
-<p>e.g.&nbsp;if we have an iterator type for a HashMap there is only one implementation for it keys and values.</p>
-<p>On the other hand we want generic types for a trait when we expect to have multiple implementation for the same type.</p>
-<p>e.g a service trait that supports multiple types of requests.</p>
-<p><strong>Why don’t we use generic always?</strong> It saves the type checker some headache. We make its job easier. Reduces extra generic type params that we need to use.</p>
+<section id="reprpacked" class="level3">
+<h3 class="anchored" data-anchor-id="reprpacked"><em>repr(packed)</em></h3>
+<p>Tells the compiler that we do not want any padding between our fields. This implies that we are willing to take the performance hit of using misaligned accesses.</p>
+<p>See: <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=da726a144f41ec06745f671dbfb7ca60">representation of a struct using <code>repr(packed)</code></a></p>
+<p>Note: Foo takes 16 bytes in the above example.</p>
 </section>
-<section id="different-types-of-for-loops" class="level2">
-<h2 class="anchored" data-anchor-id="different-types-of-for-loops">Different types of for loops</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General idea of Rust: being explicit is good</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// consumes vs and owned acess to v</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs<span class="op">.</span>iter() <span class="op">{</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// borrows vs, &amp; to v</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> <span class="op">&amp;</span>vs <span class="op">{</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// eq to vs.iter()</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="other-method-in-iterator-trait" class="level2">
-<h2 class="anchored" data-anchor-id="other-method-in-iterator-trait">Other method in Iterator trait</h2>
-<p>Provides default implementation for other methods by using Item and next(). Note that <code>Iterator</code> provides a default implementation of methods such as <code>nth</code> and <code>fold</code> which call next internally. However, it is also possible to write a custom implementation of methods like <code>nth</code> and <code>fold</code> if an iterator can compute them more efficiently without calling <code>next</code>.</p>
+<section id="other-options" class="level3">
+<h3 class="anchored" data-anchor-id="other-options">Other options</h3>
+<ol type="1">
+<li><code>repr(transparent</code>) Used on types with a single field which guarantees that the layout of the outer type is the same as the inner type.</li>
+<li><code>repr(align(n))</code> When we want to give a particular field a larger alignment that it required. A common use for this is to ensure that values stored in contiguous memory end up in different cache lines in the CPU. (Helps avoid <em>false sharing</em>.)</li>
+</ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

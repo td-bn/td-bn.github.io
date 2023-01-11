@@ -294,6 +294,27 @@
     "text": "Useful primitives used in channel implementations\n\nMutex\nA mutual exclusion primitive for protecting shared data.\nThis mutex will block threads waiting for the lock to become available.\nThe data can only be accessed through the RAII guards returned from lock and try_lock, which guarantees that the data is only ever accessed when the mutex is locked.\n\n\nCondvar\nA conditional variable which represents the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.\nCondition variables are typically associated with a boolean predicate (a condition) and a mutex. The predicate is always verified inside of the mutex before determining that a thread must block.\n.wait : Blocks the current thread until this condition variable receives a notification.\n.notify_one: Wakes up one blocked thread on this condvar.\n\n\nArc\nA thread-safe reference-counting pointer. ‘Arc’ stands for ‘Atomically Reference Counted’.\nThe type Arc<T> provides shared ownership of a value of type T, allocated in the heap."
   },
   {
+    "objectID": "rust/types-alignment-and-layout.html",
+    "href": "rust/types-alignment-and-layout.html",
+    "title": "Alignment and memory layout of types",
+    "section": "",
+    "text": "Rust value has a type. One of the most fundamental role of types is to tell how to reference bits in memory.\ne.g. 0b11011101 can have different values based on whether this is interpreted as a u32 of an i32."
+  },
+  {
+    "objectID": "rust/types-alignment-and-layout.html#alignment",
+    "href": "rust/types-alignment-and-layout.html#alignment",
+    "title": "Alignment and memory layout of types",
+    "section": "Alignment",
+    "text": "Alignment\nAlignment dictates where the bytes for a type can be stored.\nNote pointers point to bytes not bits. For this reason they must start at a byte boundary. This means that all pointers must be byte aligned i.e. they must be placed at an address that is a multiple of 8.\nWhenever possible we want to ensure that the hardware is operating in its native alignment. For 64 bit CPUs, most values are accessed in 8 byte words, hence most operations start at a 8-byte-aligned address.\n\ne.g. it would be silly to have a u64 spanning across two 8-byte words. It would be ineffiencient for the CPU to read this as compared to one that is in a single word.\n\nCPU operations require or strongly prefer that their arguments are naturally aligned. Since naturally aligned access provides better performance and other advatages, the compiler tries to take advantage of these properties. It gives every type an alignment that’s computed based on the types that it contains.\nBuilt in types are usually aligned to their size. e.g > a u8 is byte-aligned, u16 is two byte-aligned and so on\nComplex types are typically assigned the largest alignment of the types they contain. > a type containing a u8, u16 and a u32 will be 4-byte aligned"
+  },
+  {
+    "objectID": "rust/types-alignment-and-layout.html#layout",
+    "href": "rust/types-alignment-and-layout.html#layout",
+    "title": "Alignment and memory layout of types",
+    "section": "Layout",
+    "text": "Layout\nLayout refers to the in-memory representation of the type. Rust provides a repr attribute that can be used on type definitions to request a particular memory layout.\nstruct Foo {\n  tiny: bool,\n  normal: u32,\n  small: u8,\n  long: u64,\n  short: u16,\n\n}\n\nrepr(C)\nThe most common one is repr(C) which lays out the type in a way that is compatible with how a C or C++ compiler would lay out the same type. This is useful when writing Rust code that interfaces with foreign-function interfaces.\nSee: representation of a struct using repr(C)\nNote: Foo takes 32 bytes in the above example.\nOne of the limitations is that this requires that we place all fields in the same order that they appear in the original struct definition.\n\n\nrepr(Rust), the default Rust representation\nDoes not provide guarantees for deterministic field ordering for types that happen to have the same fields. Also doesn’t follow the representation of fields in the same order that they have been defined in.\nCan reorder fields, which means that they can be placed in decreasing order of size. This allows for no padding in the above example. The fields themselves can be used to achieve the necessary alignment.\nSee: representation of a struct using repr(Rust)\nNote: Foo takes 16 bytes in the above example.\n\n\nrepr(packed)\nTells the compiler that we do not want any padding between our fields. This implies that we are willing to take the performance hit of using misaligned accesses.\nSee: representation of a struct using repr(packed)\nNote: Foo takes 16 bytes in the above example.\n\n\nOther options\n\nrepr(transparent) Used on types with a single field which guarantees that the layout of the outer type is the same as the inner type.\nrepr(align(n)) When we want to give a particular field a larger alignment that it required. A common use for this is to ensure that values stored in contiguous memory end up in different cache lines in the CPU. (Helps avoid false sharing.)"
+  },
+  {
     "objectID": "rust/foundations.html",
     "href": "rust/foundations.html",
     "title": "",
