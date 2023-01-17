@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>foundations</title>
+<title>Trait and trait-bounds</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Trait and trait-bounds</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -194,7 +194,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link active">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -214,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
+  <a href="../rust/trait-bounds.html" class="sidebar-item-text sidebar-link active">Trait and trait-bounds</a>
   </div>
 </li>
       </ul>
@@ -305,17 +305,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foundations" id="toc-foundations" class="nav-link active" data-scroll-target="#foundations">Foundations</a>
+  <li><a href="#dynamically-sized-typesdst" id="toc-dynamically-sized-typesdst" class="nav-link active" data-scroll-target="#dynamically-sized-typesdst">Dynamically Sized Types(DST)</a>
   <ul class="collapse">
-  <li><a href="#values-variables-and-pointers" id="toc-values-variables-and-pointers" class="nav-link" data-scroll-target="#values-variables-and-pointers">Values, variables and pointers</a></li>
-  <li><a href="#high-level-model-of-variables" id="toc-high-level-model-of-variables" class="nav-link" data-scroll-target="#high-level-model-of-variables">High level model of variables</a></li>
-  <li><a href="#low-level-model-of-variables" id="toc-low-level-model-of-variables" class="nav-link" data-scroll-target="#low-level-model-of-variables">Low level model of variables</a></li>
-  <li><a href="#memory-regions" id="toc-memory-regions" class="nav-link" data-scroll-target="#memory-regions">Memory regions</a>
-  <ul class="collapse">
-  <li><a href="#stack" id="toc-stack" class="nav-link" data-scroll-target="#stack">Stack</a></li>
-  <li><a href="#heap" id="toc-heap" class="nav-link" data-scroll-target="#heap">Heap</a></li>
-  <li><a href="#static-memory" id="toc-static-memory" class="nav-link" data-scroll-target="#static-memory">Static Memory</a></li>
+  <li><a href="#fat-pointers" id="toc-fat-pointers" class="nav-link" data-scroll-target="#fat-pointers">Fat pointers</a></li>
   </ul></li>
+  <li><a href="#traits-and-trait-bounds" id="toc-traits-and-trait-bounds" class="nav-link" data-scroll-target="#traits-and-trait-bounds">Traits and Trait Bounds</a>
+  <ul class="collapse">
+  <li><a href="#static-dispatch" id="toc-static-dispatch" class="nav-link" data-scroll-target="#static-dispatch">Static dispatch</a></li>
+  </ul></li>
+  <li><a href="#dynamic-dispatch" id="toc-dynamic-dispatch" class="nav-link" data-scroll-target="#dynamic-dispatch">Dynamic Dispatch</a>
+  <ul class="collapse">
+  <li><a href="#trait-objects" id="toc-trait-objects" class="nav-link" data-scroll-target="#trait-objects">Trait objects</a></li>
+  <li><a href="#pros-and-cons-of-dynamic-dispatch" id="toc-pros-and-cons-of-dynamic-dispatch" class="nav-link" data-scroll-target="#pros-and-cons-of-dynamic-dispatch">Pros and cons of dynamic dispatch</a></li>
+  <li><a href="#choosing-between-dynamic-and-static-dispatch" id="toc-choosing-between-dynamic-and-static-dispatch" class="nav-link" data-scroll-target="#choosing-between-dynamic-and-static-dispatch">Choosing between dynamic and static dispatch</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -323,53 +325,100 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Trait and trait-bounds</h1>
+</div>
 
 
-<section id="foundations" class="level1">
-<h1>Foundations</h1>
-<section id="values-variables-and-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="values-variables-and-pointers">Values, variables and pointers</h2>
-<p><strong>Values</strong> in Rust are a combination of a type and an element in the domain of that type.</p>
-<p>Values are stored at a place which can be the stack, the heap or any other location.</p>
-<p>A <strong>pointer</strong> points to such a place. It holds the address of a region of memory.</p>
-<p>The most common way to store a value is on a named value slot on the stack. We refer to this named value slot by a <strong>variable</strong>.</p>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="dynamically-sized-typesdst" class="level2">
+<h2 class="anchored" data-anchor-id="dynamically-sized-typesdst">Dynamically Sized Types(DST)</h2>
+<p>Most Rust types are <code>Sized</code> i.e.&nbsp;they have a size that is known at compile time. Two common exceptions to this are trait objects and slices(e.g <code>dyn Iterator</code> or <code>[u8]</code>)</p>
+<p>Their size depends on some information that is available only when the program is run and not at compile time. That is why they are called <em>dynamically sized traits</em>.</p>
+<p>The compiler requires types to be <code>Sized</code> nearly everywhere: struct fields, function arguments, return values, variable types and array types. Every single type bound we write has <code>T: Sized</code> by default, unless we opt out.</p>
+<p>The way to bridge this gap between the unsized and sized types is to place unsized types behind a <em>wide pointer</em> (fat pointer).</p>
+<section id="fat-pointers" class="level3">
+<h3 class="anchored" data-anchor-id="fat-pointers">Fat pointers</h3>
+<p>A wide/fat pointer is like other pointers, but it includes an extra word-sized field that gives additional information required by the compiler to generate reasonable code for working with the pointer.</p>
+<p><em><strong>Wide/fat pointers are <code>Sized</code></strong></em> Specifically they are twice the size of a <code>usize</code>, one usize to hold the pointer type and another to hold the additional information required by the compiler.</p>
 <blockquote class="blockquote">
-<p>Note: We can store the same pointer in more than one variable and thus have multiple variables that indirectly refer to the same location in memory, and thus the same underlying value.</p>
+<p>NOTE: <code>Box</code> and <code>Arc</code> also support storing wide/fat pointers. That is why they support <code>T: ?Sized</code></p>
 </blockquote>
 </section>
-<section id="high-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="high-level-model-of-variables">High level model of variables</h2>
-<p>In a high level model of a variable, we can think of variables as name given to a value. When we assign a value to a variable, then that value from then on is named by that variable.</p>
-<p>A good mental model is to imagine a dependency relationship being created between two successive access of a variable. When a variable is moved, no dependency can be mapped to it. A dependency relationship cannot be mapped from a variable that isn’t there(hasn’t been initliazed or has been moved).</p>
-<p>The dependency relationships or flows trace the lifetimes of a particular instance of a value.</p>
-<p>This roughly matches roughly how the compiler and the borrow checker reason about the program.</p>
 </section>
-<section id="low-level-model-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="low-level-model-of-variables">Low level model of variables</h2>
-<p>Variables name memory locations that may or may not hold legal values.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span> <span class="co">// x is a name for a region in memory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span><span class="op">;</span> <span class="co">// value 6 written to address</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we declare multiple variables with the same names they end up at different memory locations.</p>
+<section id="traits-and-trait-bounds" class="level2">
+<h2 class="anchored" data-anchor-id="traits-and-trait-bounds">Traits and Trait Bounds</h2>
+<p>Traits are the glue that allow Rust types to interoperate even though they don’t know about each other at the time they are defined.</p>
+<section id="how-are-generics-used-in-rust" class="level5">
+<h5 class="anchored" data-anchor-id="how-are-generics-used-in-rust">How are generics used in Rust?</h5>
+<p>The compiler replaces the generic types with actual types in the code that involves generics. We are basically telling the compiler to make a copy of that function for each type T it is used with.</p>
 </section>
-<section id="memory-regions" class="level2">
-<h2 class="anchored" data-anchor-id="memory-regions">Memory regions</h2>
-<section id="stack" class="level3">
-<h3 class="anchored" data-anchor-id="stack">Stack</h3>
-<p>Stack is a region of memory that is used by a program as a scratch space for function calls. Every time a function is called a new ‘frame’ is allocated on top of the stack. It contains all the variables within the function along with the arguments the function takes. A variable stored on the frame cannot be accessed after the frame goes away(lifetime is lifetime of the frame).</p>
+<section id="static-dispatch" class="level3">
+<h3 class="anchored" data-anchor-id="static-dispatch">Static dispatch</h3>
+<p>Consider the code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="dt">String</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">pub</span> <span class="kw">fn</span> contains(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> p<span class="op">:</span> <span class="kw">impl</span> <span class="bu">Pattern</span>) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span>is_contained_in(<span class="kw">self</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The compiler needs a different copy of the function body of each <code>impl Pattern</code> type because it needs to know the address of the <code>is_contained_in</code> function to call it. The CPU needs to be told where to jump and continue execution.</p>
+<p>This is referred to as <em>static dispatch</em> because the address we are dispatching to is known at compile time.</p>
+<p>This process of going from a generic type to a non-generic type is called <code>monomorphization</code>.</p>
+<section id="cost-of-monomorphization" class="level5">
+<h5 class="anchored" data-anchor-id="cost-of-monomorphization">Cost of monomorphization</h5>
+<ol type="1">
+<li>All instances of non-generic types must be compiled separately which increases the compile time.</li>
+<li>Each monomorphized function results in its own chunk of machine code, thus making the program larger.</li>
+<li>CPU’s instruction cache is also less effective as instructions are not shared between different instantiations of the a generic type’s methods. It needs to hold multiple copies of effectively the same instructions.</li>
+</ol>
+<blockquote class="blockquote">
+<p>One pattern is to declare a non-generic helper function to perform shared operations.</p>
+</blockquote>
 </section>
-<section id="heap" class="level3">
-<h3 class="anchored" data-anchor-id="heap">Heap</h3>
-<p>Heap is a pool of memory that isn’t tied to the stack of the program. This is useful when we want a value to live beyond the frame of the current function’s frame.</p>
-<p>Since allocations from the heap do not go away after the function, we can allocate in one function pass around the pointer to another thread and continue to safely operate of the value in the heap. The pointer has an unconstrained lifetime - its lifetime is however long the program keeps it alive.</p>
 </section>
-<section id="static-memory" class="level3">
-<h3 class="anchored" data-anchor-id="static-memory">Static Memory</h3>
-<p>Static memory is a catch all term for several closely related regions located in the file a program is compiled into. Values in static memory live for the duration of the program.</p>
-<p>Static memory also holds the variables we define with a <code>static</code> keyword as well as certain constants values like strings.</p>
-<p>The <code>'static</code> lifetime does not create a static variable but once a reference with a static lifetime is created, it lives on till the end of the program. Whereever it pionts to might as well be in the static memory.</p>
+</section>
+<section id="dynamic-dispatch" class="level2">
+<h2 class="anchored" data-anchor-id="dynamic-dispatch">Dynamic Dispatch</h2>
+<p>Enables code to call a trait method on a generic type without knowing what that type is.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="dt">String</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">pub</span> <span class="kw">fn</span> contains(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> p<span class="op">:</span> <span class="op">&amp;</span><span class="kw">dyn</span> <span class="bu">Pattern</span>) <span class="op">-&gt;</span> <span class="dt">bool</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    p<span class="op">.</span>is_contained_in(<span class="kw">self</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We are basically telling that the caller must give two pieces of information: - the address of the pattern - the address of the method <code>is_contained_in</code></p>
+<p>In practise the address of the <code>vtable</code> is passed to the method. The <code>vtable</code> contains the address of all the implementations of all the trait’s methods.</p>
+<p>This allows us to use the same function body regardless of the type of the caller wants to use.</p>
+<p>See playground example <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=1ae1f32c71726d7c48c07856468ad2be">here</a></p>
+<section id="trait-objects" class="level3">
+<h3 class="anchored" data-anchor-id="trait-objects">Trait objects</h3>
+<p>The combination of a type that implements a trait and its vtable are known as a <em>trait object</em>. Most traits can be turned into trait objects but not all.</p>
+<p>Only traits which are <em>object-safe</em> can be turned into trait objects.</p>
+<p>To be object-safe: - none of the traits methods can be generic or use the Self type - the trait cannot have any static methods, since it would be impossible to know which method to call</p>
+<p>Using the <code>Self: Sized</code> bound imples that Self is not being used through a trait object, because otherwise it would be <code>!Sized</code>. We can place that bound on a trait to require that a trait never uses dynamic dispatch, or it can be placed on a specific method to specify that the method should never be used through a trait object.</p>
+</section>
+<section id="pros-and-cons-of-dynamic-dispatch" class="level3">
+<h3 class="anchored" data-anchor-id="pros-and-cons-of-dynamic-dispatch">Pros and cons of dynamic dispatch</h3>
+<p>Pros: - cuts compile time - improve efficiency of CPU instruction cache</p>
+<p>Cons: - prevents the compiler from optimizing for specific types - every lookup from the vtable adds a small overhead over calling methods directly</p>
+</section>
+<section id="choosing-between-dynamic-and-static-dispatch" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-between-dynamic-and-static-dispatch">Choosing between dynamic and static dispatch</h3>
+<p>Rule of thumb: <em>Use static dispatch in libraries and dynamic dispatch in you binaries</em></p>
+<p>We want to allow the user to decide what kind of dispatch is best for them in a library. Dynamic dispatch forces the users to do the same, whereas with static dispatch they can choose whether to use dynamic dispatch or not.</p>
+<p>For binaries, we are writing the final code, hence if cleaner code, leaving our generic parameter, quicker compile times at the cost marginal performance sound okay, its a better choice for binaries.</p>
 
 
-</section>
 </section>
 </section>
 
