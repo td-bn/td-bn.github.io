@@ -1,0 +1,112 @@
+---
+title: Trait and trait-bounds
+format: html
+---
+
+## Dynamically Sized Types(DST)
+
+Most Rust types are `Sized` i.e. they have a size that is known at compile time. 
+Two common exceptions to this are trait objects and slices(e.g `dyn Iterator` or `[u8]`)
+
+Their size depends on some information that is available only when the program is run and  not at compile time.
+That is why they are called _dynamically sized traits_. 
+
+The compiler requires types to be `Sized` nearly everywhere: struct fields, function arguments, return values, variable types and array types. 
+Every single type bound we write has `T: Sized` by default, unless we opt out.
+
+The way to bridge this gap between the unsized and sized types is to place unsized types behind a _wide pointer_ (fat pointer).
+
+### Fat pointers
+A wide/fat pointer is like other pointers, but it includes an extra word-sized field that gives additional information required by the compiler to generate reasonable code for working with the pointer.
+
+_**Wide/fat pointers are `Sized`**_
+Specifically they are twice the size of a `usize`, one usize to hold the pointer type and another to hold the additional information required by the compiler.
+
+> NOTE: `Box` and `Arc` also support storing wide/fat pointers. That is why they support `T: ?Sized`
+
+## Traits and Trait Bounds
+
+Traits are the glue that allow Rust types to interoperate even though they don't know about each other at the time they are defined.
+
+##### How are generics used in Rust?
+The compiler replaces the generic types with actual types in the code that involves generics. 
+We are basically telling the compiler to make a copy of that function for each type T it is used with.
+
+### Static dispatch
+
+Consider the code:
+```rust
+impl String {
+  pub fn contains(&self, p: impl Pattern) -> bool {
+    p.is_contained_in(self)
+  }
+}
+```
+
+The compiler needs a different copy of the function body of each `impl Pattern` type because it needs to know the address of the `is_contained_in` function to call it.
+The CPU needs to be told where to jump and continue execution. 
+
+This is referred to as _static dispatch_ because the address we are dispatching to is known at compile time.
+
+This process of going from a generic type to a non-generic type is called `monomorphization`. 
+
+##### Cost of monomorphization
+1. All instances of non-generic types must be compiled separately which increases the compile time.
+2. Each monomorphized function results in its own chunk of machine code, thus making the program larger.
+3. CPU's instruction cache is also less effective as instructions are not shared between different instantiations of the a generic type's methods. It needs to hold multiple copies of effectively the same instructions.
+
+> One pattern is to declare a non-generic helper function to perform shared operations.
+
+## Dynamic Dispatch
+
+Enables code to call a trait method on a generic type without knowing what that type is. 
+```rust
+impl String {
+  pub fn contains(&self, p: &dyn Pattern) -> bool {
+    p.is_contained_in(self)
+  }
+}
+```
+
+We are basically telling that the caller must give two pieces of information: 
+	- the address of the pattern
+	- the address of the method `is_contained_in`
+
+In practise the address of the `vtable` is passed to the method. The `vtable` contains the address of all the implementations of all the trait's methods.
+
+This allows us to use the same function body regardless of the type of the caller wants to use.
+
+See playground example [here](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1ae1f32c71726d7c48c07856468ad2be)
+
+
+### Trait objects
+
+The combination of a type that implements a trait and its vtable are known as a _trait object_. Most traits can be turned into trait objects but not all. 
+
+Only traits which are _object-safe_ can be turned into trait objects.
+
+To be object-safe:
+	- none of the traits methods can be generic or use the Self type
+	- the trait cannot have any static methods, since it would be impossible to know which method to call
+
+Using the `Self: Sized`  bound imples that Self is not being used through a trait object, because otherwise it would be `!Sized`.  We can place that bound on a trait to require that a trait never uses dynamic dispatch, or it can be placed on a specific method to specify that the method should never be used through a trait object. 
+
+### Pros and cons of dynamic dispatch
+
+Pros:
+- cuts compile time
+- improve efficiency of CPU instruction cache
+
+Cons:
+- prevents the compiler from optimizing for specific types
+- every lookup from the vtable adds a small overhead over calling methods directly
+
+### Choosing between dynamic and static dispatch
+
+Rule of thumb: _Use static dispatch in libraries and dynamic dispatch in you binaries_
+
+We want to allow the user to decide what kind of dispatch is best for them in a library.
+Dynamic dispatch forces the users to do the same, whereas with static dispatch they can choose whether to use dynamic dispatch or not.
+
+For binaries, we are writing the final code, hence if cleaner code, leaving our generic parameter, quicker compile times at the cost marginal performance sound okay, its a better choice for binaries.
+
