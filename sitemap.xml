@@ -2,66 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://td-bn.github.io/decentralization/btc/btc-timelocks.html</loc>
-    <lastmod>2023-01-17T06:51:17.653Z</lastmod>
+    <lastmod>2023-01-20T04:48:22.654Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/decentralization/btc/btc-segwit.html</loc>
-    <lastmod>2023-01-17T06:51:18.014Z</lastmod>
+    <lastmod>2023-01-20T04:48:23.034Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/decentralization/btc/btc-transactions2.html</loc>
-    <lastmod>2023-01-17T06:51:18.356Z</lastmod>
+    <lastmod>2023-01-20T04:48:23.365Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/decentralization/btc/btc-conditionals.html</loc>
-    <lastmod>2023-01-17T06:51:18.687Z</lastmod>
+    <lastmod>2023-01-20T04:48:23.693Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/decentralization/btc/btc-transactions.html</loc>
-    <lastmod>2023-01-17T06:51:19.091Z</lastmod>
+    <lastmod>2023-01-20T04:48:24.090Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/decentralization/tbd/tdDEX.html</loc>
-    <lastmod>2023-01-17T06:51:19.418Z</lastmod>
+    <lastmod>2023-01-20T04:48:24.421Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/iter.html</loc>
-    <lastmod>2023-01-17T06:51:19.777Z</lastmod>
+    <lastmod>2023-01-20T04:48:24.757Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/chanells.html</loc>
-    <lastmod>2023-01-17T06:51:20.090Z</lastmod>
+    <lastmod>2023-01-20T04:48:25.072Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/types-alignment-and-layout.html</loc>
-    <lastmod>2023-01-17T06:51:20.419Z</lastmod>
+    <lastmod>2023-01-20T04:48:25.409Z</lastmod>
+  </url>
+  <url>
+    <loc>https://td-bn.github.io/rust/coherance-and-orphan-rules.html</loc>
+    <lastmod>2023-01-20T04:48:25.746Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/foundations.html</loc>
-    <lastmod>2023-01-17T06:51:20.734Z</lastmod>
+    <lastmod>2023-01-20T04:48:26.065Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/async-await.html</loc>
-    <lastmod>2023-01-17T06:51:21.061Z</lastmod>
+    <lastmod>2023-01-20T04:48:26.411Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/pointers.html</loc>
-    <lastmod>2023-01-17T06:51:21.385Z</lastmod>
+    <lastmod>2023-01-20T04:48:26.729Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/trait-bounds.html</loc>
-    <lastmod>2023-01-17T06:51:21.742Z</lastmod>
+    <lastmod>2023-01-20T04:48:27.075Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/declarative_macros.html</loc>
-    <lastmod>2023-01-17T06:51:22.070Z</lastmod>
+    <lastmod>2023-01-20T04:48:27.398Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/rust/ownership.html</loc>
-    <lastmod>2023-01-17T06:51:22.400Z</lastmod>
+    <lastmod>2023-01-20T04:48:27.735Z</lastmod>
   </url>
   <url>
     <loc>https://td-bn.github.io/fastai/lesson_1.html</loc>
-    <lastmod>2023-01-17T06:51:22.753Z</lastmod>
+    <lastmod>2023-01-20T04:48:28.084Z</lastmod>
   </url>
 </urlset>

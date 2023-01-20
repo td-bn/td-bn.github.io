@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Conditional Flows</title>
+<title>Coherence and Orphan Rules</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,24 +86,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -125,7 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Conditional Flows</h1>
+      <h1 class="quarto-secondary-nav-title">Coherence and Orphan Rules</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -166,60 +166,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
+  <a href="../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
+  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
+  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link">Coherence and Orphan Rules</a>
+  <a href="../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link active">Coherence and Orphan Rules</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
+  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
+  <a href="../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
+  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
+  <a href="../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
   </div>
 </li>
       </ul>
@@ -244,42 +244,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Bitcoin</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Bitcoin</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link active">Conditional Flows</a>
+  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
+  <a href="../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
   </div>
 </li>
       </ul>
@@ -296,7 +296,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
   </div>
 </li>
       </ul>
@@ -310,12 +310,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#verify-opcodes" id="toc-verify-opcodes" class="nav-link active" data-scroll-target="#verify-opcodes">VERIFY opcodes</a></li>
-  <li><a href="#example-script-using-conditionals" id="toc-example-script-using-conditionals" class="nav-link" data-scroll-target="#example-script-using-conditionals">Example script using conditionals</a>
+  <li><a href="#generic-type-parameters-or-associated-types" id="toc-generic-type-parameters-or-associated-types" class="nav-link active" data-scroll-target="#generic-type-parameters-or-associated-types">Generic type parameters or associated types?</a></li>
+  <li><a href="#coherence-and-orphan-rule" id="toc-coherence-and-orphan-rule" class="nav-link" data-scroll-target="#coherence-and-orphan-rule">Coherence and orphan rule</a>
   <ul class="collapse">
-  <li><a href="#two-of-three-multisig" id="toc-two-of-three-multisig" class="nav-link" data-scroll-target="#two-of-three-multisig">1. two of three multisig</a></li>
-  <li><a href="#one-of-three-multisig-as-pubkey" id="toc-one-of-three-multisig-as-pubkey" class="nav-link" data-scroll-target="#one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</a></li>
-  <li><a href="#for-as-sig-only-path" id="toc-for-as-sig-only-path" class="nav-link" data-scroll-target="#for-as-sig-only-path">3. For A’s SIG only path</a></li>
+  <li><a href="#blanket-implementations" id="toc-blanket-implementations" class="nav-link" data-scroll-target="#blanket-implementations">Blanket implementations</a></li>
+  <li><a href="#fundamental-types" id="toc-fundamental-types" class="nav-link" data-scroll-target="#fundamental-types">Fundamental types</a></li>
+  <li><a href="#covered-implementations" id="toc-covered-implementations" class="nav-link" data-scroll-target="#covered-implementations">Covered Implementations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -325,7 +325,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Conditional Flows</h1>
+<h1 class="title d-none d-lg-block">Coherence and Orphan Rules</h1>
 </div>
 
 
@@ -340,65 +340,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Conditional operators allows us to write scripts that have two ways of being unlocked, depending on whether the condition evluates to TRUE or FALSE.</p>
-<p>Conditionals can be nested indefinitely, only limited by the maximum size of a script.</p>
-<p>Operators used to write conditionals are: <code>IF</code>, <code>ELSE</code>, <code>ENDIF</code>, <code>NOTIF</code></p>
-<p><strong>Note</strong>: In a stack based language like Bitcoin Script, the condition comes before the IF. e.g.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">condition</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is true</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ELSE</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">code</span> to run when condition is false</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ENDIF</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> to run in either case</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="verify-opcodes" class="level2">
-<h2 class="anchored" data-anchor-id="verify-opcodes">VERIFY opcodes</h2>
-<p>Verify means that if a condition is not TRUE, then the evaluation is stopped immediately.</p>
-<p>Thus VERIFY suffixes act like guard clauses, continuing only if the pre-condition is met.</p>
-<p>e.g.&nbsp;redeem script with an EQUALVERIFY guard clause.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUALVERIFY <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This can also be written using an <code>IF</code> instead:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">HASH160</span> <span class="op">&lt;</span>expected hash<span class="op">&gt;</span> EQUAL</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IF</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">&lt;</span>Bob<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note</p>
-<ul>
-<li>the VERIFY construction is more efficient, it uses two fewer opcodes.</li>
-<li>VERIFY opcodes do not leave anything on the stack, unlike say an EQUAL opcode.</li>
-</ul>
+<section id="generic-type-parameters-or-associated-types" class="level3">
+<h3 class="anchored" data-anchor-id="generic-type-parameters-or-associated-types">Generic type parameters or associated types?</h3>
+<p>Rust traits can be generic in two ways: 1. with generic type parameters <code>trait Foo&lt;T&gt;</code> 2. with associated types <code>trait Foo { type Bar; }</code></p>
+<p>With the generic trait, users must always specify the generic parameters and repeat any bounds on those parameters. If we add a generic parameter to a trait, all users of that trait must also be updated to reflect the change. The upside is that the trait can be implemented multiple times for the same type: e.g.&nbsp;one can implement both <code>FromIterator&lt;T&gt;</code> and <code>FromIterator&lt;&amp;T&gt;</code> where T: Clone , precisely because of the flexibility that generic traits provide.</p>
+<p>Associated traits are easier to work with but will not allow multiple implementations. The compiler needs to know only the type that implements the trait, and the associated traits follow. This means that the bounds can live <em>within the trait itself and do not need to be repeated on use.</em></p>
+<blockquote class="blockquote">
+<p><strong>Note</strong>: one cannot implement Deref against multiple <code>Target</code> types, not can one implement Iterator with multiple different <code>Item</code> types.</p>
+</blockquote>
 </section>
-<section id="example-script-using-conditionals" class="level2">
-<h2 class="anchored" data-anchor-id="example-script-using-conditionals">Example script using conditionals</h2>
-<p>Following is an example of a script with multiple outcomes:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">01</span>  IF</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">02</span>    IF</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">03</span>      2</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">04</span>    ELSE</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">05</span>      <span class="op">&lt;</span>30 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">06</span>      <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIGVERIFY</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">07      1</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">08    ENDIF</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">09    &lt;M'</span>s Pubkey<span class="op">&gt;</span> <span class="op">&lt;</span>S<span class="st">'s Pubkey&gt; &lt;Z'</span>s Pubkey<span class="op">&gt;</span> 3 CHECKMULTISIG</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span>  ELSE</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">11</span>    <span class="op">&lt;</span>90 days<span class="op">&gt;</span> CHECKSEQUENCEVERIFY DROP</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">12</span>    <span class="op">&lt;</span>A<span class="st">'s Pubkey&gt; CHECKSIG</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">13  ENDIF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can evaluate the script in 3 ways:</p>
-<section id="two-of-three-multisig" class="level3">
-<h3 class="anchored" data-anchor-id="two-of-three-multisig">1. two of three multisig</h3>
-<p>We can unlock for 2 of 3 multisig using:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>M<span class="st">'s Sig&gt; &lt;Z'</span>s Sig<span class="op">&gt;</span> TRUE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here <code>TRUE TRUE</code> force evaluation of the nested if’s.</p>
+<section id="coherence-and-orphan-rule" class="level2">
+<h2 class="anchored" data-anchor-id="coherence-and-orphan-rule">Coherence and orphan rule</h2>
+<blockquote class="blockquote">
+<p>For any given type and method, there is only ever one correct choice for which implementation of the method to use for that type.</p>
+</blockquote>
+<p>Imagine what would happen if we wrote out own <code>Display</code> implementation for the <code>bool</code> type. The compiler wouldn’t know which implementation to use.</p>
+<p>A way to uphold the coherence rule would be ensure that only the create that defines a trait can write implementations for that trait. But this would make traits useless, as there would be no way to implement traits like <code>Debug</code> for our own types.</p>
+<p>Another way could be to to allow implementation of traits for only own own types. But that means that a create defines a trait cannot provide implementations for types in the standard library.</p>
+<p>We ideally want a set of rules so that: - allow downstream creates to implement upstream traits for their types - allow upstream crates to add implementation of their own traits without breaking downstream code</p>
+<p>The orphan rules establishes this balance. &gt; One can implement a trait for a type only if the trait or the type is local to ones crate.</p>
+<section id="blanket-implementations" class="level3">
+<h3 class="anchored" data-anchor-id="blanket-implementations">Blanket implementations</h3>
+<p><code>impl&lt;T&gt; MyTrait for T where T:..</code></p>
+<p>These sort of blanket implementations are only allowed for crates that define a trait.</p>
+<p>Adding a blanket implementation is considered to be breaking code. This is because a downstream implementation would now stop compiling because of conflicting implementations.</p>
 </section>
-<section id="one-of-three-multisig-as-pubkey" class="level3">
-<h3 class="anchored" data-anchor-id="one-of-three-multisig-as-pubkey">2. one of three multisig + A’s Pubkey</h3>
-<p>We can use 1 of 3, along with A’s Pubkey using:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">0</span> <span class="op">&lt;</span>A<span class="st">'s Sig&gt; &lt;S/M/Z'</span>s Sig<span class="op">&gt;</span> FALSE TRUE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="fundamental-types" class="level3">
+<h3 class="anchored" data-anchor-id="fundamental-types">Fundamental types</h3>
+<p>Some types are so essential that it is necessary to allow anyone to implement traits on them, even if the seemingly violate the orphan rules.</p>
+<p>These include: <code>&amp;</code>, <code>&amp;mut</code> and <code>Box</code>.</p>
+<p>Adding a blanked implementation over a fundamental type is also considered a breaking change.</p>
 </section>
-<section id="for-as-sig-only-path" class="level3">
-<h3 class="anchored" data-anchor-id="for-as-sig-only-path">3. For A’s SIG only path</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>A<span class="st">'s Sig&gt; FALSE </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="covered-implementations" class="level3">
+<h3 class="anchored" data-anchor-id="covered-implementations">Covered Implementations</h3>
+<p><code>impl&lt;P1...=Pn&gt; ForeignTrait&lt;T1..=Tn&gt; for T0</code> Implementation of foreign traits for foreign types is allowed under specific circumstances: - at least one <code>Ti</code> is a local type - no <code>T</code> before <code>Ti</code> is one of the generic types <code>P1..=Pn</code> - a <code>T</code> is allowed to appear in <code>T0..Ti</code> as long as they are covered by some intermediate type.</p>
+<p>A <code>T</code> is covered if it appears as a type parameter to some other type e.g.&nbsp;<code>Vec&lt;T&gt;</code> but not if it stands on its own, or just appears behind a fundamental type like <code>&amp;T</code></p>
+<p>e.g.&nbsp;valid implementations</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="cf">for</span> MyType</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="cf">for</span> MyType<span class="op">&lt;</span>T<span class="op">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>MyType<span class="op">&gt;</span> <span class="cf">for</span> <span class="dt">Vec</span><span class="op">&lt;</span>T<span class="op">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> ForeignTrait<span class="op">&lt;</span>MyType<span class="op">,</span> T<span class="op">&gt;</span> <span class="cf">for</span> <span class="dt">Vec</span><span class="op">&lt;</span>T<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>e.g.&nbsp;invalid implementations:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> ForeignTrait <span class="cf">for</span> T</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="cf">for</span> T</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span><span class="dt">Vec</span><span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="cf">for</span> T</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>MyType<span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> <span class="cf">for</span> T</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="bu">From</span><span class="op">&lt;</span>T<span class="op">&gt;</span> <span class="cf">for</span> <span class="dt">Vec</span><span class="op">&lt;</span>T<span class="op">&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span><span class="op">&lt;</span>T<span class="op">&gt;</span> ForeignTrait<span class="op">&lt;</span>T<span class="op">,</span> MyType<span class="op">&gt;</span> <span class="cf">for</span> <span class="dt">Vec</span><span class="op">&lt;</span>T<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
