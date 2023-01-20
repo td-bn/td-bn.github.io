@@ -1,0 +1,90 @@
+---
+title: Coherence and Orphan Rules
+---
+
+### Generic type parameters or associated types?
+
+Rust traits can be generic in two ways:
+1. with generic type parameters
+   `trait Foo<T>`
+2. with associated types
+   `trait Foo { type Bar; }`
+
+
+With the generic trait, users must always specify the generic parameters and repeat any bounds on those parameters.
+If we add a generic parameter to a trait, all users of that trait must also be updated to reflect the change.
+The upside is that the trait can be implemented multiple times for the same type: e.g. one 
+can implement both `FromIterator<T>` and `FromIterator<&T>` where T: Clone , 
+precisely because of  the flexibility that generic traits provide.
+
+Associated traits are easier to work with but will not allow multiple implementations.
+The compiler needs to know only the type that implements the trait, and the associated traits follow. This means that the bounds can live _within the trait itself and do not need to be repeated on use._
+
+> **Note**: one cannot implement Deref against multiple `Target` types, not can one implement Iterator with multiple different `Item` types.
+
+
+## Coherence and orphan rule
+
+> For any given type and method, there is only ever one correct choice for which implementation of the method to use for that type.
+
+Imagine what would happen if we wrote out own `Display` implementation for the `bool` type. The compiler wouldn't know which implementation to use.
+
+
+A way to uphold the coherence rule would be ensure that only the create that defines a trait can write implementations for that trait. But this would make traits useless, as there would be no way to implement traits like `Debug` for our own types. 
+
+Another way could be to to allow implementation of traits for only own own types. But that means that a create defines a trait cannot provide implementations for types in the standard library.
+
+We ideally want a set of rules so that:
+- allow downstream creates to implement upstream traits for their types
+- allow upstream crates to add implementation of their own traits without breaking downstream code
+
+The orphan rules establishes this balance.
+> One can implement a trait for a type only if the trait or the type is local to ones crate.
+
+### Blanket implementations
+
+`impl<T> MyTrait for T where T:..`
+
+These sort of blanket implementations are only allowed for crates that define a trait.
+
+Adding a blanket implementation is considered to be breaking code. This is because a downstream implementation would now stop compiling because of conflicting implementations.
+
+
+### Fundamental types
+
+Some types are so essential that it is necessary to allow anyone to implement traits on them, even if the seemingly violate the orphan rules.
+
+These include: `&`, `&mut` and `Box`.
+
+Adding a blanked implementation over a fundamental type is also considered a breaking change.
+
+### Covered Implementations
+
+`impl<P1...=Pn> ForeignTrait<T1..=Tn> for T0`
+Implementation of foreign traits for foreign types is allowed under specific circumstances:
+- at least one `Ti` is a local type
+- no `T` before `Ti` is one of the generic types `P1..=Pn`
+- a `T` is allowed to appear in `T0..Ti` as long as they are covered by some intermediate type.
+
+A `T` is covered if it appears as a type parameter to some other type e.g. `Vec<T>` but not if it stands on its own, or just appears behind a fundamental type like `&T`
+
+e.g. valid implementations
+
+```rust
+impl<T> From<T> for MyType
+impl<T> From<T> for MyType<T>
+impl<T> From<MyType> for Vec<T>
+impl<T> ForeignTrait<MyType, T> for Vec<T>
+```
+
+e.g. invalid implementations:
+
+```rust
+impl<T> ForeignTrait for T
+impl<T> From<T> for T
+impl<T> From<Vec<T>> for T
+impl<T> From<MyType<T>> for T
+impl<T> From<T> for Vec<T>
+impl<T> ForeignTrait<T, MyType> for Vec<T>
+```
+
