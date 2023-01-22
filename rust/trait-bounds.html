@@ -324,6 +324,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#pros-and-cons-of-dynamic-dispatch" id="toc-pros-and-cons-of-dynamic-dispatch" class="nav-link" data-scroll-target="#pros-and-cons-of-dynamic-dispatch">Pros and cons of dynamic dispatch</a></li>
   <li><a href="#choosing-between-dynamic-and-static-dispatch" id="toc-choosing-between-dynamic-and-static-dispatch" class="nav-link" data-scroll-target="#choosing-between-dynamic-and-static-dispatch">Choosing between dynamic and static dispatch</a></li>
   </ul></li>
+  <li><a href="#trait-bounds" id="toc-trait-bounds" class="nav-link" data-scroll-target="#trait-bounds">Trait bounds</a>
+  <ul class="collapse">
+  <li><a href="#higher-ranked-trait-bounds" id="toc-higher-ranked-trait-bounds" class="nav-link" data-scroll-target="#higher-ranked-trait-bounds">Higher-ranked trait bounds</a></li>
+  </ul></li>
+  <li><a href="#marker-traits" id="toc-marker-traits" class="nav-link" data-scroll-target="#marker-traits">Marker Traits</a></li>
   </ul>
 </nav>
     </div>
@@ -422,9 +427,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Rule of thumb: <em>Use static dispatch in libraries and dynamic dispatch in you binaries</em></p>
 <p>We want to allow the user to decide what kind of dispatch is best for them in a library. Dynamic dispatch forces the users to do the same, whereas with static dispatch they can choose whether to use dynamic dispatch or not.</p>
 <p>For binaries, we are writing the final code, hence if cleaner code, leaving our generic parameter, quicker compile times at the cost marginal performance sound okay, its a better choice for binaries.</p>
-
-
 </section>
+</section>
+<section id="trait-bounds" class="level2">
+<h2 class="anchored" data-anchor-id="trait-bounds">Trait bounds</h2>
+<p>Bounds can be any type restrictions. They do not need to include generic parameters, types of arguments or local types.</p>
+<p><code>where String: Clone</code> is a valid trait bound.</p>
+<p><code>where io::Error: From&lt;MyError&lt;T&gt;&gt;</code> is also valid. Generic type parameters do not need to appear only on the left side. This is useful to express more intricate trait bounds. It can also save one from needlessly repeating bounds.</p>
+<p>e.g.</p>
+<p>To construct a <code>HashMap&lt;T,V,S&gt;</code> where keys are some generic tyype <code>T</code> and whose value is <code>usize</code>, we can use:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> HashMap<span class="op">&lt;</span>T<span class="op">,</span><span class="dt">usize</span><span class="op">,</span>S<span class="op">&gt;:</span> <span class="bu">FromIterator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>instead of</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> T<span class="op">:</span><span class="bu">Hash</span><span class="op">+</span><span class="bu">Eq</span><span class="op">,</span> S<span class="op">:</span><span class="bu">BuildHasher</span><span class="op">+</span><span class="bu">Default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This also clearly communicates the ‘true’ requirements of the code.</p>
+<p>We can also write bounds for associated types of types we’re generic over. We can refer to the associated type using the syntax:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>Type <span class="kw">as</span> Trait<span class="op">&gt;</span><span class="pp">::</span>AssocType</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>See: https://doc.rust-lang.org/std/iter/struct.Flatten.html</p>
+<section id="higher-ranked-trait-bounds" class="level3">
+<h3 class="anchored" data-anchor-id="higher-ranked-trait-bounds">Higher-ranked trait bounds</h3>
+<p>When working with generic references to a type, writing bounds requires a generic lifetime parameter that we can use a lifetime for the references.</p>
+<p>Sometimes thought, we also want the baility to say that <em>this reference implements this trait for any lifetime</em>. This type of bound is known as a higher-ranked trait bound, is is useful in associations with the Fn trait.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wher F<span class="op">:</span> <span class="cf">for</span><span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span> <span class="bu">Fn</span>(<span class="op">&amp;</span><span class="ot">'a</span> T) <span class="op">-&gt;</span> <span class="op">&amp;</span><span class="ot">'a</span> U</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We are saying that for any lifetime ’a, the bound must hold.</p>
+<p>The compiler is smart enough to automatically add the <code>for</code> when we write <code>Fn</code> bounds with references like this, which covers the majority of use cases. The explicit form is needed exceedingly rarely.</p>
+<p>Example that implement <code>Debug</code> for any type that can be Iterated over and whose elements are <code>Debug</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> <span class="bu">Debug</span> <span class="cf">for</span> AnyIterable</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> <span class="cf">for</span><span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span> <span class="op">&amp;</span><span class="ot">'a</span> <span class="dt">Self</span><span class="op">:</span> <span class="bu">IntoIterator</span><span class="op">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span><span class="op">&lt;</span><span class="ot">'a</span><span class="op">&gt;</span> <span class="op">&lt;&amp;</span><span class="ot">'a</span> <span class="dt">Self</span> <span class="kw">as</span> <span class="bu">IntoIterator</span><span class="op">&gt;</span><span class="pp">::</span>Item<span class="op">:</span> <span class="bu">Debug</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> fmt(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> f<span class="op">:</span> <span class="op">&amp;</span><span class="kw">mut</span> Formatter) <span class="op">-&gt;</span> <span class="dt">Result</span>(()<span class="op">,</span> Erro) <span class="op">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        f<span class="op">.</span>debug_list()<span class="op">.</span>enteries(<span class="kw">self</span>)<span class="op">.</span>finish()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>   </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="marker-traits" class="level2">
+<h2 class="anchored" data-anchor-id="marker-traits">Marker Traits</h2>
+<p>Usually we use traits to denote functionality that multiple types support e.g a <code>Hash</code> type can be hashed by calling <code>hash</code>. But not all traits are functional.</p>
+<p><code>Marker traits</code> indicate a property of the implementing type. Marker traits have no methods or associated types, and serve just to tell you that a particular type can or cannot be used in a certain way.</p>
+<p>e.g.&nbsp;A type that is <code>Send</code> is safe to send across thread boundaries. There are no methods associated with this behaviour. It is just a fact about the type.</p>
+<p><code>std::marker</code> has a number of these including <code>Send, Sync, Copy, Sized and Unpin</code></p>
+<p>Most of these (except Copy) are auto-traits. That means that the compiler automatically implements them for types unless the type contains something that does not implement the marker trait.</p>
+<p>Marker traits are important because <em>they allow us to write bounds that capture the tsemantic requirements not directly expressed in the code</em>.</p>
+<p>Unit types (e.g.&nbsp;<code>MyMarker</code>) serve a function similar to marker types. They hold no data and have no methods. They are useful for marking a type in a particular state.</p>
+
+
 </section>
 
 </main> <!-- /main -->
