@@ -110,3 +110,76 @@ Dynamic dispatch forces the users to do the same, whereas with static dispatch t
 
 For binaries, we are writing the final code, hence if cleaner code, leaving our generic parameter, quicker compile times at the cost marginal performance sound okay, its a better choice for binaries.
 
+
+## Trait bounds
+
+Bounds can be any type restrictions. They do not need to include generic parameters, types of arguments or local types. 
+
+`where String: Clone` is a valid trait bound.
+
+`where io::Error: From<MyError<T>>` is also valid. Generic type parameters do not need to appear only on the left side. This is useful to express more intricate trait bounds.
+It can also save one from needlessly repeating bounds. 
+
+e.g.
+
+To construct a `HashMap<T,V,S>` where keys are some generic tyype `T` and whose value is `usize`, we can use:
+```rust
+where HashMap<T,usize,S>: FromIterator
+```
+instead of 
+```rust
+where T:Hash+Eq, S:BuildHasher+Default
+```
+
+This also clearly communicates the 'true' requirements of the code.
+
+We can also write bounds for associated types of types we're generic over. We can refer to the associated type using the syntax: 
+```rust
+<Type as Trait>::AssocType
+```
+
+See: https://doc.rust-lang.org/std/iter/struct.Flatten.html
+
+### Higher-ranked trait bounds
+
+When working with generic references to a type, writing bounds requires a generic lifetime parameter that we can use a lifetime for the references.
+
+Sometimes thought, we also want the baility to say that _this reference implements this trait for any lifetime_. This type of bound is known as a higher-ranked trait bound, is is useful in associations with the Fn trait.
+
+```rust
+wher F: for<'a> Fn(&'a T) -> &'a U
+```
+We are saying that for any lifetime 'a, the bound must hold.
+
+The compiler is smart enough to automatically add the `for` when we write `Fn` bounds with references like this, which covers the majority of use cases. The explicit form is needed exceedingly rarely.
+
+
+Example that implement `Debug`  for any type that can be Iterated over and whose elements are `Debug`.
+```rust
+impl Debug for AnyIterable
+	where for<'a> &'a Self: IntoIterator,
+		for<'a> <&'a Self as IntoIterator>::Item: Debug {
+	fn fmt(&self, f: &mut Formatter) -> Result((), Erro) {
+		f.debug_list().enteries(self).finish()
+	}	
+}
+```
+
+
+## Marker Traits
+
+Usually we use traits to denote functionality that multiple types support e.g a `Hash` type can be hashed by calling `hash`. But not all traits are functional.
+
+`Marker traits` indicate a property of the implementing type. Marker traits have no methods or associated types, and serve just to tell you that a particular type can or cannot be used in a certain way.
+
+e.g. A type that is `Send` is safe to send across thread boundaries. There are no methods associated with this behaviour. It is just a fact about the type.
+
+`std::marker` has a number of these including `Send, Sync, Copy, Sized and Unpin`
+
+Most of these (except Copy) are auto-traits. That means that the compiler automatically implements them for types unless the type contains something that does not implement the marker trait.
+
+Marker traits are important because _they allow us to write bounds that capture the tsemantic requirements not directly expressed in the code_.
+
+
+Unit types (e.g. `MyMarker`) serve a function similar to marker types.  They hold no data and have no methods. They are useful for marking a type in a particular state.
+
