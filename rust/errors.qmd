@@ -28,7 +28,7 @@ pub enum FileCopyError {
 }
 ```
 
-[Playground example](https://gist.github.com/7eb17f3b3f9bff64322c13e2fd25909c) of error enumeration.
+[Playground example](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=7eb17f3b3f9bff64322c13e2fd25909c) of error enumeration.
 
 
 ### Opaque Errors
