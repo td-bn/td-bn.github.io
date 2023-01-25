@@ -28,6 +28,9 @@ pub enum FileCopyError {
 }
 ```
 
+[Playground example](https://gist.github.com/7eb17f3b3f9bff64322c13e2fd25909c) of error enumeration.
+
+
 ### Opaque Errors
 
 Sometime the application using your code can't meaningfully recover from the error, even if knows exactly the source of the error. In cases like this we want to provide a single opaque error type.
