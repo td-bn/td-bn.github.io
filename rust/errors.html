@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Iterators</title>
+<title>Errors</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -134,7 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Iterators</h1>
+      <h1 class="quarto-secondary-nav-title">Errors</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/errors.html" class="sidebar-item-text sidebar-link">Errors</a>
+  <a href="../rust/errors.html" class="sidebar-item-text sidebar-link active">Errors</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -209,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link active">Iterators</a>
+  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -315,12 +315,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#three-forms-of-iterators" id="toc-three-forms-of-iterators" class="nav-link active" data-scroll-target="#three-forms-of-iterators">Three forms of iterators</a></li>
-  <li><a href="#how-for-loop-works-under-the-hood" id="toc-how-for-loop-works-under-the-hood" class="nav-link" data-scroll-target="#how-for-loop-works-under-the-hood">How for loop works under the hood</a></li>
-  <li><a href="#into-iter" id="toc-into-iter" class="nav-link" data-scroll-target="#into-iter">Into iter</a></li>
-  <li><a href="#associated-type-vs-generic-type" id="toc-associated-type-vs-generic-type" class="nav-link" data-scroll-target="#associated-type-vs-generic-type">Associated type vs generic type</a></li>
-  <li><a href="#different-types-of-for-loops" id="toc-different-types-of-for-loops" class="nav-link" data-scroll-target="#different-types-of-for-loops">Different types of for loops</a></li>
-  <li><a href="#other-method-in-iterator-trait" id="toc-other-method-in-iterator-trait" class="nav-link" data-scroll-target="#other-method-in-iterator-trait">Other method in Iterator trait</a></li>
+  <li><a href="#representing-errors" id="toc-representing-errors" class="nav-link active" data-scroll-target="#representing-errors">Representing Errors</a>
+  <ul class="collapse">
+  <li><a href="#enumeration" id="toc-enumeration" class="nav-link" data-scroll-target="#enumeration">Enumeration</a></li>
+  <li><a href="#opaque-errors" id="toc-opaque-errors" class="nav-link" data-scroll-target="#opaque-errors">Opaque Errors</a></li>
+  <li><a href="#downcasting" id="toc-downcasting" class="nav-link" data-scroll-target="#downcasting">Downcasting</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -329,7 +329,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Iterators</h1>
+<h1 class="title d-none d-lg-block">Errors</h1>
 </div>
 
 
@@ -344,104 +344,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/iter-flatten/src/lib.rs">this</a> for exercise.</p>
-<p>Iterator in Rust is a trait. It has an associate type named <code>Item</code> and a method called <code>next</code>.</p>
-<p>Item is the type of item that the iterator will yield. It will call next and return items until they are exhausted at which point it returns <code>None</code>.</p>
-<p>Iterators are also composable, and it’s common to chain them together to do more complex forms of processing.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> next(<span class="op">&amp;</span><span class="kw">mut</span> <span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span><span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
+<p>Two types of errors: - will users need to know the details of what went wrong, so that they can handle it as they wish - will they just log whatever we raise and move on as best they can</p>
+<section id="representing-errors" class="level2">
+<h2 class="anchored" data-anchor-id="representing-errors">Representing Errors</h2>
+<p>Do we <em>enumerate</em> all possible errors so that the caller can distinguish them or do we provide a single <em>opaque</em> error.</p>
+<section id="enumeration" class="level3">
+<h3 class="anchored" data-anchor-id="enumeration">Enumeration</h3>
+<p>The user needs to be able to distinguish between different error cases so that they can respond accordingly. So we use an enum.</p>
+<p>When making our own error types we should take care to: 1. Error type should implement the <code>std::error::Error</code> trait, which provides callers with common methods for introspecting error types. e.g.&nbsp;<code>Error::source</code> method a mechanism to find the source of the underlying error. This is most commonly used to trace the error to the source cause. 2. The type should implement both <code>Display</code> and <code>Debug</code> so that the caller can print meaningful messages. The rule of thumb is a line describing the error for the <code>Display</code> implementation and more descriptive error including information that can help in debugging for the <code>Debug</code> implementation. 3. Wherever possible it should implement both <code>Send</code> and <code>Sync</code>, so that users can share the errors across thread boundaries. 4. Wherever possible the error type should be <code>'static</code> This allows the user to easily propagate the error up and down the stack without running in to lifetime issues. It also enable the error to be used more easily with type-erased error types.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">enum</span> FileCopyError <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    In(<span class="pp">std::io::</span><span class="bu">Error</span>)<span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Out(<span class="pp">std::io::</span><span class="bu">Error</span>)<span class="op">,</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="three-forms-of-iterators" class="level2">
-<h2 class="anchored" data-anchor-id="three-forms-of-iterators">Three forms of iterators</h2>
-<p>Three common ways to create iterators form a collection:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iter() <span class="co">// which iterates over &amp;T.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iter_mut() <span class="co">// which iterates over &amp;mut T.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>into_iter() <span class="co">// which iterates over T.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="https://gist.github.com/7eb17f3b3f9bff64322c13e2fd25909c">Playground example</a> of error enumeration.</p>
 </section>
-<section id="how-for-loop-works-under-the-hood" class="level2">
-<h2 class="anchored" data-anchor-id="how-for-loop-works-under-the-hood">How for loop works under the hood</h2>
-<p>A for loop like</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="pp">vec!</span>[<span class="st">"a"</span><span class="op">,</span> <span class="st">"b"</span><span class="op">,</span> <span class="st">"c"</span>] </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>turns into something like:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> iter <span class="op">=</span> <span class="pp">vec!</span>[<span class="op">...</span>]<span class="op">.</span>into_iter()<span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="kw">let</span> <span class="cn">Some</span>(x) <span class="op">=</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In actuality it is something like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">// let values = vec![...];</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> result <span class="op">=</span> <span class="cf">match</span> <span class="bu">IntoIterator</span><span class="pp">::</span>into_iter(values) <span class="op">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">mut</span> iter <span class="op">=&gt;</span> <span class="cf">loop</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> next<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">match</span> iter<span class="op">.</span>next() <span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="cn">Some</span>(val) <span class="op">=&gt;</span> next <span class="op">=</span> val<span class="op">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                <span class="cn">None</span> <span class="op">=&gt;</span> <span class="cf">break</span><span class="op">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="kw">let</span> x <span class="op">=</span> next<span class="op">;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="co">// ....</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="opaque-errors" class="level3">
+<h3 class="anchored" data-anchor-id="opaque-errors">Opaque Errors</h3>
+<p>Sometime the application using your code can’t meaningfully recover from the error, even if knows exactly the source of the error. In cases like this we want to provide a single opaque error type.</p>
+<p>The error should implement <code>Send</code>, <code>Sync</code>, <code>Display</code>, <code>Debug</code>, and <code>Error</code> (including the sources method). Internally we might want to represent more fine-grained details, but there is no need to expose those to the users of the library.</p>
+<p>Exactly how opaque error type should be is mostly up to us. - it could be a type with all private fields that exposes only limited methods for displaying and introspecting the error - it could be a severely type-erased error type like <code>Box&lt;dyn Error + Send + Sync + 'staic&gt;</code>, which reveals nothing more than the fact that it is an error and does not generally allow introspection.</p>
+<p>Using <code>Box&lt;dyn Error&gt;</code> leaves users with little choice but to bubble up the error.</p>
+<p>Type-erased errors often compose nicely and allow expression of an open-ended errors. We can easily combine errors from different sources without having to introduce additional error types.</p>
+<p>e.g.&nbsp; If we write a function whose return is <code>Box&lt;dyn Error + ...&gt;</code> the we can use <code>?</code> across different errors types inside that function, on all sorts of errors and they can all be turned into a common error type.</p>
+<p><strong>’static bound in <code>Box&lt;dyn Error ..&gt;</code></strong> allows - the propagation of errors without worrying about the lifetime bounds of that method that failed - access to downcasting</p>
 </section>
-<section id="into-iter" class="level2">
-<h2 class="anchored" data-anchor-id="into-iter">Into iter</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">trait</span> <span class="bu">IntoIterator</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> IntoIter: Iterator<span class="op">&lt;</span>Item <span class="op">=</span> <span class="dt">Self</span><span class="pp">::</span>Item<span class="op">&gt;;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> into_iter(<span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Self</span><span class="pp">::</span>IntoIter<span class="op">;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Sort of a wrapper trait around iter. Anything that can be turned into an iterator. Usually used for collections. By definiting <code>IntoIter</code> for a type, we define how it can be converted into an iterator.</p>
-<p>In addition to an associated type <code>Item</code>, it also has an associtaed type <code>IntoIter</code>.</p>
-<p>If a collection <code>C</code> implements <code>iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;C</code>, with an implementation that just calles <code>iter()</code>. Likewise, a collection <code>C</code> that implements <code>mut_iter()</code>, it usually also implements <code>IntoIterator</code> for <code>&amp;mut C</code>, with an implementation that just calles <code>iter_mut()</code>.</p>
-<p>This enables convenient shorthands like:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> values <span class="op">=</span> <span class="pp">vec!</span>[<span class="dv">41</span>]<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span><span class="kw">mut</span> values <span class="op">{</span> <span class="co">// same as `values.iter_mut()`</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>x <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="op">&amp;</span>values <span class="op">{</span> <span class="co">// same as `values.iter()`</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">assert_eq!</span>(<span class="op">*</span>x<span class="op">,</span> <span class="dv">42</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="pp">assert_eq!</span>(values<span class="op">.</span>len()<span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="associated-type-vs-generic-type" class="level2">
-<h2 class="anchored" data-anchor-id="associated-type-vs-generic-type">Associated type vs generic type</h2>
-<p>Why do we have?</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">type</span> Item<span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">..</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>and not</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">trait</span> <span class="bu">Iterator</span><span class="op">&lt;</span>Item<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Both of these would work. An associated type is used when we expect there to be only one implementation of the trait for a given type.</p>
-<p>e.g.&nbsp;if we have an iterator type for a HashMap there is only one implementation for it keys and values.</p>
-<p>On the other hand we want generic types for a trait when we expect to have multiple implementation for the same type.</p>
-<p>e.g a service trait that supports multiple types of requests.</p>
-<p><strong>Why don’t we use generic always?</strong> It saves the type checker some headache. We make its job easier. Reduces extra generic type params that we need to use.</p>
-</section>
-<section id="different-types-of-for-loops" class="level2">
-<h2 class="anchored" data-anchor-id="different-types-of-for-loops">Different types of for loops</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General idea of Rust: being explicit is good</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// consumes vs and owned acess to v</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vs<span class="op">.</span>iter() <span class="op">{</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// borrows vs, &amp; to v</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> <span class="op">&amp;</span>vs <span class="op">{</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// eq to vs.iter()</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="other-method-in-iterator-trait" class="level2">
-<h2 class="anchored" data-anchor-id="other-method-in-iterator-trait">Other method in Iterator trait</h2>
-<p>Provides default implementation for other methods by using Item and next(). Note that <code>Iterator</code> provides a default implementation of methods such as <code>nth</code> and <code>fold</code> which call next internally. However, it is also possible to write a custom implementation of methods like <code>nth</code> and <code>fold</code> if an iterator can compute them more efficiently without calling <code>next</code>.</p>
+<section id="downcasting" class="level3">
+<h3 class="anchored" data-anchor-id="downcasting">Downcasting</h3>
+<p>Downcasting is the process of taking an item of one type and casting it to a more specific type.</p>
+<p>In the context of errors, downcasting allows a user to tuen a <code>dyn Error</code> into a concrete underlying error type when the <code>dyn Error</code> was originally of that type.</p>
+<p>The <code>downcast_ref</code> method returns an <code>Option</code> which tells the user whether or not the downcast succeed. This method only if the argument is <code>'static</code>. If we return an opaque Error that is not <code>'static</code> we take away the user’s ability to do this kind of error introspection should they wish.</p>
+<p><a href="https://doc.rust-lang.org/std/any/trait.Any.html#method.downcast_ref">See docs for trait Any</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
