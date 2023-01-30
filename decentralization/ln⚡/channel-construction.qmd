@@ -1,0 +1,62 @@
+---
+title: Channel construction
+format: html
+---
+
+In the Lightning Network a combination of recorded (on-chain) and presigned but withheld (off-chain) transactions form a "layer" of payments that is a faster, cheaper, and more private way to use Bitcoin.
+
+In a 2-of-2 scheme like that used in the Lightning Network, neither signer can spend the bitcoin without obtaining a signature from the other party.
+
+Payment channels in Lightning are based on a 2-of-2 multisig address, with the two channel partners as signers in the multisig.
+
+## Identifying nodes on LN
+- Each node generates a root private key when first initialized.
+- From that private key, the node derives a public key that is the node identifier and shared with the network.
+- Additionally, every node also advertises a network address where it can be reached, in one of several possible formats:
+	- Can be an IPv4/v6 address and a port number
+	- Cab be an onion address and a port number
+- The network address identifier is written as Address:Port
+
+### Node identifiers
+The node public key and network address are written in the following format, separated by an @ sign, as _NodeID@Address:Port_.
+e.g.
+
+`02a1cebfacb2674143b5ad0df3c22c609e935f7bc0ebe801f37b8e9023d45ea7b8 @172.16.235.20:9735` 
+
+## Constructing a channel
+
+Channel establishment is achieved by the exchange of six messages between Alice and Bob’s nodes (three from each peer): open_channel, accept_channel, funding_created, funding_signed, funding_locked, and funding_locked.
+
+![[Pasted image 20230130152720.png]]
+
+Channel establishment involves three parts:
+1. First, the two peers communicate their capabilities and expectations, with Alice initiating a request through open_channel and Bob accepting the channel request through accept_channel.
+2. Alice contructs the funding and refunding transactions, and sends the funding_created to Bob.  Bob responds by sending back the necessary signature using funding_signed. Alice will now broadcast the funding transaction (on-chain) to establish and anchor the payment channel. The transaction will need to be confirmed on the Bitcoin blockchain
+3. Once the transaction has sufficient confirmations (as defined by the `minimum_depth` field in the `accept_channel` message), Alice and Bob exchange funding_locked messages, and the channel enters normal operating mode.
+
+## Constructing a refund transaction
+
+Alice will construct the refund transaction immediately after constructing (but not broadcasting) the funding transaction. The refund transaction spends the 2-of-2 multisig back to Alice’s wallet. We call this refund transaction a _commitment transaction_ because it commits both channel partners to distributing the channel balance fairly
+
+She can do so because she can calculate the funding transaction’s hash and reference it as an input in the refund transaction.
+
+This means that Alice can create a chained transaction by referencing an output that doesn’t yet exist, knowing that the reference will be valid if the funding transaction is confirmed, making the refund transaction valid too.
+
+
+###  Channel id
+The channel ID is made by a bitwise "exclusive or" (XOR) of the funding transaction ID and output index:
+
+`channel_id = funding_txid XOR funding_output_index`
+
+## Malleability and Segwit
+
+Alice has to depend on the transaction ID of the funding transaction being known before confirmation. 
+
+Because of the way transactions were constructed with the signatures (witnesses) included in the transaction ID, it was possible for a third party (e.g., Bob) to broadcast an alternative version of a transaction with a _malleated_ (modified) transaction ID. This is known as _transaction malleability_, and prior to SegWit, this problem made it difficult to implement indefinite lifetime payment channels securely.
+
+Note, ECDSA signatures for a message are not unique. Knowing a signature (which is included in a valid transaction) allows one to produce many different-looking signatures that are still valid
+
+The introduction of SegWit made unconfirmed transaction IDs immutable from the point of view of third parties, meaning that Alice could be sure that the transaction ID of the funding transaction would not change.
+
+Before SegWit removed signatures from the transaction digest algorithm, Bob could replace the signature with an equivalent valid signature that produced a different transaction ID, breaking the chain between the funding transaction and the refund transaction.
+

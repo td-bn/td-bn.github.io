@@ -19,6 +19,8 @@ website:
             contents: decentralization/tbd/*
           - section: Bitcoin
             contents: decentralization/btc/*
+          - section: LN⚡
+            contents: decentralization/ln⚡/*
       - section: ML/AI
         contents: fastai/*
 
