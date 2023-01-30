@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Smart pointers and Interior Mutability</title>
+<title>Channel construction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -62,7 +62,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Smart pointers and Interior Mutability</h1>
+      <h1 class="quarto-secondary-nav-title">Channel construction</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -103,65 +103,65 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
+  <a href="../../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
+  <a href="../../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
+  <a href="../../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link">Coherence and Orphan Rules</a>
+  <a href="../../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link">Coherence and Orphan Rules</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/errors.html" class="sidebar-item-text sidebar-link">Errors</a>
+  <a href="../../rust/errors.html" class="sidebar-item-text sidebar-link">Errors</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
+  <a href="../../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
+  <a href="../../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link active">Smart pointers and Interior Mutability</a>
+  <a href="../../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
+  <a href="../../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
   </div>
 </li>
       </ul>
@@ -186,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
@@ -201,42 +201,42 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  <a href="../../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  <a href="../../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
+  <a href="../../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">LN⚡</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">LN⚡</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link">Channel construction</a>
+  <a href="../../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link active">Channel construction</a>
   </div>
 </li>
       </ul>
@@ -253,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
   </div>
 </li>
       </ul>
@@ -267,17 +267,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-are-smart-pointers" id="toc-what-are-smart-pointers" class="nav-link active" data-scroll-target="#what-are-smart-pointers">What are smart pointers?</a></li>
-  <li><a href="#unsafe-cell" id="toc-unsafe-cell" class="nav-link" data-scroll-target="#unsafe-cell">Unsafe Cell</a></li>
-  <li><a href="#cell" id="toc-cell" class="nav-link" data-scroll-target="#cell">Cell</a></li>
-  <li><a href="#refcell" id="toc-refcell" class="nav-link" data-scroll-target="#refcell">RefCell</a></li>
-  <li><a href="#rc" id="toc-rc" class="nav-link" data-scroll-target="#rc">Rc</a></li>
-  <li><a href="#thread-safe-version-of-these" id="toc-thread-safe-version-of-these" class="nav-link" data-scroll-target="#thread-safe-version-of-these">Thread safe version of these</a>
+  <li><a href="#identifying-nodes-on-ln" id="toc-identifying-nodes-on-ln" class="nav-link active" data-scroll-target="#identifying-nodes-on-ln">Identifying nodes on LN</a>
   <ul class="collapse">
-  <li><a href="#cell-1" id="toc-cell-1" class="nav-link" data-scroll-target="#cell-1">Cell</a></li>
-  <li><a href="#refcell---rwlock" id="toc-refcell---rwlock" class="nav-link" data-scroll-target="#refcell---rwlock">Refcell -&gt; RwLock</a></li>
-  <li><a href="#rc---arc" id="toc-rc---arc" class="nav-link" data-scroll-target="#rc---arc">Rc -&gt; Arc</a></li>
+  <li><a href="#node-identifiers" id="toc-node-identifiers" class="nav-link" data-scroll-target="#node-identifiers">Node identifiers</a></li>
   </ul></li>
+  <li><a href="#constructing-a-channel" id="toc-constructing-a-channel" class="nav-link" data-scroll-target="#constructing-a-channel">Constructing a channel</a></li>
+  <li><a href="#constructing-a-refund-transaction" id="toc-constructing-a-refund-transaction" class="nav-link" data-scroll-target="#constructing-a-refund-transaction">Constructing a refund transaction</a>
+  <ul class="collapse">
+  <li><a href="#channel-id" id="toc-channel-id" class="nav-link" data-scroll-target="#channel-id">Channel id</a></li>
+  </ul></li>
+  <li><a href="#malleability-and-segwit" id="toc-malleability-and-segwit" class="nav-link" data-scroll-target="#malleability-and-segwit">Malleability and Segwit</a></li>
   </ul>
 </nav>
     </div>
@@ -286,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Smart pointers and Interior Mutability</h1>
+<h1 class="title d-none d-lg-block">Channel construction</h1>
 </div>
 
 
@@ -301,54 +300,53 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="what-are-smart-pointers" class="level2">
-<h2 class="anchored" data-anchor-id="what-are-smart-pointers">What are smart pointers?</h2>
-<p>Smart pointers, on the other hand, are data structures that act like a pointer but also have additional metadata and capabilities. In other words, they act like pointers but have additional behaviour e.g. - what happens when the smart pointer needs to be dropped - what behaviour to expose to the outside world and how</p>
-<p>See exercises/code <a href="https://github.com/td-bn/rust-level-up/tree/main/crust-of-rust/pointers/src">here</a></p>
+<p>In the Lightning Network a combination of recorded (on-chain) and presigned but withheld (off-chain) transactions form a “layer” of payments that is a faster, cheaper, and more private way to use Bitcoin.</p>
+<p>In a 2-of-2 scheme like that used in the Lightning Network, neither signer can spend the bitcoin without obtaining a signature from the other party.</p>
+<p>Payment channels in Lightning are based on a 2-of-2 multisig address, with the two channel partners as signers in the multisig.</p>
+<section id="identifying-nodes-on-ln" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-nodes-on-ln">Identifying nodes on LN</h2>
+<ul>
+<li>Each node generates a root private key when first initialized.</li>
+<li>From that private key, the node derives a public key that is the node identifier and shared with the network.</li>
+<li>Additionally, every node also advertises a network address where it can be reached, in one of several possible formats:
+<ul>
+<li>Can be an IPv4/v6 address and a port number</li>
+<li>Cab be an onion address and a port number</li>
+</ul></li>
+<li>The network address identifier is written as Address:Port</li>
+</ul>
+<section id="node-identifiers" class="level3">
+<h3 class="anchored" data-anchor-id="node-identifiers">Node identifiers</h3>
+<p>The node public key and network address are written in the following format, separated by an @ sign, as&nbsp;<em>NodeID@Address:Port</em>. e.g.</p>
+<p><code>02a1cebfacb2674143b5ad0df3c22c609e935f7bc0ebe801f37b8e9023d45ea7b8 @172.16.235.20:9735</code></p>
 </section>
-<section id="unsafe-cell" class="level2">
-<h2 class="anchored" data-anchor-id="unsafe-cell">Unsafe Cell</h2>
-<p>Core primitive for interior mutability in Rust.</p>
-<p>An usafe primitive. UnsafeCell opts out of the immutability guarantee for &amp;T.</p>
-<p>A shared reference to <code>&amp;UnsafeCell&lt;T&gt;</code> may point to data that is being mutated.</p>
 </section>
-<section id="cell" class="level2">
-<h2 class="anchored" data-anchor-id="cell">Cell</h2>
-<p>Rust allows shared references: everyone can read ONLY. Rust allows mutable references: ONLY one owner can change things.</p>
-<p>Cell is a sharable mutable reference. Sometimes it is required to have multiple references to an object and yet mutate it.</p>
-<p>Cell allows us to do this is a single threaded context. Usually used to a flag or an int in a thread local environment.</p>
-<p>Cell is copy. Generally used for small types that are Copy.</p>
+<section id="constructing-a-channel" class="level2">
+<h2 class="anchored" data-anchor-id="constructing-a-channel">Constructing a channel</h2>
+<p>Channel establishment is achieved by the exchange of six messages between Alice and Bob’s nodes (three from each peer): open_channel, accept_channel, funding_created, funding_signed, funding_locked, and funding_locked.</p>
+<p>[[Pasted image 20230130152720.png]]</p>
+<p>Channel establishment involves three parts: 1. First, the two peers communicate their capabilities and expectations, with Alice initiating a request through open_channel and Bob accepting the channel request through accept_channel. 2. Alice contructs the funding and refunding transactions, and sends the funding_created to Bob. Bob responds by sending back the necessary signature using funding_signed. Alice will now broadcast the funding transaction (on-chain) to establish and anchor the payment channel. The transaction will need to be confirmed on the Bitcoin blockchain 3. Once the transaction has sufficient confirmations (as defined by the&nbsp;<code>minimum_depth</code>&nbsp;field in the&nbsp;<code>accept_channel</code>&nbsp;message), Alice and Bob exchange funding_locked messages, and the channel enters normal operating mode.</p>
 </section>
-<section id="refcell" class="level2">
-<h2 class="anchored" data-anchor-id="refcell">RefCell</h2>
-<p>Normally all borrow checks are done at compile time. RefCell allows us to do safe dynamically checked borrowing.</p>
+<section id="constructing-a-refund-transaction" class="level2">
+<h2 class="anchored" data-anchor-id="constructing-a-refund-transaction">Constructing a refund transaction</h2>
+<p>Alice will construct the refund transaction immediately after constructing (but not broadcasting) the funding transaction. The refund transaction spends the 2-of-2&nbsp;multisig&nbsp;back to Alice’s wallet.&nbsp;We call this refund transaction a&nbsp;<em>commitment transaction</em>&nbsp;because it commits both channel partners to distributing the channel balance fairly</p>
+<p>She can do so because she can calculate the funding transaction’s hash and reference it as an input in the refund transaction.</p>
+<p>This means that Alice can create a chained transaction by referencing an output that doesn’t yet exist, knowing that the reference will be valid if the funding transaction is confirmed, making the refund transaction valid too.</p>
+<section id="channel-id" class="level3">
+<h3 class="anchored" data-anchor-id="channel-id">Channel id</h3>
+<p>The channel ID is made by a bitwise “exclusive or” (XOR) of the funding transaction ID and output index:</p>
+<p><code>channel_id = funding_txid XOR funding_output_index</code></p>
 </section>
-<section id="rc" class="level2">
-<h2 class="anchored" data-anchor-id="rc">Rc</h2>
-<p>Rc refers to reference counting pionters.</p>
-<p>It provides a shared ownership of a value of type <code>T</code>, allocating in the heap. Calling a <code>clone</code> method returns a pointer to the same allocation in the heap.</p>
-<p>When the last <code>Rc</code> pointer to the allocation is destroyed, the value is dropped.</p>
-<p>Since sharing mutable references is not permitted by default in Rust, we have to put a <code>Cell</code> and <code>Refcell</code> insdie an <code>Rc</code>.</p>
-<p><code>Rc</code> cannot be send between thread.</p>
 </section>
-<section id="thread-safe-version-of-these" class="level2">
-<h2 class="anchored" data-anchor-id="thread-safe-version-of-these">Thread safe version of these</h2>
-<section id="cell-1" class="level3">
-<h3 class="anchored" data-anchor-id="cell-1">Cell</h3>
-<p>No thread safe version. Having two threads modify the same reference at the same time is not okay.</p>
-</section>
-<section id="refcell---rwlock" class="level3">
-<h3 class="anchored" data-anchor-id="refcell---rwlock">Refcell -&gt; RwLock</h3>
-<p><code>RwLock</code> is kinda similar in functionality to a RefCell.</p>
-<p><code>RwLock</code> doesn’t return <code>Option</code>s for giving out read and write references. Instead it using blocks the thread if the borrow can’t suceed. When the conditions are met, the operations are allowed.</p>
-</section>
-<section id="rc---arc" class="level3">
-<h3 class="anchored" data-anchor-id="rc---arc">Rc -&gt; Arc</h3>
-<p>Thread safe reference counting pointer. Use CPU atomics to managing the reference count.</p>
-<p>NOTE: There is a cost to using these atomics. That’s why we might want to use Cell, RefCells and Rcs.</p>
+<section id="malleability-and-segwit" class="level2">
+<h2 class="anchored" data-anchor-id="malleability-and-segwit">Malleability and Segwit</h2>
+<p>Alice has to depend on the transaction ID of the funding transaction being known before confirmation.</p>
+<p>Because of the way transactions were constructed with the signatures (witnesses) included in the transaction ID, it was possible for a third party (e.g., Bob) to broadcast an alternative version of a transaction with a&nbsp;<em>malleated</em>&nbsp;(modified) transaction ID. This is known as&nbsp;<em>transaction malleability</em>, and prior to SegWit, this problem made it difficult to implement indefinite lifetime payment channels securely.</p>
+<p>Note, ECDSA signatures for a message are not unique.&nbsp;Knowing a signature (which is included in a valid transaction) allows one to produce many different-looking signatures that are still valid</p>
+<p>The introduction of SegWit made unconfirmed transaction IDs immutable from the point of view of third parties, meaning that Alice could be sure that the transaction ID of the funding transaction would not change.</p>
+<p>Before SegWit removed signatures from the transaction digest algorithm, Bob could replace the signature with an equivalent valid signature that produced a different transaction ID, breaking the chain between the funding transaction and the refund transaction.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
