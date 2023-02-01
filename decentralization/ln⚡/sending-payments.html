@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Channels and sync primitives</title>
+<title>Sending Payments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +23,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -62,7 +62,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar docked">
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Channels and sync primitives</h1>
+      <h1 class="quarto-secondary-nav-title">Sending Payments</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -103,65 +103,65 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Rust</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Rust</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
+  <a href="../../rust/types-alignment-and-layout.html" class="sidebar-item-text sidebar-link">Alignment and memory layout of types</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
+  <a href="../../rust/async-await.html" class="sidebar-item-text sidebar-link">Async/Await</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/chanells.html" class="sidebar-item-text sidebar-link active">Channels and sync primitives</a>
+  <a href="../../rust/chanells.html" class="sidebar-item-text sidebar-link">Channels and sync primitives</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link">Coherence and Orphan Rules</a>
+  <a href="../../rust/coherance-and-orphan-rules.html" class="sidebar-item-text sidebar-link">Coherence and Orphan Rules</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
+  <a href="../../rust/declarative_macros.html" class="sidebar-item-text sidebar-link">Declerative macros</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/errors.html" class="sidebar-item-text sidebar-link">Errors</a>
+  <a href="../../rust/errors.html" class="sidebar-item-text sidebar-link">Errors</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
+  <a href="../../rust/foundations.html" class="sidebar-item-text sidebar-link">Foundations</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
+  <a href="../../rust/iter.html" class="sidebar-item-text sidebar-link">Iterators</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
+  <a href="../../rust/ownership.html" class="sidebar-item-text sidebar-link">Ownership, Borrowing and Lifetimes</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
+  <a href="../../rust/pointers.html" class="sidebar-item-text sidebar-link">Smart pointers and Interior Mutability</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
+  <a href="../../rust/trait-bounds.html" class="sidebar-item-text sidebar-link">Trait and trait-bounds</a>
   </div>
 </li>
       </ul>
@@ -186,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
+  <a href="../../decentralization/tbd/tdDEX.html" class="sidebar-item-text sidebar-link">tbDEX: Foundations, participants and flow</a>
   </div>
 </li>
       </ul>
@@ -201,47 +201,47 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
+  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
+  <a href="../../decentralization/btc/btc-transactions.html" class="sidebar-item-text sidebar-link">Bitcoin Transactions</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
+  <a href="../../decentralization/btc/btc-conditionals.html" class="sidebar-item-text sidebar-link">Conditional Flows</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
+  <a href="../../decentralization/btc/btc-segwit.html" class="sidebar-item-text sidebar-link">SegWit</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
+  <a href="../../decentralization/btc/btc-timelocks.html" class="sidebar-item-text sidebar-link">Timelocks</a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">LN⚡</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">LN⚡</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link">Channel construction</a>
+  <a href="../../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link">Channel construction</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../decentralization/ln⚡/sending-payments.html" class="sidebar-item-text sidebar-link">Sending Payments</a>
+  <a href="../../decentralization/ln⚡/sending-payments.html" class="sidebar-item-text sidebar-link active">Sending Payments</a>
   </div>
 </li>
       </ul>
@@ -258,7 +258,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
+  <a href="../../fastai/lesson_1.html" class="sidebar-item-text sidebar-link">Is it a duck or a swan?</a>
   </div>
 </li>
       </ul>
@@ -272,13 +272,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#types-of-channels" id="toc-types-of-channels" class="nav-link active" data-scroll-target="#types-of-channels">Types of channels</a></li>
-  <li><a href="#useful-primitives-used-in-channel-implementations" id="toc-useful-primitives-used-in-channel-implementations" class="nav-link" data-scroll-target="#useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</a>
+  <li><a href="#cheating-with-old-commitments" id="toc-cheating-with-old-commitments" class="nav-link active" data-scroll-target="#cheating-with-old-commitments">Cheating with old commitments</a>
   <ul class="collapse">
-  <li><a href="#mutex" id="toc-mutex" class="nav-link" data-scroll-target="#mutex">Mutex</a></li>
-  <li><a href="#condvar" id="toc-condvar" class="nav-link" data-scroll-target="#condvar">Condvar</a></li>
-  <li><a href="#arc" id="toc-arc" class="nav-link" data-scroll-target="#arc">Arc</a></li>
+  <li><a href="#lightning-protocols-revocation-and-penalty-mechanism" id="toc-lightning-protocols-revocation-and-penalty-mechanism" class="nav-link" data-scroll-target="#lightning-protocols-revocation-and-penalty-mechanism">Lightning protocol’s revocation and penalty mechanism</a></li>
   </ul></li>
+  <li><a href="#commitment-transaction" id="toc-commitment-transaction" class="nav-link" data-scroll-target="#commitment-transaction">Commitment transaction</a></li>
+  <li><a href="#advancing-the-channel-state" id="toc-advancing-the-channel-state" class="nav-link" data-scroll-target="#advancing-the-channel-state">Advancing the channel state</a></li>
   </ul>
 </nav>
     </div>
@@ -287,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Channels and sync primitives</h1>
+<h1 class="title d-none d-lg-block">Sending Payments</h1>
 </div>
 
 
@@ -302,40 +301,60 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><code>Channels</code> gives us handles for sender(s) and a receiver. <code>Sender(s)</code> can send the data and the <code>Receiver</code> can receive the data.</p>
-<p>Rust provides <code>mpsc</code>(multiple producer, single consumer) channels in the std lib.</p>
-<p>See <a href="https://github.com/td-bn/rust-level-up/blob/main/crust-of-rust/channel/src/lib.rs">this</a> for simple Async channel implementation using Rust sync primitives.</p>
-<section id="types-of-channels" class="level2">
-<h2 class="anchored" data-anchor-id="types-of-channels">Types of channels</h2>
-<ol type="1">
-<li><p>Asynchronous Infinite capacity. Non blocking send. Uses <code>Sender</code>.</p></li>
-<li><p>Synchronous Fixed size buffer. Blocking till buffer space available. Uses <code>SyncSender</code>.</p></li>
-</ol>
-<p>Both Senders are clonable such that multiple threads can simultaneoulsy send to a single consumber.</p>
-<p>In both of these channels all data created on the <code>Sender</code> half will become available on the <code>Receiver</code> in the same order that it was sent. The <code>Sender</code> can be cloned but only one <code>Receiver</code> is supported.</p>
+<p>Sending a payment in a lightning channel is simply a matter of redistributing the balance of the channel.</p>
+<p>All the two parties have to do is create and sign a transaction that spends the 2-of-2 multisig to two outputs paying the two parties their corresponding balances. This updated transaction is called a&nbsp;<em>commitment transaction</em>.</p>
+<p>Operating the payment channel is done by&nbsp;<em>advancing the channel state</em>&nbsp;through a series of commitments. Each commitment updates the balances to reflect payments that have flowed across the channel. Any party can initiate the commitment to update the state of the channel.</p>
+<p>Each signed and valid commitment transaction can be used by either channel partner at any time to close the channel by broadcasting it to the Bitcoin network.&nbsp; Since they both have the most recent commitment transaction and can use it at any time, they can also just hold it and not broadcast it. It’s their guarantee of a fair exit from the channel.</p>
+<p>&nbsp;No matter how many commitment transactions the parties construct and sign, only one of them can actually get confirmed. &nbsp;As long as the parties hold these transactions and don’t broadcast them, the funding output is unspent.</p>
+<section id="cheating-with-old-commitments" class="level2">
+<h2 class="anchored" data-anchor-id="cheating-with-old-commitments">Cheating with old commitments</h2>
+<p>Preventing older commitment transactions from being used by the channel partners is done by a mechanism of revocation and penalties.</p>
+<p>Note only the last one accurately reflects the most recent channel balances.</p>
+<section id="lightning-protocols-revocation-and-penalty-mechanism" class="level3">
+<h3 class="anchored" data-anchor-id="lightning-protocols-revocation-and-penalty-mechanism">Lightning protocol’s revocation and penalty mechanism</h3>
+<p>Consists of three elements.</p>
+<section id="asymmetric-commitment-transactions" class="level4">
+<h4 class="anchored" data-anchor-id="asymmetric-commitment-transactions">Asymmetric commitment transactions</h4>
+<p>Each party has a slightly different commitment transactions. They are not symmetric. The outputs that pay each channel partner are called&nbsp;<code>to_local</code>or <code>to_self</code>&nbsp;and&nbsp;<code>to_remote</code>, respectively. An invariant that the&nbsp;<em>broadcasting</em>&nbsp;party must always wait ensures that the “honest” party has time to refute the claim and revoke their funds.</p>
 </section>
-<section id="useful-primitives-used-in-channel-implementations" class="level2">
-<h2 class="anchored" data-anchor-id="useful-primitives-used-in-channel-implementations">Useful primitives used in channel implementations</h2>
-<section id="mutex" class="level3">
-<h3 class="anchored" data-anchor-id="mutex">Mutex</h3>
-<p>A mutual exclusion primitive for protecting shared data.</p>
-<p>This mutex will block threads waiting for the lock to become available.</p>
-<p>The data can only be accessed through the <code>RAII</code> guards returned from <code>lock</code> and <code>try_lock</code>, which guarantees that the data is only ever accessed when the mutex is locked.</p>
+<section id="delayed-spending" class="level4">
+<h4 class="anchored" data-anchor-id="delayed-spending">Delayed Spending</h4>
+<p>The payment to the party holding the commitment transaction is delayed (timelocked), whereas the payment to the other party can be claimed immediately. The&nbsp;<code>to_local</code>&nbsp;output is always timelocked and can’t be spent immediately, whereas the&nbsp;<code>to_remote</code>&nbsp;output is not timelocked and can be spent immediately. The delay is there for one reason: to allow the&nbsp;<em>remote</em>&nbsp;party to exercise a penalty option if an old (revoked) commitment should be broadcast by the other channel partner. Let’s look at the revocation keys and penalty option next.</p>
+<p>The delay is negotiated during the initial channel construction message flow, as a field called to_self_delay.</p>
 </section>
-<section id="condvar" class="level3">
-<h3 class="anchored" data-anchor-id="condvar">Condvar</h3>
-<p>A conditional variable which represents the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.</p>
-<p>Condition variables are typically associated with a boolean predicate (a condition) and a mutex. The predicate is always verified inside of the mutex before determining that a thread must block.</p>
-<p><code>.wait</code> : Blocks the current thread until this condition variable receives a notification.</p>
-<p><code>.notify_one</code>: Wakes up one blocked thread on this condvar.</p>
+<section id="revocation-keys" class="level4">
+<h4 class="anchored" data-anchor-id="revocation-keys">Revocation Keys</h4>
+<p>Used to unlock a penalty option for old commitments.</p>
+<p>The way this works is that the&nbsp;<code>to_local</code>&nbsp;output is not only timelocked, but it also has two spending conditions in the script: it can be spent by&nbsp;<em>self</em>&nbsp;after the timelock delay&nbsp;<em>or</em>&nbsp;it can be spent by&nbsp;<em>remote</em>&nbsp;immediately with a revocation key for this commitment.</p>
+<p>A critical requirement to the security of this script is that the remote party&nbsp;<em>cannot</em>&nbsp;unilaterally sign with the&nbsp;<code>revocationpubkey</code>.</p>
 </section>
-<section id="arc" class="level3">
-<h3 class="anchored" data-anchor-id="arc">Arc</h3>
-<p>A thread-safe reference-counting pointer. ‘Arc’ stands for ‘Atomically Reference Counted’.</p>
-<p>The type <code>Arc&lt;T&gt;</code> provides shared ownership of a value of type T, allocated in the heap.</p>
+</section>
+</section>
+<section id="commitment-transaction" class="level2">
+<h2 class="anchored" data-anchor-id="commitment-transaction">Commitment transaction</h2>
+<p>The first (<code>to_local</code>) output of a commitment transaction is defined as:</p>
+<pre class="script"><code>OP_IF
+    # Penalty transaction
+    &lt;revocationpubkey&gt;
+OP_ELSE
+    &lt;to_self_delay&gt;
+    OP_CHECKSEQUENCEVERIFY
+    OP_DROP
+    &lt;local_delayedpubkey&gt;
+OP_ENDIF
+OP_CHECKSIG</code></pre>
+<p>The first clause allows the output to be spent by anyone who can sign for <em>revocationpubkey</em>.</p>
+<p>The second clause is timelocked by <em>to_self_delay</em> blocks and can only be spent after that many blocks by anyone who can sign for <em>local_delayedpubkey</em></p>
+<p>The&nbsp;<code>revocationpubkey</code>&nbsp; is derived for&nbsp;<em>each</em>&nbsp;state based on information from&nbsp;<em>both</em>&nbsp;the self (local) and remote party.</p>
+</section>
+<section id="advancing-the-channel-state" class="level2">
+<h2 class="anchored" data-anchor-id="advancing-the-channel-state">Advancing the channel state</h2>
+<p>To advance the state of the channel, the local and remote parties exchange two messages: commitment_signed and revoke_and_ack messages.</p>
+<p>The commitment_signed message can be sent by either channel partner when they have an update to the channel state.</p>
+<p>The other channel partner then may respond with revoke_and_ack to&nbsp;<em>revoke</em>&nbsp;the old commitment and&nbsp;<em>acknowledge</em>&nbsp;the new commitment.</p>
+<p>When the other channel partner responds with revoke_and_ack they give the other partner a <em>per_commitment_scret</em>. This is used for the construction of the revocation key, which allows the honest party to penalize the cheating party.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
