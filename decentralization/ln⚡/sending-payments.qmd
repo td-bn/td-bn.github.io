@@ -1,0 +1,86 @@
+---
+title: Sending Payments
+format: html
+---
+
+Sending a payment in a lightning channel is simply a matter of redistributing the balance of the channel.
+
+All the two parties have to do is create and sign a transaction that spends the 2-of-2 multisig to two outputs paying the two parties their corresponding balances. 
+This updated transaction is called a _commitment transaction_.
+
+Operating the payment channel is done by _advancing the channel state_ through a series of commitments. 
+Each commitment updates the balances to reflect payments that have flowed across the channel. Any party can initiate the commitment  to update the state of the channel.
+
+Each signed and valid commitment transaction can be used by either channel partner at
+any time to close the channel by broadcasting it to the Bitcoin network. 
+Since they both have the most recent commitment transaction and can use it at any time,
+they can also just hold it and not broadcast it. 
+It’s their guarantee of a fair exit from the channel.
+
+ No matter how many commitment transactions the parties construct and sign, only one of them can actually get confirmed.
+ As long as  the parties hold these transactions and don’t broadcast them, the funding output is unspent.
+
+## Cheating with old commitments
+
+Preventing older commitment transactions from being used by the channel partners is done by a mechanism of revocation and penalties.
+
+Note only the last one accurately reflects the most recent channel balances.
+
+### Lightning protocol’s revocation and penalty mechanism
+
+Consists of three elements.
+
+#### Asymmetric commitment transactions
+Each party has a slightly different commitment transactions. They are not symmetric.
+The outputs that pay each channel partner are called `to_local`or `to_self` and `to_remote`, respectively.
+An invariant that the _broadcasting_ party must always wait ensures that the "honest" party has time to refute the claim and revoke their funds.
+
+
+#### Delayed Spending
+The payment to the party holding the commitment transaction is delayed (timelocked), whereas the payment to the other party can be claimed immediately.
+The `to_local` output is always timelocked and can’t be spent immediately, whereas the `to_remote` output is not timelocked and can be spent immediately.
+The delay is there for one reason: to allow the _remote_ party to exercise a penalty option if an old (revoked) commitment should be broadcast by the other channel partner. Let’s look at the revocation keys and penalty option next.
+
+The delay is negotiated during the initial channel construction message flow, as a field called to_self_delay.
+
+#### Revocation Keys
+Used to unlock a penalty option for old commitments.
+
+The way this works is that the `to_local` output is not only timelocked, but it also has two spending conditions in the script: it can be spent by _self_ after the timelock delay _or_ it can be spent by _remote_ immediately with a revocation key for this commitment.
+
+A critical requirement to the security of this script is that the remote party _cannot_ unilaterally sign with the `revocationpubkey`.
+
+
+## Commitment transaction
+
+The first (`to_local`) output of a commitment transaction is defined as:
+```script
+OP_IF
+    # Penalty transaction
+    <revocationpubkey>
+OP_ELSE
+    <to_self_delay>
+    OP_CHECKSEQUENCEVERIFY
+    OP_DROP
+    <local_delayedpubkey>
+OP_ENDIF
+OP_CHECKSIG
+```
+
+The first clause allows the output to be spent by anyone who can sign for _revocationpubkey_.
+
+The second clause is timelocked by _to_self_delay_ blocks and can only be spent after that many blocks by anyone who can sign for _local_delayedpubkey_
+
+The `revocationpubkey`  is derived for _each_ state based on information from _both_ the self (local) and remote party.
+
+## Advancing the channel state
+
+To advance the state of the channel,  the local and remote parties exchange two messages: commitment_signed and revoke_and_ack messages.
+
+The commitment_signed message can be sent by either channel partner when they have an update to the channel state.
+
+The other channel partner then may respond with revoke_and_ack to _revoke_ the old commitment and _acknowledge_ the new commitment.
+
+When the other channel partner responds with revoke_and_ack they give the other partner a _per_commitment_scret_. This is used for the construction of the revocation key, which allows the honest party to penalize the cheating party.
+
+
