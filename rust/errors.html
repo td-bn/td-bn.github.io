@@ -341,6 +341,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#opaque-errors" id="toc-opaque-errors" class="nav-link" data-scroll-target="#opaque-errors">Opaque Errors</a></li>
   <li><a href="#downcasting" id="toc-downcasting" class="nav-link" data-scroll-target="#downcasting">Downcasting</a></li>
   </ul></li>
+  <li><a href="#propagating-errors" id="toc-propagating-errors" class="nav-link" data-scroll-target="#propagating-errors">Propagating Errors</a></li>
   </ul>
 </nav>
     </div>
@@ -364,14 +365,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Two types of errors: - will users need to know the details of what went wrong, so that they can handle it as they wish - will they just log whatever we raise and move on as best they can</p>
+<p>Two types of errors:</p>
+<ul>
+<li>will users need to know the details of what went wrong, so that they can handle it as they wish</li>
+<li>will they just log whatever we raise and move on as best they can</li>
+</ul>
 <section id="representing-errors" class="level2">
 <h2 class="anchored" data-anchor-id="representing-errors">Representing Errors</h2>
 <p>Do we <em>enumerate</em> all possible errors so that the caller can distinguish them or do we provide a single <em>opaque</em> error.</p>
 <section id="enumeration" class="level3">
 <h3 class="anchored" data-anchor-id="enumeration">Enumeration</h3>
 <p>The user needs to be able to distinguish between different error cases so that they can respond accordingly. So we use an enum.</p>
-<p>When making our own error types we should take care to: 1. Error type should implement the <code>std::error::Error</code> trait, which provides callers with common methods for introspecting error types. e.g.&nbsp;<code>Error::source</code> method a mechanism to find the source of the underlying error. This is most commonly used to trace the error to the source cause. 2. The type should implement both <code>Display</code> and <code>Debug</code> so that the caller can print meaningful messages. The rule of thumb is a line describing the error for the <code>Display</code> implementation and more descriptive error including information that can help in debugging for the <code>Debug</code> implementation. 3. Wherever possible it should implement both <code>Send</code> and <code>Sync</code>, so that users can share the errors across thread boundaries. 4. Wherever possible the error type should be <code>'static</code> This allows the user to easily propagate the error up and down the stack without running in to lifetime issues. It also enable the error to be used more easily with type-erased error types.</p>
+<p>When making our own error types we should take care to:</p>
+<ol type="1">
+<li>Error type should implement the <code>std::error::Error</code> trait, which provides callers with common methods for introspecting error types. e.g.&nbsp;<code>Error::source</code> method a mechanism to find the source of the underlying error. This is most commonly used to trace the error to the source cause.</li>
+<li>The type should implement both <code>Display</code> and <code>Debug</code> so that the caller can print meaningful messages. The rule of thumb is a line describing the error for the <code>Display</code> implementation and more descriptive error including information that can help in debugging for the <code>Debug</code> implementation.</li>
+<li>Wherever possible it should implement both <code>Send</code> and <code>Sync</code>, so that users can share the errors across thread boundaries.</li>
+<li>Wherever possible the error type should be <code>'static</code> This allows the user to easily propagate the error up and down the stack without running in to lifetime issues. It also enable the error to be used more easily with type-erased error types.</li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">enum</span> FileCopyError <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    In(<span class="pp">std::io::</span><span class="bu">Error</span>)<span class="op">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Out(<span class="pp">std::io::</span><span class="bu">Error</span>)<span class="op">,</span></span>
@@ -386,7 +397,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Using <code>Box&lt;dyn Error&gt;</code> leaves users with little choice but to bubble up the error.</p>
 <p>Type-erased errors often compose nicely and allow expression of an open-ended errors. We can easily combine errors from different sources without having to introduce additional error types.</p>
 <p>e.g.&nbsp; If we write a function whose return is <code>Box&lt;dyn Error + ...&gt;</code> the we can use <code>?</code> across different errors types inside that function, on all sorts of errors and they can all be turned into a common error type.</p>
-<p><strong>’static bound in <code>Box&lt;dyn Error ..&gt;</code></strong> allows - the propagation of errors without worrying about the lifetime bounds of that method that failed - access to downcasting</p>
+<p><strong>’static bound in <code>Box&lt;dyn Error ..&gt;</code></strong> allows</p>
+<ul>
+<li>the propagation of errors without worrying about the lifetime bounds of that method that failed</li>
+<li>access to downcasting</li>
+</ul>
 </section>
 <section id="downcasting" class="level3">
 <h3 class="anchored" data-anchor-id="downcasting">Downcasting</h3>
@@ -394,9 +409,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In the context of errors, downcasting allows a user to tuen a <code>dyn Error</code> into a concrete underlying error type when the <code>dyn Error</code> was originally of that type.</p>
 <p>The <code>downcast_ref</code> method returns an <code>Option</code> which tells the user whether or not the downcast succeed. This method only if the argument is <code>'static</code>. If we return an opaque Error that is not <code>'static</code> we take away the user’s ability to do this kind of error introspection should they wish.</p>
 <p><a href="https://doc.rust-lang.org/std/any/trait.Any.html#method.downcast_ref">See docs for trait Any</a></p>
-
-
 </section>
+</section>
+<section id="propagating-errors" class="level2">
+<h2 class="anchored" data-anchor-id="propagating-errors">Propagating Errors</h2>
+<p>Rust’s <code>?</code> operator acts as a shorthand for <em>unwrap of return early</em> when working with Errors.</p>
+<p><code>?</code>:</p>
+<ul>
+<li>performs type conversion through the <code>From</code> trait</li>
+<li>in a function that returns <code>Result&lt;T, E&gt;</code> we can use <code>?</code> on any <code>Result&lt;T, X&gt;</code> where <code>E: From&lt;X&gt;</code>.</li>
+</ul>
+<p>This feature makes error erasure through <code>Box&lt;dyn Error&gt;</code> so appealing. We can just use <code>?</code> everywhere without having to worry about the particular error type.</p>
+<blockquote class="blockquote">
+<p>NOTE: The <code>?</code> operator is just syntax sugar for a trait tentatively called <code>Try</code>. See: https://doc.rust-lang.org/std/ops/trait.Try.html</p>
+</blockquote>
+<p>See <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=a5a156aa12e2958050f1577e8564d0f3">playground example</a></p>
+
+
 </section>
 
 </main> <!-- /main -->
