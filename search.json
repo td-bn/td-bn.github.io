@@ -282,35 +282,35 @@
   {
     "objectID": "decentralization/ln⚡/routing.html",
     "href": "decentralization/ln⚡/routing.html",
-    "title": "",
+    "title": "Routing payements using HTLCs",
     "section": "",
-    "text": "#bitcoin #bitcoindev #ln\nThe purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. The reason no one can cheat is because at any point anyone can take their transactions on-chain. The Bitcoin blockchain acts as a dispute-resolution and final settlement mechanism. The reason that any transaction can be kept off chain is precisely because at any point the transactions can be taken on-chain.\nAny Lightning node can route payments across its payment channels. Routing nodes cannot steal money while routing a payment. Routing nodes cannot lose money while participating in the routing process. They can choose to charge a fee for routing or do it for free. Due to onion routing, each node is only aware of the one node further in the route, and the previous node in the route.\nKey innovations of LN:"
+    "text": "The purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. The reason no one can cheat is because at any point anyone can take their transactions on-chain. The Bitcoin blockchain acts as a dispute-resolution and final settlement mechanism. The reason that any transaction can be kept off chain is precisely because at any point the transactions can be taken on-chain.\nAny Lightning node can route payments across its payment channels. Routing nodes cannot steal money while routing a payment. Routing nodes cannot lose money while participating in the routing process. They can choose to charge a fee for routing or do it for free. Due to onion routing, each node is only aware of the one node further in the route, and the previous node in the route.\nKey innovations of LN:"
   },
   {
     "objectID": "decentralization/ln⚡/routing.html#routing-vs-pathfinding",
     "href": "decentralization/ln⚡/routing.html#routing-vs-pathfinding",
-    "title": "",
+    "title": "Routing payements using HTLCs",
     "section": "Routing vs Pathfinding",
     "text": "Routing vs Pathfinding\nPathfinding refers to finding a series of payment channels that connect sender A to sender B.\nRouting refers to sending a payment across the network from A to B across the path found by pathfinding."
   },
   {
     "objectID": "decentralization/ln⚡/routing.html#fairness-protocol-for-sending-payments",
     "href": "decentralization/ln⚡/routing.html#fairness-protocol-for-sending-payments",
-    "title": "",
+    "title": "Routing payements using HTLCs",
     "section": "Fairness protocol for sending payments",
     "text": "Fairness protocol for sending payments\n\nProperties\nTrustless: The protocol can be trusted to prevent cheating.\nAtomic: Either the payment is fully executed, or it fails and everyone is refunded.\nMultihop: The security of a payment extends end to end for payments routed between channels, just as it is between a payment on a single channel."
   },
   {
     "objectID": "decentralization/ln⚡/routing.html#htlc-an-implementation-of-the-trustless-atomic-multihop-protocol",
     "href": "decentralization/ln⚡/routing.html#htlc-an-implementation-of-the-trustless-atomic-multihop-protocol",
-    "title": "",
+    "title": "Routing payements using HTLCs",
     "section": "HTLC: An implementation of the trustless, atomic, multihop protocol",
     "text": "HTLC: An implementation of the trustless, atomic, multihop protocol\nHTLC refers to hash time-locked contracts.\nHTLC uses a hash preimage as a secret that unlocks payments.\n\nThe recepient of the payment generates a random secret number and calculates its hash.\nThe hash becomes the condition for the of the payment, and once the secret is revealed, all the participants can redeem their incoming payments.\n\n\nPayment flow\nAlice requests an invoice from Dina. Inside the invoice is a payment hash. This is also called the payment pre-image.\nDina shares the hash of the secret with Alice.\n[[ln_routing_payment.excalidraw|600]]\nAlice will reimburse Bob with 12 gold coins if you can show a valid message that hashes to:_hash(R)_Bob has 24 hours to show the secret after the contract was signed. If Bob does not provide the secret by this time, Alice’s deposit will be refunded by the escrow service and the contract becomes invalid.\nBitcoin Script contract\n# To remote node with revocation key\nOP_DUP OP_HASH160 <RIPEMD160(SHA256(revocationpubkey))> OP_EQUAL\nOP_IF\n    OP_CHECKSIG\nOP_ELSE\n    <remote_htlcpubkey> OP_SWAP OP_SIZE 32 OP_EQUAL\n    OP_IF\n        # To local node via HTLC-success transaction.\n        OP_HASH160 <RIPEMD160(payment_hash)> OP_EQUALVERIFY\n        2 OP_SWAP <local_htlcpubkey> 2 OP_CHECKMULTISIG\n    OP_ELSE\n        # To remote node after timeout.\n        OP_DROP <cltv_expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP\n        OP_CHECKSIG\n    OP_ENDIF\nOP_ENDIF"
   },
   {
     "objectID": "decentralization/ln⚡/routing.html#failures",
     "href": "decentralization/ln⚡/routing.html#failures",
-    "title": "",
+    "title": "Routing payements using HTLCs",
     "section": "Failures",
     "text": "Failures\nCooperative failures occur when the HTLC is unwound by every participant on the route, removing the HTLC output from the commitment messages without changing their balances.\nWhat if someone refuses to remove the HTLC? We have a timelock, which expires rendering the output unusable."
   },

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>routing</title>
+<title>Routing payements using HTLCs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Routing payements using HTLCs</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -236,12 +236,12 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/ln⚡/routing.html" class="sidebar-item-text sidebar-link active">bitcoin #bitcoindev #ln</a>
+  <a href="../../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link">Channel construction</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/ln⚡/channel-construction.html" class="sidebar-item-text sidebar-link">Channel construction</a>
+  <a href="../../decentralization/ln⚡/routing.html" class="sidebar-item-text sidebar-link active">Routing payements using HTLCs</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -293,9 +293,23 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Routing payements using HTLCs</h1>
+</div>
 
 
-<p>#bitcoin #bitcoindev #ln</p>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
 <p>The purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. The reason no one can cheat is because at any point anyone can take their transactions on-chain. The Bitcoin blockchain acts as a dispute-resolution and final settlement mechanism. The reason that any transaction can be kept off chain is precisely because at any point the transactions can be taken on-chain.</p>
 <p>Any Lightning node can route payments across its payment channels. Routing nodes cannot steal money while routing a payment. Routing nodes cannot lose money while participating in the routing process. They can choose to charge a fee for routing or do it for free. Due to onion routing, each node is only aware of the one node further in the route, and the previous node in the route.</p>
 <p>Key innovations of LN:</p>
