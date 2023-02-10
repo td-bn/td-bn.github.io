@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bitcoin scripting</title>
+<title>routing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Bitcoin scripting</h1>
+      <h1 class="quarto-secondary-nav-title"></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -193,15 +193,15 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Bitcoin</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Bitcoin</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link active">Bitcoin scripting</a>
+  <a href="../../decentralization/btc/btc-transactions2.html" class="sidebar-item-text sidebar-link">Bitcoin scripting</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -228,15 +228,15 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">LN⚡</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">LN⚡</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../decentralization/ln⚡/routing.html" class="sidebar-item-text sidebar-link">bitcoin #bitcoindev #ln</a>
+  <a href="../../decentralization/ln⚡/routing.html" class="sidebar-item-text sidebar-link active">bitcoin #bitcoindev #ln</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -277,77 +277,83 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#multisig" id="toc-multisig" class="nav-link active" data-scroll-target="#multisig">Multisig</a></li>
-  <li><a href="#pay-to-hash-scriptp2hs" id="toc-pay-to-hash-scriptp2hs" class="nav-link" data-scroll-target="#pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</a></li>
-  <li><a href="#p2sh-addresses" id="toc-p2sh-addresses" class="nav-link" data-scroll-target="#p2sh-addresses">P2SH Addresses</a></li>
+  <li><a href="#routing-vs-pathfinding" id="toc-routing-vs-pathfinding" class="nav-link active" data-scroll-target="#routing-vs-pathfinding">Routing vs Pathfinding</a></li>
+  <li><a href="#fairness-protocol-for-sending-payments" id="toc-fairness-protocol-for-sending-payments" class="nav-link" data-scroll-target="#fairness-protocol-for-sending-payments">Fairness protocol for sending payments</a>
+  <ul class="collapse">
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Properties</a></li>
+  </ul></li>
+  <li><a href="#htlc-an-implementation-of-the-trustless-atomic-multihop-protocol" id="toc-htlc-an-implementation-of-the-trustless-atomic-multihop-protocol" class="nav-link" data-scroll-target="#htlc-an-implementation-of-the-trustless-atomic-multihop-protocol">HTLC: An implementation of the trustless, atomic, multihop protocol</a>
+  <ul class="collapse">
+  <li><a href="#payment-flow" id="toc-payment-flow" class="nav-link" data-scroll-target="#payment-flow">Payment flow</a></li>
+  </ul></li>
+  <li><a href="#failures" id="toc-failures" class="nav-link" data-scroll-target="#failures">Failures</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">Bitcoin scripting</h1>
-</div>
 
 
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-</header>
-
-<section id="multisig" class="level2">
-<h2 class="anchored" data-anchor-id="multisig">Multisig</h2>
-<p>Multisignature scripts set a condition where N public keys are recorded in the script and at least M of those must provide signatures to unlock the funds.</p>
-<p>The locking script looks like:</p>
-<p><code>2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
-<p>The unlocking script can look something like:</p>
-<p><code>&lt;Signature B&gt; &lt;Signature C&gt;</code></p>
-<p>Combining the two, the validation script looks something like:</p>
-<p><code>&lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
-<p>NOTE: There is a bug in the multisignature execution. It requires one extra argument. Convention is to use 0. So above actually looks like:</p>
-<p><code>0 &lt;Signature B&gt; &lt;Signature C&gt; 2 &lt;Public Key A&gt; &lt;Public Key B&gt; &lt;Public Key C&gt; 3 CHECKMULTISIG</code></p>
-</section>
-<section id="pay-to-hash-scriptp2hs" class="level2">
-<h2 class="anchored" data-anchor-id="pay-to-hash-scriptp2hs">Pay-to-hash-script(P2HS)</h2>
-<p>Multisignatures are cumbersome to use.</p>
-<p>Issues for payee:</p>
+<p>#bitcoin #bitcoindev #ln</p>
+<p>The purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. The reason no one can cheat is because at any point anyone can take their transactions on-chain. The Bitcoin blockchain acts as a dispute-resolution and final settlement mechanism. The reason that any transaction can be kept off chain is precisely because at any point the transactions can be taken on-chain.</p>
+<p>Any Lightning node can route payments across its payment channels. Routing nodes cannot steal money while routing a payment. Routing nodes cannot lose money while participating in the routing process. They can choose to charge a fee for routing or do it for free. Due to onion routing, each node is only aware of the one node further in the route, and the previous node in the route.</p>
+<p>Key innovations of LN:</p>
 <ul>
-<li>Needs wallet software that can create custom transaction scripts</li>
-<li>script is somewhat large and payer has to pay for the large size of the transaction</li>
-<li>UTXO is carried by the RAM of all nodes until spent</li>
+<li>connecting a series of payments with end to end security</li>
+<li>incentive structure for nodes to forward payments</li>
 </ul>
-<p>P2HS was created to address these issues. The complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script.</p>
-<p>P2SH means “pay to a script matching this hash, a script that will be presented later when this output is spent. In P2SH transactions, the locking script that is replaced by a hash is referred to as the redeem script because it is presented to the system at redemption time rather than as a locking script.</p>
-<p>The locking script looks like:</p>
-<p><code>HASH160 &lt;20-byte hash of redeem script&gt; EQUAL</code></p>
-<p>The unlocking script can look something like:</p>
-<p><code>0 Sig1 Sig2 &lt;redeem script&gt;</code></p>
-<p>where the redeem script can look something like:</p>
-<p><code>2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 CHECKMULTISIG</code></p>
-<p><strong>NOTE</strong>: Standard multisignature scripts can invalidate transactions by way of their locking or unlocking script, while P2SH scripts can invalidate transactions by way of their unlocking script only</p>
+<section id="routing-vs-pathfinding" class="level2">
+<h2 class="anchored" data-anchor-id="routing-vs-pathfinding">Routing vs Pathfinding</h2>
+<p>Pathfinding refers to finding a series of payment channels that connect sender A to sender B.</p>
+<p>Routing refers to sending a payment across the network from A to B across the path found by pathfinding.</p>
 </section>
-<section id="p2sh-addresses" class="level2">
-<h2 class="anchored" data-anchor-id="p2sh-addresses">P2SH Addresses</h2>
-<p>Another important part of the P2SH feature is the ability to encode a script hash as an address(defined in BIP-13). P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like Bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix “5,” which results in Base58Check-encoded addresses that start with a “3.”</p>
-<p>It works in exactly the same way as a payment to a Bitcoin address.</p>
-<p>Benefits of P2SH:</p>
+<section id="fairness-protocol-for-sending-payments" class="level2">
+<h2 class="anchored" data-anchor-id="fairness-protocol-for-sending-payments">Fairness protocol for sending payments</h2>
+<section id="properties" class="level3">
+<h3 class="anchored" data-anchor-id="properties">Properties</h3>
+<p><strong>Trustless</strong>: The protocol can be trusted to prevent cheating.</p>
+<p><strong>Atomic</strong>: Either the payment is fully executed, or it fails and everyone is refunded.</p>
+<p><strong>Multihop</strong>: The security of a payment extends end to end for payments routed between channels, just as it is between a payment on a single channel.</p>
+</section>
+</section>
+<section id="htlc-an-implementation-of-the-trustless-atomic-multihop-protocol" class="level2">
+<h2 class="anchored" data-anchor-id="htlc-an-implementation-of-the-trustless-atomic-multihop-protocol">HTLC: An implementation of the trustless, atomic, multihop protocol</h2>
+<p>HTLC refers to hash time-locked contracts.</p>
+<p>HTLC uses a hash preimage as a secret that unlocks payments.</p>
 <ul>
-<li>Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.</li>
-<li>Scripts can be coded as an address, so the sender and the sender’s wallet don’t need complex engineering to implement P2SH.</li>
-<li>P2SH shifts the burden of constructing the script to the recipient, not the sender.</li>
-<li>P2SH shifts the burden in data storage for the long script from the output (which additionally to being stored on the blockchain is in the UTXO set) to the input (only stored on the blockchain).</li>
-<li>P2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).</li>
-<li>P2SH shifts the higher transaction fee costs of a long script from the sender to the recipient, who has to include the long redeem script to spend it.</li>
+<li>The recepient of the payment generates a random secret number and calculates its hash.</li>
+<li>The hash becomes the condition for the of the payment, and once the secret is revealed, all the participants can redeem their incoming payments.</li>
 </ul>
-<p><strong>NOTE</strong>: Because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid redeem script it will be processed regardless. The UTXO will be successfully locked. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script.</p>
+<section id="payment-flow" class="level3">
+<h3 class="anchored" data-anchor-id="payment-flow">Payment flow</h3>
+<p>Alice requests an invoice from Dina. Inside the invoice is a payment hash. This is also called the payment pre-image.</p>
+<p>Dina shares the hash of the secret with Alice.</p>
+<p>[[ln_routing_payment.excalidraw|600]]</p>
+<pre><code>Alice will reimburse Bob with 12 gold coins if you can show a valid message that hashes to:_hash(R)_Bob has 24 hours to show the secret after the contract was signed. If Bob does not provide the secret by this time, Alice’s deposit will be refunded by the escrow service and the contract becomes invalid.</code></pre>
+<p>Bitcoin Script contract</p>
+<pre><code># To remote node with revocation key
+OP_DUP OP_HASH160 &lt;RIPEMD160(SHA256(revocationpubkey))&gt; OP_EQUAL
+OP_IF
+    OP_CHECKSIG
+OP_ELSE
+    &lt;remote_htlcpubkey&gt; OP_SWAP OP_SIZE 32 OP_EQUAL
+    OP_IF
+        # To local node via HTLC-success transaction.
+        OP_HASH160 &lt;RIPEMD160(payment_hash)&gt; OP_EQUALVERIFY
+        2 OP_SWAP &lt;local_htlcpubkey&gt; 2 OP_CHECKMULTISIG
+    OP_ELSE
+        # To remote node after timeout.
+        OP_DROP &lt;cltv_expiry&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP
+        OP_CHECKSIG
+    OP_ENDIF
+OP_ENDIF</code></pre>
+</section>
+</section>
+<section id="failures" class="level2">
+<h2 class="anchored" data-anchor-id="failures">Failures</h2>
+<p>Cooperative failures occur when the HTLC is unwound by every participant on the route, removing the HTLC output from the commitment messages without changing their balances.</p>
+<p>What if someone refuses to remove the HTLC? We have a timelock, which expires rendering the output unusable.</p>
 
 
 </section>
