@@ -1,4 +1,6 @@
-#bitcoin #bitcoindev  #ln
+---
+title: Routing payements using HTLCs
+---
 
 The purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. 
 The reason no one can cheat is because at any point anyone can take their transactions on-chain. 
