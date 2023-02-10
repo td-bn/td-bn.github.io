@@ -1,0 +1,78 @@
+#bitcoin #bitcoindev  #ln
+
+The purpose of the LN is to enable off-chain transactions that are trusted just the same as the on-chain transactions because no one can cheat. 
+The reason no one can cheat is because at any point anyone can take their transactions on-chain. 
+The Bitcoin blockchain acts as a dispute-resolution and final settlement mechanism. 
+The reason that any transaction can be kept off chain is precisely because at any point the transactions can be taken on-chain.
+
+
+Any Lightning node can route payments across its payment channels. Routing nodes cannot steal money while routing a payment. 
+Routing nodes cannot lose money while participating in the routing process. They can choose to charge a fee for routing or do it for free. 
+Due to onion routing, each node is only aware of the one node further in the route, and the previous node in the route.
+
+Key innovations of LN:
+
+- connecting a series of payments with end to end security
+-  incentive structure for nodes to forward payments
+
+## Routing vs Pathfinding
+
+Pathfinding refers to finding a series of payment channels that connect sender A to sender B.
+
+Routing refers to sending a payment across the network from A to B across the path found by pathfinding.
+
+## Fairness protocol for sending payments
+
+### Properties
+
+**Trustless**: The protocol can be trusted to prevent cheating.
+
+**Atomic**:  Either the payment is fully executed, or it fails and everyone is refunded.
+
+**Multihop**: The security of a payment extends end to end for payments routed between channels, just as it is between a payment on a single channel.
+
+## HTLC: An implementation of  the trustless, atomic, multihop protocol
+
+HTLC refers to hash time-locked contracts.
+
+HTLC uses a hash preimage as a secret that unlocks payments.
+
+- The recepient of the payment generates a random secret number and calculates its hash.
+- The hash becomes the condition for the of the payment, and once the secret is revealed, all the participants can redeem their incoming payments.
+
+### Payment flow
+Alice requests an invoice from Dina. Inside the invoice is a payment hash. This is also called the payment pre-image.
+
+Dina shares the hash of the secret with Alice.
+
+![[ln_routing_payment.excalidraw|600]]
+
+
+	Alice will reimburse Bob with 12 gold coins if you can show a valid message that hashes to:_hash(R)_Bob has 24 hours to show the secret after the contract was signed. If Bob does not provide the secret by this time, Alice’s deposit will be refunded by the escrow service and the contract becomes invalid.
+
+Bitcoin Script contract
+
+	# To remote node with revocation key
+	OP_DUP OP_HASH160 <RIPEMD160(SHA256(revocationpubkey))> OP_EQUAL
+	OP_IF
+	    OP_CHECKSIG
+	OP_ELSE
+	    <remote_htlcpubkey> OP_SWAP OP_SIZE 32 OP_EQUAL
+	    OP_IF
+	        # To local node via HTLC-success transaction.
+	        OP_HASH160 <RIPEMD160(payment_hash)> OP_EQUALVERIFY
+	        2 OP_SWAP <local_htlcpubkey> 2 OP_CHECKMULTISIG
+	    OP_ELSE
+	        # To remote node after timeout.
+	        OP_DROP <cltv_expiry> OP_CHECKLOCKTIMEVERIFY OP_DROP
+	        OP_CHECKSIG
+	    OP_ENDIF
+	OP_ENDIF
+
+## Failures
+
+Cooperative failures occur when the HTLC is unwound by every participant on the route, removing the HTLC output from the commitment messages without changing their balances.
+
+What if someone refuses to remove the HTLC?
+We have a timelock, which expires rendering the output unusable. 
+
