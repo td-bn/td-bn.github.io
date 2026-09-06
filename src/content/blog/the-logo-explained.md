@@ -1,5 +1,5 @@
 ---
-title: "The mark, explained"
+title: "The logo, explained"
 description: "Three shapes spell the name: an alif, an F, and a ha."
 pubDate: 2026-09-06
 ---
@@ -16,6 +16,6 @@ The horizontal lines crossing it also do double duty. On the right of the bar, t
 
 ![The ha: the same line, on the left, dropping into the basin](../../assets/logo-story/03-ha-basin.svg)
 
-Put together, the whole mark:
+Put together, the whole logo:
 
-![The complete faber ihsan mark](../../assets/logo-story/04-full-mark.svg)
+![The complete faber ihsan logo](../../assets/logo-story/04-full-mark.svg)
