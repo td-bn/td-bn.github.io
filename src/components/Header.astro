@@ -5,7 +5,8 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<a class="mark" href="/" aria-label="Home">
-			<img class="mark-img" src="/mark.svg" width="28" height="27" alt="faber ihsan mark" />
+			<img class="mark-img mark-ink" src="/mark.svg" width="28" height="27" alt="" />
+		<img class="mark-img mark-reversed" src="/mark-reversed.svg" width="28" height="27" alt="" />
 			<span class="mark-name">faber ihsan</span>
 		</a>
 		<div class="internal-links">
@@ -41,6 +42,18 @@ import HeaderLink from './HeaderLink.astro';
 	.mark-img {
 		display: block;
 		transform: translateY(-1px);
+	}
+	/* One mark per color scheme: ink on paper, reversed on dark. */
+	.mark-reversed {
+		display: none;
+	}
+	@media (prefers-color-scheme: dark) {
+		.mark-ink {
+			display: none;
+		}
+		.mark-reversed {
+			display: block;
+		}
 	}
 	.mark-name {
 		font-family: var(--font-mono);
