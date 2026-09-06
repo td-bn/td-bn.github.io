@@ -1,7 +1,7 @@
 ---
 title: "From OLAP to OLTP: moving user-facing queries out of BigQuery"
 description: "We served user requests straight from BigQuery. Here is why that stopped working, and how an hourly pipeline into MySQL got our p95 from 10s to 150ms."
-pubDate: 2026-09-06
+pubDate: 2026-09-05
 ---
 
 
