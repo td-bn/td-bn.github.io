@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # design process artifacts
 DESIGN_BRIEF.md
+node_modules
