@@ -1,5 +1,5 @@
 ---
-title: "The logo, explained"
+title: "The logo"
 description: "Three shapes spell the name: an alif, an F, and a ha."
 pubDate: 2026-09-06
 ---
@@ -14,7 +14,7 @@ The horizontal lines crossing it also do double duty. On the right of the bar, t
 
 ![The arms of the F, on the right of the spine](../../assets/logo-story/02-f-bar.svg)
 
-![The ha: the same line, on the left, dropping into the basin](../../assets/logo-story/03-ha-basin.svg)
+![The ha: the same line, on the left](../../assets/logo-story/03-ha-basin.svg)
 
 Put together, the whole logo:
 
