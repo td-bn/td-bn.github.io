@@ -1,0 +1,54 @@
+---
+---
+
+<footer>
+	<div class="rule"></div>
+	<div class="row">
+		<span class="mono end">end of notes</span>
+		<a class="mono" href="/rss.xml">rss</a>
+	</div>
+</footer>
+
+<style>
+	footer {
+		width: 46rem;
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+		padding: 0 1em 3.5em;
+	}
+	.rule {
+		border-top: 1.5px solid var(--rule-strong);
+		border-bottom: 1px solid var(--rule);
+		height: 3px;
+		margin-bottom: 1.2em;
+	}
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6em 1.4em;
+		align-items: baseline;
+		justify-content: space-between;
+	}
+	.mono {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+	}
+	a.mono {
+		background: none;
+	}
+	a.mono:hover {
+		color: var(--stamp);
+	}
+	.end {
+		color: var(--stamp);
+		transform: rotate(-1.4deg);
+	}
+	@media (max-width: 520px) {
+		.end {
+			display: none;
+		}
+	}
+</style>

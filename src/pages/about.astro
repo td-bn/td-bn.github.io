@@ -1,0 +1,114 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const description = 'Who keeps this notebook, and what goes in it.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`About · ${SITE_TITLE}`} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article>
+				<header class="about-head">
+					<p class="stamp">about</p>
+					<h1>Who keeps this notebook</h1>
+					<div class="hand-rule" aria-hidden="true"></div>
+				</header>
+
+				<div class="prose">
+					<p>
+						I'm Burhan. Software engineer, working in data systems.
+					</p>
+					<p>The name of this place, <em>faber ihsan</em>, is a standard to keep, not a brand.</p>
+					<p><a href="https://en.wikipedia.org/wiki/Homo_faber"><em>Faber</em></a> is Latin for smith or maker. The word says something about people: man is a creator, set apart by what he makes. A faber has a drive to build, and expresses himself through what he builds.</p>
+					<p><a href="https://en.wikipedia.org/wiki/Ihsan"><em>Ihsan</em></a> is Arabic, from <em>ahsana</em>, to make good, to make beautiful. It is the highest level of faith: to act as if every act is an act of worship. Prayer, work, how you treat people, the same presence in all of it.</p>
+					<p>
+						New entries land in the <a href="/rss.xml">feed</a>, or you can read the <a
+							href="/blog">full index</a>.
+					</p>
+				</div>
+
+				<dl class="particulars">
+					<div>
+						<dt>Work</dt>
+						<dd>Software engineering, data systems</dd>
+					</div>
+					<div>
+						<dt>Notes on</dt>
+						<dd>Pipelines, tooling, reading</dd>
+					</div>
+				</dl>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.about-head {
+		margin-bottom: 2.4em;
+	}
+	.about-head .stamp {
+		margin: 0 0 0.9em;
+	}
+	.about-head h1 {
+		max-width: 20ch;
+		margin-bottom: 0.5rem;
+	}
+	.hand-rule {
+		height: 8px;
+		background-repeat: repeat-x;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='8'%3E%3Cpath d='M0 5 C 20 1, 40 8, 60 4 S 100 1, 120 5' fill='none' stroke='%23a8321d' stroke-width='1.5'/%3E%3C/svg%3E");
+	}
+	/* Specimen card: the details you'd clip to the inside cover. */
+	.particulars {
+		max-width: var(--measure);
+		margin: 3em 0 0;
+		padding: 1.2em 1.3em;
+		border: 1.5px solid var(--ink);
+		border-radius: var(--sketch-radius);
+		background-color: var(--card);
+		transform: rotate(-0.35deg);
+	}
+	.particulars > div {
+		display: grid;
+		grid-template-columns: 8rem 1fr;
+		gap: 0.5em;
+		padding: 0.45em 0;
+		border-bottom: 1px dotted var(--rule-strong);
+	}
+	.particulars > div:last-child {
+		border-bottom: none;
+	}
+	dt {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--stamp);
+		line-height: 2;
+	}
+	dd {
+		margin: 0;
+		font-size: 0.95rem;
+		color: var(--ink);
+	}
+	@media (prefers-color-scheme: dark) {
+		.hand-rule {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='8'%3E%3Cpath d='M0 5 C 20 1, 40 8, 60 4 S 100 1, 120 5' fill='none' stroke='%23e58367' stroke-width='1.5'/%3E%3C/svg%3E");
+		}
+	}
+	@media (max-width: 520px) {
+		.particulars > div {
+			grid-template-columns: 1fr;
+			gap: 0.1em;
+		}
+	}
+</style>

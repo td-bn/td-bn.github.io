@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import PostList from '../../components/PostList.astro';
+import { SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const description = 'Every note in the book, newest first.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Notes · ${SITE_TITLE}`} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<header class="index-head">
+				<p class="stamp">index</p>
+				<h1>Notes</h1>
+				<p class="count">
+					{posts.length}
+					{posts.length === 1 ? 'entry' : 'entries'} · newest first
+				</p>
+			</header>
+			<PostList posts={posts} />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.index-head {
+		margin-bottom: 2.4em;
+	}
+	.index-head .stamp {
+		margin: 0 0 0.9em;
+	}
+	.index-head h1 {
+		margin-bottom: 0.3rem;
+	}
+	.count {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+	}
+</style>

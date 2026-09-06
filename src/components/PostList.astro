@@ -1,0 +1,105 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+const total = posts.length;
+---
+
+<ol class="entries">
+	{
+		posts.map((post, i) => (
+			<li class="entry">
+				<span class="entry-no" aria-hidden="true">
+					{String(total - i).padStart(3, '0')}
+				</span>
+				<div class="entry-body">
+					<a class="entry-line" href={`/blog/${post.id}/`}>
+						<span class="entry-title">{post.data.title}</span>
+						<span class="entry-leader" aria-hidden="true" />
+						<FormattedDate date={post.data.pubDate} />
+					</a>
+					<p class="entry-desc">{post.data.description}</p>
+				</div>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.entries {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.entry {
+		display: grid;
+		grid-template-columns: 3.4rem 1fr;
+		align-items: start;
+		gap: 0 0.6rem;
+		padding: 1.15em 0;
+		border-bottom: 1px solid var(--rule);
+	}
+	.entry:first-child {
+		border-top: 1.5px solid var(--rule-strong);
+	}
+	/* Margin number, written in the notebook's left gutter. */
+	.entry-no {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		color: var(--stamp);
+		line-height: 2.1;
+		transform: rotate(-3deg);
+		display: inline-block;
+	}
+	.entry-line {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		background: none;
+		color: var(--ink);
+	}
+	.entry-title {
+		font-size: 1.12rem;
+		font-weight: 700;
+		line-height: 1.35;
+	}
+	.entry-leader {
+		flex: 1 1 1.5rem;
+		min-width: 1.5rem;
+		border-bottom: 1px dotted var(--rule-strong);
+		transform: translateY(-0.3em);
+	}
+	.entry-line time {
+		color: var(--ink-mute);
+	}
+	.entry-line:hover .entry-title {
+		color: var(--stamp);
+	}
+	.entry-desc {
+		margin: 0.15em 0 0;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--ink-mute);
+	}
+	@media (max-width: 560px) {
+		.entry {
+			grid-template-columns: 2.4rem 1fr;
+		}
+		.entry-line {
+			flex-wrap: wrap;
+			gap: 0.15rem 0.5rem;
+		}
+		.entry-leader {
+			display: none;
+		}
+		.entry-line time {
+			flex-basis: 100%;
+		}
+	}
+</style>

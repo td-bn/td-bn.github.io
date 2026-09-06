@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import PostList from '../components/PostList.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const recent = posts.slice(0, 6);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="masthead">
+				<p class="tagline">{SITE_DESCRIPTION}</p>
+			</section>
+
+			<section class="entries-section" aria-labelledby="recent-heading">
+				<div class="section-head">
+					<h2 id="recent-heading">Recent entries</h2>
+					<a class="all-link" href="/blog">all notes</a>
+				</div>
+				<PostList posts={recent} />
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.masthead {
+		margin-bottom: 3.5em;
+	}
+	.masthead h1 {
+		margin-bottom: 0.2rem;
+	}
+	.tagline {
+		margin: 0 0 1.8em;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		color: var(--ink-mute);
+		padding-bottom: 1.2em;
+		border-bottom: 1.5px solid var(--rule);
+	}
+	.intro {
+		max-width: 58ch;
+	}
+	.intro p:last-child {
+		margin-bottom: 0;
+	}
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1em;
+		margin-bottom: 1em;
+	}
+	.section-head h2 {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+	}
+	.all-link {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--stamp);
+		background: none;
+	}
+	.all-link::after {
+		content: '\00a0\2192';
+	}
+</style>

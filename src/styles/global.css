@@ -1,0 +1,356 @@
+/*
+  Field notes — engineering-notebook styling.
+  Graph-paper page, stamped labels, ruled margins, ink-on-paper palette.
+*/
+
+:root {
+	color-scheme: light dark;
+
+	--paper: #faf8f1;
+	--card: #fffdf6;
+	--ink: #23211c;
+	--ink-body: #3a362e;
+	--ink-mute: #6e685c;
+	--rule: #d9d3c4;
+	--rule-strong: #b8b1a0;
+	--grid: rgba(38, 74, 112, 0.075);
+	--grid-major: rgba(38, 74, 112, 0.13);
+	--stamp: #a8321d;
+	--stamp-wash: rgba(168, 50, 29, 0.07);
+	--link: #1c4f7c;
+	--link-wash: rgba(28, 79, 124, 0.14);
+	--code-bg: #f2efe4;
+
+	--grid-step: 24px;
+	--measure: 65ch;
+
+	--font-body: var(--font-atkinson), system-ui, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+	--sketch-radius: 14px 5px 16px 6px / 6px 16px 5px 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--paper: #14161a;
+		--card: #1a1d22;
+		--ink: #ebe7db;
+		--ink-body: #d6d1c4;
+		--ink-mute: #9c9689;
+		--rule: #333941;
+		--rule-strong: #4a515b;
+		--grid: rgba(150, 182, 214, 0.055);
+		--grid-major: rgba(150, 182, 214, 0.1);
+		--stamp: #e58367;
+		--stamp-wash: rgba(229, 131, 103, 0.11);
+		--link: #8cb8e8;
+		--link-wash: rgba(140, 184, 232, 0.2);
+		--code-bg: #1e2229;
+	}
+}
+
+/* Graph paper lives on the root so it covers the viewport, not just the content box. */
+html {
+	background-color: var(--paper);
+	background-image:
+		linear-gradient(var(--grid) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+		linear-gradient(var(--grid-major) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid-major) 1px, transparent 1px);
+	background-size:
+		var(--grid-step) var(--grid-step),
+		var(--grid-step) var(--grid-step),
+		calc(var(--grid-step) * 5) calc(var(--grid-step) * 5),
+		calc(var(--grid-step) * 5) calc(var(--grid-step) * 5);
+	background-position: 0 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-body);
+	font-size: 19px;
+	line-height: 1.75;
+	color: var(--ink-body);
+	text-align: left;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+main {
+	position: relative;
+	width: 46rem;
+	max-width: calc(100% - 2em);
+	margin: auto;
+	padding: 3.5em 1em 5em;
+}
+
+/* The red margin rule down the left of the page, as on ruled notebook paper. */
+@media (min-width: 1024px) {
+	main::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 2.5em;
+		left: -1.6rem;
+		border-left: 1.5px solid var(--stamp);
+		opacity: 0.4;
+	}
+}
+
+/* Type scale, tightened from the template's default for long-form reading. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.6rem 0;
+	color: var(--ink);
+	line-height: 1.18;
+	letter-spacing: -0.012em;
+}
+h1 {
+	font-size: 2.25rem;
+}
+h2 {
+	font-size: 1.55rem;
+}
+h3 {
+	font-size: 1.25rem;
+}
+h4 {
+	font-size: 1.1rem;
+}
+h5,
+h6 {
+	font-size: 1rem;
+}
+
+strong,
+b {
+	font-weight: 700;
+	color: var(--ink);
+}
+
+a {
+	color: var(--link);
+	text-decoration: none;
+	background-image: linear-gradient(var(--link-wash), var(--link-wash));
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	background-size: 100% 2px;
+	transition: background-size 0.15s ease;
+}
+a:hover {
+	background-size: 100% 100%;
+}
+a:focus-visible {
+	outline: 2px solid var(--stamp);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+p {
+	margin: 0 0 1.35em;
+}
+
+/* Stamped label: mono, letterspaced, boxed, off-axis. */
+.stamp {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 0.66rem;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--stamp);
+	border: 1.5px solid currentColor;
+	padding: 0.24em 0.6em 0.18em;
+	background-color: var(--stamp-wash);
+	transform: rotate(-1.6deg);
+}
+
+.meta {
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	letter-spacing: 0.06em;
+	color: var(--ink-mute);
+}
+
+/* Long-form body copy. */
+.prose {
+	max-width: var(--measure);
+}
+.prose > h2,
+.prose > h3 {
+	margin-top: 2.2em;
+}
+.prose > h2 {
+	padding-bottom: 0.25em;
+	border-bottom: 1.5px solid var(--rule);
+}
+.prose > h3 {
+	color: var(--ink);
+}
+.prose ul,
+.prose ol {
+	margin: 0 0 1.35em;
+	padding-left: 1.3em;
+}
+.prose li {
+	margin-bottom: 0.4em;
+}
+.prose li::marker {
+	color: var(--stamp);
+}
+
+blockquote {
+	margin: 2em 0;
+	padding: 0.1em 0 0.1em 1.1em;
+	border-left: 3px solid var(--stamp);
+	color: var(--ink);
+	font-size: 1.05em;
+	font-style: italic;
+}
+blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+code {
+	font-family: var(--font-mono);
+	font-size: 0.85em;
+	padding: 0.12em 0.35em;
+	background-color: var(--code-bg);
+	border: 1px solid var(--rule);
+	border-radius: 3px;
+}
+
+pre {
+	margin: 1.8em 0;
+	padding: 1.1em 1.2em;
+	overflow-x: auto;
+	font-size: 0.85rem;
+	line-height: 1.6;
+	border: 1.5px solid var(--rule-strong);
+	border-radius: 2px;
+	background-color: var(--code-bg) !important;
+}
+pre > code {
+	all: unset;
+	font-family: var(--font-mono);
+}
+
+/* Shiki dual-theme: swap to the dark palette without a runtime toggle. */
+@media (prefers-color-scheme: dark) {
+	.astro-code,
+	.astro-code span {
+		color: var(--shiki-dark) !important;
+		font-style: var(--shiki-dark-font-style) !important;
+		font-weight: var(--shiki-dark-font-weight) !important;
+		text-decoration: var(--shiki-dark-text-decoration) !important;
+	}
+}
+
+hr {
+	border: none;
+	border-top: 1.5px solid var(--rule);
+	margin: 2.5em 0;
+}
+
+table {
+	width: 100%;
+	margin: 1.8em 0;
+	border-collapse: collapse;
+	font-size: 0.92em;
+}
+th,
+td {
+	padding: 0.5em 0.7em;
+	text-align: left;
+	border-bottom: 1px solid var(--rule);
+}
+th {
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--stamp);
+	border-bottom: 1.5px solid var(--rule-strong);
+}
+tbody tr:last-child td {
+	border-bottom: 1.5px solid var(--rule-strong);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* Figures read as a diagram taped onto the page. */
+figure {
+	margin: 2.4em 0;
+	text-align: center;
+}
+figure img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	padding: 0.9em;
+	background-color: var(--card);
+	border: 1.5px solid var(--ink);
+	border-radius: var(--sketch-radius);
+	transform: rotate(-0.5deg);
+}
+figcaption {
+	margin-top: 1em;
+	font-family: var(--font-mono);
+	font-size: 0.74rem;
+	line-height: 1.6;
+	letter-spacing: 0.05em;
+	color: var(--ink-mute);
+	text-align: center;
+}
+figcaption::before {
+	content: 'fig. ';
+	color: var(--stamp);
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+}
+@media (prefers-color-scheme: dark) {
+	figure img {
+		background-color: #f3f1ea;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		transition: none !important;
+	}
+}
+
+@media (max-width: 720px) {
+	body {
+		font-size: 17.5px;
+	}
+	main {
+		padding: 2em 1em 3.5em;
+	}
+	h1 {
+		font-size: 1.85rem;
+	}
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

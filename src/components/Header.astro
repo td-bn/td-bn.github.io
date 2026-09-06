@@ -1,0 +1,74 @@
+---
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header>
+	<nav>
+		<a class="mark" href="/" aria-label="Home">
+			<img class="mark-img" src="/mark.svg" width="28" height="27" alt="faber ihsan mark" />
+			<span class="mark-name">faber ihsan</span>
+		</a>
+		<div class="internal-links">
+			<HeaderLink href="/blog">Notes</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+			<a class="feed" href="/rss.xml">RSS</a>
+		</div>
+	</nav>
+</header>
+
+<style>
+	header {
+		border-bottom: 1.5px solid var(--rule-strong);
+		box-shadow: 0 2px 0 -1px var(--rule);
+	}
+	nav {
+		width: 46rem;
+		max-width: calc(100% - 2em);
+		margin: auto;
+		padding: 1.1em 1em;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.6em 1.2em;
+	}
+	.mark {
+		display: flex;
+		align-items: center;
+		gap: 0.6em;
+		background: none;
+	}
+	.mark-img {
+		display: block;
+		transform: translateY(-1px);
+	}
+	.mark-name {
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		color: var(--ink);
+	}
+	.internal-links {
+		display: flex;
+		align-items: baseline;
+		gap: 1.1em;
+	}
+	.feed {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-mute);
+		background: none;
+	}
+	.feed:hover {
+		color: var(--stamp);
+	}
+	@media (max-width: 520px) {
+		nav {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
