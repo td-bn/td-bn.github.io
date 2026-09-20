@@ -34,7 +34,7 @@ const markdownFigures = {
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://td-bn.github.io',
+	site: 'https://faberihsan.com',
 	integrations: [mdx(), sitemap()],
 	markdown: {
 		processor: satteri({ hastPlugins: [markdownFigures] }),
